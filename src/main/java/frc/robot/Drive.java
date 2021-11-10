@@ -210,10 +210,10 @@ public class Drive {
 
     public void setTurnPercent(double topleft, double topright, double botleft, double botright)
     {
-        topTurnLeft.set(ControlMode.Position, topleft);
-        topTurnRight.set(ControlMode.Position, topright);
-        bottomTurnLeft.set(ControlMode.Position, botleft);
-        bottomTurnRight.set(ControlMode.Position, botright);
+        topTurnLeft.set(ControlMode.PercentOutput, topleft);
+        topTurnRight.set(ControlMode.PercentOutput, topright);
+        bottomTurnLeft.set(ControlMode.PercentOutput, botleft);
+        bottomTurnRight.set(ControlMode.PercentOutput, botright);
     }
 
     private static class InstanceHolder

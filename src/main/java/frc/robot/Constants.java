@@ -1,0 +1,29 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot;
+
+/** Add your docs here. */
+public final class Constants {
+
+    public static class DRIVE
+    {
+        public static int topDriveRightCANID = 0;
+        public static int topTurnRightCANID = 0;
+        public static int bottomDriveRightCANID = 0;
+        public static int bottomTurnRightCANID = 0;
+        
+        public static int topDriveLeftCANID = 0;
+        public static int topTurnLeftCANID = 0;
+        public static int bottomDriveLeftCANID = 0;
+        public static int bottomTurnLeftCANID = 0;
+
+        public static double driveKP = 1;
+        public static double driveKI = 0;
+        public static double driveKD = 0;
+        public static double driveKF = 0;
+        public static double driveOpenRampRate = 0.5;
+        public static double driveCloseRampRate = 0.5;
+    }
+}

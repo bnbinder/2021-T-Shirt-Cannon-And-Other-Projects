@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DRIVE;
 
 /** Add your docs here. */
@@ -88,6 +90,12 @@ public class Drive {
 
     public void updateDrive()
     {
+        SmartDashboard.putNumber("top turn right", topTurnRight.getSelectedSensorPosition());
+        SmartDashboard.putNumber("top turn left", topTurnLeft.getSelectedSensorPosition());
+        SmartDashboard.putNumber("bot turn right", bottomTurnRight.getSelectedSensorPosition());
+        SmartDashboard.putNumber("bot turn left", bottomTurnLeft.getSelectedSensorPosition());
+
+
         topDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
         topTurnLeft.configVelocityMeasurementWindow(32);
 
@@ -198,6 +206,14 @@ public class Drive {
         topTurnRight.set(ControlMode.Position, position);
         bottomTurnLeft.set(ControlMode.Position, position);
         bottomTurnRight.set(ControlMode.Position, position);
+    }
+
+    public void setTurnPercent(double topleft, double topright, double botleft, double botright)
+    {
+        topTurnLeft.set(ControlMode.Position, topleft);
+        topTurnRight.set(ControlMode.Position, topright);
+        bottomTurnLeft.set(ControlMode.Position, botleft);
+        bottomTurnRight.set(ControlMode.Position, botright);
     }
 
     private static class InstanceHolder

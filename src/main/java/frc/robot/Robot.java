@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,6 +21,10 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+  private Drive mDrive = Drive.getInstance();
+  private XboxController xbox = new XboxController(0);
+
   @Override
   public void robotInit() {}
 
@@ -33,7 +41,21 @@ public class Robot extends TimedRobot {
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    mDrive.updateDrive();
+    if(xbox.getBButton())
+    {
+      mDrive.setTurnPos(60);
+    }
+    else if(xbox.getAButton())
+    {
+      mDrive.setTwoTurnPos(60);
+    }
+    else
+    {
+      mDrive.setTurnPercent(0,0,0,0);
+    }
+  }
 
   @Override
   public void disabledInit() {}

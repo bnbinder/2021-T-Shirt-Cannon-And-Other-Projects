@@ -41,7 +41,7 @@ public class Drive {
                    rightTopVelNative, rightBottomVelNative;
     
     private Drive()
-    {
+    { //TODO set integrated sensor for all thingies 
         topDriveLeft.configFactoryDefault();
         bottomDriveLeft.configFactoryDefault();
         topDriveRight.configFactoryDefault();

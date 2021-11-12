@@ -22,8 +22,11 @@ public final class Constants {
         public static double driveKP = 1;
         public static double driveKI = 0;
         public static double driveKD = 0;
-        public static double driveKF = 0;
+        public static double driveKF = 0; //! (%ofMotor x 1023) / maxNativeVelocity
         public static double driveOpenRampRate = 0.5;
         public static double driveCloseRampRate = 0.5;
+
+        public static double oneFullRotation = 1023;
+        public static double maxNativeVelocity = 2084; //TODO make sure this is right for talon fx
     }
 }

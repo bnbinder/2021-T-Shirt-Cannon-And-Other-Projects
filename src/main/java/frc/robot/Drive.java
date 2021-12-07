@@ -200,7 +200,7 @@ public class Drive {
         bottomTurnRight.setSelectedSensorPosition(position);
     }
 
-    public void setTwoTurnPos(double position)
+    public void setActualTurnPos(double position)
     {
         topTurnLeft.set(ControlMode.Position, position);
         topTurnRight.set(ControlMode.Position, position);

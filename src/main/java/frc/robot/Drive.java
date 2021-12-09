@@ -7,25 +7,28 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DRIVE;
+import frc.robot.Constants.TURN;
+
 
 /** Add your docs here. */
 public class Drive {
     TalonFX topDriveRight = new TalonFX(DRIVE.topDriveRightCANID);
-    TalonFX topTurnRight = new TalonFX(DRIVE.topTurnRightCANID);
+    TalonFX topTurnRight = new TalonFX(TURN.topTurnRightCANID);
     
     TalonFX bottomDriveRight = new TalonFX(DRIVE.bottomDriveRightCANID);
-    TalonFX bottomTurnRight = new TalonFX(DRIVE.bottomTurnRightCANID);
+    TalonFX bottomTurnRight = new TalonFX(TURN.bottomTurnRightCANID);
    
     TalonFX topDriveLeft = new TalonFX(DRIVE.topDriveLeftCANID);
-    TalonFX topTurnLeft = new TalonFX(DRIVE.topTurnLeftCANID);
+    TalonFX topTurnLeft = new TalonFX(TURN.topTurnLeftCANID);
     
     TalonFX bottomDriveLeft = new TalonFX(DRIVE.bottomDriveLeftCANID);
-    TalonFX bottomTurnLeft = new TalonFX(DRIVE.bottomTurnLeftCANID);
+    TalonFX bottomTurnLeft = new TalonFX(TURN.bottomTurnLeftCANID);
 
     private double distance;
     private double leftTopPosNative, leftBottomPosNative, 
@@ -62,6 +65,27 @@ public class Drive {
         bottomTurnLeft.setNeutralMode(NeutralMode.Brake);
         bottomTurnRight.setNeutralMode(NeutralMode.Brake);
 
+        topTurnLeft.config_kP(0, TURN.turnKP);
+        topTurnLeft.config_kI(0, TURN.turnKI);
+        topTurnLeft.config_kD(0, TURN.turnKD);
+        topTurnLeft.config_kF(0, TURN.turnKF);
+
+        topTurnRight.config_kP(0, TURN.turnKP);
+        topTurnRight.config_kI(0, TURN.turnKI);
+        topTurnRight.config_kD(0, TURN.turnKD);
+        topTurnRight.config_kF(0, TURN.turnKF);
+
+        bottomTurnLeft.config_kP(0, TURN.turnKP);
+        bottomTurnLeft.config_kI(0, TURN.turnKI);
+        bottomTurnLeft.config_kD(0, TURN.turnKD);
+        bottomTurnLeft.config_kF(0, TURN.turnKF);
+
+        bottomTurnRight.config_kP(0, TURN.turnKP);
+        bottomTurnRight.config_kI(0, TURN.turnKI);
+        bottomTurnRight.config_kD(0, TURN.turnKD);
+        bottomTurnRight.config_kF(0, TURN.turnKF);
+
+
         topDriveLeft.config_kP(0, DRIVE.driveKP);
         topDriveLeft.config_kI(0, DRIVE.driveKI);
         topDriveLeft.config_kD(0, DRIVE.driveKD);
@@ -82,16 +106,31 @@ public class Drive {
         bottomDriveRight.config_kD(0, DRIVE.driveKD);
         bottomDriveRight.config_kF(0, DRIVE.driveKF);
 
+
         topDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        topTurnLeft.configVelocityMeasurementWindow(32);
+        topDriveLeft.configVelocityMeasurementWindow(32);
 
         topDriveRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        topTurnRight.configVelocityMeasurementWindow(32);
+        topDriveRight.configVelocityMeasurementWindow(32);
 
         bottomDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        bottomTurnLeft.configVelocityMeasurementWindow(32);
+        bottomDriveLeft.configVelocityMeasurementWindow(32);
 
         bottomDriveRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
+        bottomDriveRight.configVelocityMeasurementWindow(32);
+
+
+
+        topTurnLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
+        topTurnLeft.configVelocityMeasurementWindow(32);
+
+        topTurnRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
+        topTurnRight.configVelocityMeasurementWindow(32);
+
+        bottomTurnLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
+        bottomTurnLeft.configVelocityMeasurementWindow(32);
+
+        bottomTurnRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
         bottomTurnRight.configVelocityMeasurementWindow(32);
 
 
@@ -144,6 +183,19 @@ public class Drive {
         bottomTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
 
 
+        topDriveLeft.configPeakOutputForward(DRIVE.peakOutputForward);
+        topDriveLeft.configPeakOutputReverse(DRIVE.peakOutputReverse);
+
+        topDriveRight.configPeakOutputForward(DRIVE.peakOutputForward);
+        topDriveRight.configPeakOutputReverse(DRIVE.peakOutputReverse);
+
+        bottomDriveLeft.configPeakOutputForward(DRIVE.peakOutputForward);
+        bottomDriveLeft.configPeakOutputReverse(DRIVE.peakOutputReverse);
+
+        bottomDriveRight.configPeakOutputForward(DRIVE.peakOutputForward);
+        bottomDriveRight.configPeakOutputReverse(DRIVE.peakOutputReverse);
+
+
         topTurnLeft.configPeakOutputForward(DRIVE.peakOutputForward);
         topTurnLeft.configPeakOutputReverse(DRIVE.peakOutputReverse);
 
@@ -165,13 +217,30 @@ public class Drive {
         bottomTurnLeft.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
         bottomTurnRight.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
 
+        topDriveLeft.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
+        topDriveRight.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
+        bottomDriveLeft.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
+        bottomDriveRight.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
+
+        
         //during open loop, 0.5 seconds before motor go from 0 to selected output
+        topTurnLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
+        topTurnRight.configOpenloopRamp(DRIVE.driveOpenRampRate);
+        bottomTurnLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
+        bottomTurnRight.configOpenloopRamp(DRIVE.driveOpenRampRate);
+
         topDriveLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
         topDriveRight.configOpenloopRamp(DRIVE.driveOpenRampRate);
         bottomDriveLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
         bottomDriveRight.configOpenloopRamp(DRIVE.driveOpenRampRate);
 
+
         //during close loop, 0.5 seconds before motor go from 0 to selected output
+        topTurnLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
+        topTurnRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
+        bottomTurnLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
+        bottomTurnRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
+
         topDriveLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
         topDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
         bottomDriveLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
@@ -221,6 +290,15 @@ public class Drive {
         topDriveRight.set(ControlMode.Position, topRight);
         bottomDriveLeft.set(ControlMode.Position, botLeft);
         bottomDriveRight.set(ControlMode.Position, botRight);
+    }
+
+    public void setMotionMagic(double setpoint)
+    {
+        distance = setpoint;
+        topDriveLeft.set(ControlMode.MotionMagic, distance);
+        topDriveRight.set(ControlMode.MotionMagic, distance);
+        bottomDriveLeft.set(ControlMode.MotionMagic, distance);
+        bottomDriveRight.set(ControlMode.MotionMagic, distance);
     }
 
     private static class InstanceHolder

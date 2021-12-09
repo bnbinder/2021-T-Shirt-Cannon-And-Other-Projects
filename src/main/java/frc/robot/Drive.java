@@ -81,20 +81,6 @@ public class Drive {
         bottomDriveRight.config_kI(0, DRIVE.driveKI);
         bottomDriveRight.config_kD(0, DRIVE.driveKD);
         bottomDriveRight.config_kF(0, DRIVE.driveKF);
-    }
-
-    public static Drive getInstance()
-    {
-        return InstanceHolder.mInstance;
-    }
-
-    public void updateDrive()
-    {
-        SmartDashboard.putNumber("top turn right", topTurnRight.getSelectedSensorPosition());
-        SmartDashboard.putNumber("top turn left", topTurnLeft.getSelectedSensorPosition());
-        SmartDashboard.putNumber("bot turn right", bottomTurnRight.getSelectedSensorPosition());
-        SmartDashboard.putNumber("bot turn left", bottomTurnLeft.getSelectedSensorPosition());
-
 
         topDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
         topTurnLeft.configVelocityMeasurementWindow(32);
@@ -158,26 +144,26 @@ public class Drive {
         bottomTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
 
 
-        topTurnLeft.configPeakOutputForward(.20);
-        topTurnLeft.configPeakOutputReverse(.20);
+        topTurnLeft.configPeakOutputForward(DRIVE.peakOutputForward);
+        topTurnLeft.configPeakOutputReverse(DRIVE.peakOutputReverse);
 
-        topTurnRight.configPeakOutputForward(.20);
-        topTurnRight.configPeakOutputReverse(.20);
+        topTurnRight.configPeakOutputForward(DRIVE.peakOutputForward);
+        topTurnRight.configPeakOutputReverse(DRIVE.peakOutputReverse);
 
-        bottomTurnLeft.configPeakOutputForward(.20);
-        bottomTurnLeft.configPeakOutputReverse(.20);
+        bottomTurnLeft.configPeakOutputForward(DRIVE.peakOutputForward);
+        bottomTurnLeft.configPeakOutputReverse(DRIVE.peakOutputReverse);
 
-        bottomTurnRight.configPeakOutputForward(.20);
-        bottomTurnRight.configPeakOutputReverse(.20);
+        bottomTurnRight.configPeakOutputForward(DRIVE.peakOutputForward);
+        bottomTurnRight.configPeakOutputReverse(DRIVE.peakOutputReverse);
 
         //what this do?
         //topTurnRight.configAllowableClosedloopError(0, 1);
 
         //makes sure motors dont go above 1 (100%)?
-        topTurnLeft.configClosedLoopPeakOutput(0, .20);
-        topTurnRight.configClosedLoopPeakOutput(0, .20);
-        bottomTurnLeft.configClosedLoopPeakOutput(0, .20);
-        bottomTurnRight.configClosedLoopPeakOutput(0, .20);
+        topTurnLeft.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
+        topTurnRight.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
+        bottomTurnLeft.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
+        bottomTurnRight.configClosedLoopPeakOutput(0, DRIVE.peakOutputForward);
 
         //during open loop, 0.5 seconds before motor go from 0 to selected output
         topDriveLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
@@ -190,6 +176,19 @@ public class Drive {
         topDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
         bottomDriveLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
         bottomDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
+    }
+
+    public static Drive getInstance()
+    {
+        return InstanceHolder.mInstance;
+    }
+
+    public void updateDrive()
+    {
+        SmartDashboard.putNumber("top turn right", topTurnRight.getSelectedSensorPosition());
+        SmartDashboard.putNumber("top turn left", topTurnLeft.getSelectedSensorPosition());
+        SmartDashboard.putNumber("bot turn right", bottomTurnRight.getSelectedSensorPosition());
+        SmartDashboard.putNumber("bot turn left", bottomTurnLeft.getSelectedSensorPosition());
     }
 
     public void setTurnPos(double position)
@@ -214,6 +213,14 @@ public class Drive {
         topTurnRight.set(ControlMode.Position, topright);
         bottomTurnLeft.set(ControlMode.Position, botleft);
         bottomTurnRight.set(ControlMode.Position, botright);
+    }
+
+    public void setDrivePerent(double topLeft, double topRight, double botLeft, double botRight)
+    {
+        topDriveLeft.set(ControlMode.Position, topLeft);
+        topDriveRight.set(ControlMode.Position, topRight);
+        bottomDriveLeft.set(ControlMode.Position, botLeft);
+        bottomDriveRight.set(ControlMode.Position, botRight);
     }
 
     private static class InstanceHolder

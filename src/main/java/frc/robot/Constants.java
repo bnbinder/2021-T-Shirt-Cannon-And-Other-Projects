@@ -19,7 +19,7 @@ public final class Constants {
         public static int bottomDriveLeftCANID = 0;
         public static int bottomTurnLeftCANID = 0;
 
-        public static double driveKP = 1;
+        public static double driveKP = 0.0000001;
         public static double driveKI = 0;
         public static double driveKD = 0;
         public static double driveKF = 0; //! (%ofMotor x 1023) / maxNativeVelocity
@@ -28,5 +28,8 @@ public final class Constants {
 
         public static double oneFullRotation = 1023;
         public static double maxNativeVelocity = 2084; //TODO make sure this is right for talon fx
+
+        public static double peakOutputForward = 1;
+        public static double peakOutputReverse = 1;
     }
 }

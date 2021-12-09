@@ -44,17 +44,22 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     
     
-    if(xbox.getBButton())
-    {
-      mDrive.setTurnPos(60);
-    }
-    else if(xbox.getAButton())
+    if(xbox.getAButton())
     {
       mDrive.setActualTurnPos(60);
     }
     else
     {
       mDrive.setTurnPercent(0,0,0,0);
+    }
+
+    if(xbox.getBButton())
+    {
+      mDrive.setDrivePerent(.5, .5, .5, .5);
+    }
+    else
+    {
+      mDrive.setDrivePerent(0, 0, 0, 0);
     }
     
     mDrive.updateDrive();

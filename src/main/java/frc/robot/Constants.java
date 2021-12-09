@@ -7,6 +7,9 @@ package frc.robot;
 /** Add your docs here. */
 public final class Constants {
 
+    public static double kPi = 3.14159265359;
+    public static double oneEncoderRotation = 2048;
+
     public static class DRIVE
     {
         public static int topDriveRightCANID = 0;
@@ -21,11 +24,16 @@ public final class Constants {
         public static double driveOpenRampRate = 0;
         public static double driveCloseRampRate = 0;
 
-        public static double oneFullRotation = 1023;
         public static double maxNativeVelocity = 2084; //TODO make sure this is right for talon fx
 
         public static double peakOutputForward = 1;
         public static double peakOutputReverse = 1;
+
+        public static double magicVel = 1095;
+        public static double magicAccel = 674;
+
+        public static double kWheelDiameterInches = 5.9575;
+        public static double kWheelCircumference = kWheelDiameterInches * kPi;
     }
 
     public static class TURN

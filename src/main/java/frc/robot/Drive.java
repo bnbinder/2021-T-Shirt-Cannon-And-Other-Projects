@@ -10,25 +10,29 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DRIVE;
 import frc.robot.Constants.TURN;
+import frc.robot.MkUtil;
 
 
 /** Add your docs here. */
 public class Drive {
-    TalonFX topDriveRight = new TalonFX(DRIVE.topDriveRightCANID);
-    TalonFX topTurnRight = new TalonFX(TURN.topTurnRightCANID);
+    private final AHRS navX = new AHRS();
     
-    TalonFX bottomDriveRight = new TalonFX(DRIVE.bottomDriveRightCANID);
-    TalonFX bottomTurnRight = new TalonFX(TURN.bottomTurnRightCANID);
+    private final TalonFX topDriveRight = new TalonFX(DRIVE.topDriveRightCANID);
+    private final TalonFX topTurnRight = new TalonFX(TURN.topTurnRightCANID);
+    
+    private final TalonFX bottomDriveRight = new TalonFX(DRIVE.bottomDriveRightCANID);
+    private final TalonFX bottomTurnRight = new TalonFX(TURN.bottomTurnRightCANID);
    
-    TalonFX topDriveLeft = new TalonFX(DRIVE.topDriveLeftCANID);
-    TalonFX topTurnLeft = new TalonFX(TURN.topTurnLeftCANID);
+    private final TalonFX topDriveLeft = new TalonFX(DRIVE.topDriveLeftCANID);
+    private final TalonFX topTurnLeft = new TalonFX(TURN.topTurnLeftCANID);
     
-    TalonFX bottomDriveLeft = new TalonFX(DRIVE.bottomDriveLeftCANID);
-    TalonFX bottomTurnLeft = new TalonFX(TURN.bottomTurnLeftCANID);
+    private final TalonFX bottomDriveLeft = new TalonFX(DRIVE.bottomDriveLeftCANID);
+    private final TalonFX bottomTurnLeft = new TalonFX(TURN.bottomTurnLeftCANID);
 
     private double distance;
     private double leftTopPosNative, leftBottomPosNative, 
@@ -36,12 +40,22 @@ public class Drive {
                    
                    leftTopPosInch, leftBottomPosInch,
                    rightTopPosInch, rightBottomPosInch,
+
+                   leftTopPosMeters, leftBottomPosMeters,
+                   rightTopPosMeters, rightBottomPosMeters,
                    
                    leftTopVelInch, leftBottomVelInch,
                    rightTopVelInch, rightBottomVelInch,
 
                    leftTopVelNative, leftBottomVelNative,
-                   rightTopVelNative, rightBottomVelNative;
+                   rightTopVelNative, rightBottomVelNative,
+                   
+                   leftTopVelMeters, leftBottomVelMeters,
+                   rightTopVelMeters, rightBottomVelMeters,
+                   
+                   avgVelInches, avgDistInches;
+
+                   
     
     private Drive()
     { //TODO set integrated sensor for all thingies 
@@ -254,6 +268,40 @@ public class Drive {
 
     public void updateDrive()
     {
+        leftTopVelNative = topDriveLeft.getSelectedSensorVelocity();
+        rightTopVelNative = topDriveRight.getSelectedSensorVelocity();
+        leftBottomVelNative = bottomDriveLeft.getSelectedSensorVelocity();
+        rightBottomVelNative = bottomDriveRight.getSelectedSensorVelocity();
+
+        leftTopPosNative = topDriveLeft.getSelectedSensorPosition();
+        rightTopPosNative = topDriveRight.getSelectedSensorPosition();
+        leftBottomPosNative = bottomDriveLeft.getSelectedSensorPosition();
+        rightBottomPosNative = bottomDriveRight.getSelectedSensorPosition();
+
+        leftTopVelInch = MkUtil.nativePer100MstoInchesPerSec(leftTopVelNative);
+        rightTopVelInch = MkUtil.nativePer100MstoInchesPerSec(rightTopVelNative);
+        leftBottomVelInch = MkUtil.nativePer100MstoInchesPerSec(leftBottomVelNative);
+        rightBottomVelInch = MkUtil.nativePer100MstoInchesPerSec(rightBottomVelNative);
+
+        leftTopPosInch = MkUtil.nativeToInches(leftTopPosNative);
+        rightTopPosInch = MkUtil.nativeToInches(rightTopPosNative);
+        leftBottomPosInch = MkUtil.nativeToInches(leftBottomPosNative);
+        rightBottomPosInch = MkUtil.nativeToInches(rightBottomPosNative);
+        
+        leftTopVelMeters = MkUtil.nativePer100MsToMetersPerSec(leftTopVelNative);
+        rightTopVelMeters = MkUtil.nativePer100MsToMetersPerSec(rightTopVelNative);
+        leftBottomVelMeters = MkUtil.nativePer100MsToMetersPerSec(leftBottomVelNative);
+        rightBottomVelMeters = MkUtil.nativePer100MsToMetersPerSec(rightBottomVelNative);
+
+        leftTopPosMeters = MkUtil.nativeToMeters(leftTopPosNative);
+        rightTopPosMeters = MkUtil.nativeToMeters(rightTopPosNative);
+        leftBottomPosMeters = MkUtil.nativeToMeters(leftBottomPosNative);
+        rightBottomPosMeters = MkUtil.nativeToMeters(rightBottomPosNative);
+
+        avgDistInches = (leftTopPosInch + rightTopPosInch + leftBottomPosInch + rightBottomPosInch) /4.0;
+        avgVelInches = (leftTopVelInch + rightTopVelInch + leftBottomVelInch + rightBottomVelInch) / 4.0;
+        //TODO for avg dist need to figure out how to do avg dist since four motors four wheels not tank drive
+        //TODO same with avg vel
         SmartDashboard.putNumber("top turn right", topTurnRight.getSelectedSensorPosition());
         SmartDashboard.putNumber("top turn left", topTurnLeft.getSelectedSensorPosition());
         SmartDashboard.putNumber("bot turn right", bottomTurnRight.getSelectedSensorPosition());
@@ -292,13 +340,43 @@ public class Drive {
         bottomDriveRight.set(ControlMode.Position, botRight);
     }
 
-    public void setMotionMagic(double setpoint)
+    public void zeroSensors() {
+        navX.zeroYaw();
+        topDriveLeft.setSelectedSensorPosition(0);
+        topDriveRight.setSelectedSensorPosition(0);
+        bottomDriveLeft.setSelectedSensorPosition(0);
+        bottomDriveRight.setSelectedSensorPosition(0);
+      }    
+
+    public void setMagicStraight(double setpoint)
     {
         distance = setpoint;
+
+        topDriveLeft.configMotionCruiseVelocity(DRIVE.magicVel);
+        topDriveRight.configMotionCruiseVelocity(DRIVE.magicVel);
+        bottomDriveLeft.configMotionCruiseVelocity(DRIVE.magicVel);
+        bottomDriveRight.configMotionCruiseVelocity(DRIVE.magicVel);
+
+        topDriveLeft.configMotionAcceleration(DRIVE.magicAccel);
+        topDriveRight.configMotionAcceleration(DRIVE.magicAccel);
+        bottomDriveLeft.configMotionAcceleration(DRIVE.magicAccel);
+        bottomDriveRight.configMotionAcceleration(DRIVE.magicAccel);
+
+        zeroSensors();
+    }
+
+    public void updateMagicStraight()
+    {
         topDriveLeft.set(ControlMode.MotionMagic, distance);
         topDriveRight.set(ControlMode.MotionMagic, distance);
         bottomDriveLeft.set(ControlMode.MotionMagic, distance);
         bottomDriveRight.set(ControlMode.MotionMagic, distance);
+    }
+
+    public boolean isMagicStraightDone()
+    {
+        double err = distance - avgDistInches;
+        return Math.abs(err) < 0.5 && Math.abs(avgVelInches) < 0.1;
     }
 
     private static class InstanceHolder

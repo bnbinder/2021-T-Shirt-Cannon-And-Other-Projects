@@ -12,6 +12,8 @@ public final class Constants {
 
     public static class DRIVE
     {
+        public static double greerRatio = 6.75;
+
         public static int topDriveRightCANID = 12;
         public static int bottomDriveRightCANID = 3;
         public static int topDriveLeftCANID = 9;
@@ -38,11 +40,15 @@ public final class Constants {
 
     public static class TURN
     {
+        public static double maxVel = 300;
+        public static double maxAccel = 110;
+
+        public static double greerRatio = 12.8;
+
         public static int topTurnLeftCANID = 4; //top when standing behind elec trical board
         public static int topTurnRightCANID = 7;
         public static int bottomTurnLeftCANID = 2;
         public static int bottomTurnRightCANID = 1;
-
 
         public static double turnKP = 0.09;
         public static double turnKI = 0;

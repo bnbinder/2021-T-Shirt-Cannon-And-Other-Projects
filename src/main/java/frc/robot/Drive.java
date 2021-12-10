@@ -12,7 +12,9 @@ import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.Constants.DRIVE;
 import frc.robot.Constants.TURN;
 import frc.robot.MkUtil;
@@ -33,6 +35,11 @@ public class Drive {
     
     private final TalonFX bottomDriveLeft = new TalonFX(DRIVE.bottomDriveLeftCANID);
     private final TalonFX bottomTurnLeft = new TalonFX(TURN.bottomTurnLeftCANID);
+
+    private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
+    private final ProfiledPIDController turning = new ProfiledPIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD, constraints);
+
+    private double degrees = 0;
 
     private double distance;
     private double leftTopPosNative, leftBottomPosNative, 
@@ -306,6 +313,9 @@ public class Drive {
         SmartDashboard.putNumber("top turn left", topTurnLeft.getSelectedSensorPosition());
         SmartDashboard.putNumber("bot turn right", bottomTurnRight.getSelectedSensorPosition());
         SmartDashboard.putNumber("bot turn left", bottomTurnLeft.getSelectedSensorPosition());
+
+        degrees = MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
+        SmartDashboard.putNumber("deg", degrees);
     }
 
     public void setTurnPos(double position)
@@ -338,6 +348,11 @@ public class Drive {
         topDriveRight.set(ControlMode.PercentOutput, topRight);
         bottomDriveLeft.set(ControlMode.PercentOutput, botLeft);
         bottomDriveRight.set(ControlMode.PercentOutput, botRight);
+    }
+
+    public double turnCalculate(double setpoint)
+    {
+        return turning.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
     }
 
     public void zeroSensors() {

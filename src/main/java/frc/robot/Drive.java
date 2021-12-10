@@ -209,7 +209,7 @@ public class Drive {
         bottomDriveRight.configPeakOutputForward(DRIVE.peakOutputForward);
         bottomDriveRight.configPeakOutputReverse(DRIVE.peakOutputReverse);
 
-
+/*
         topTurnLeft.configPeakOutputForward(DRIVE.peakOutputForward);
         topTurnLeft.configPeakOutputReverse(DRIVE.peakOutputReverse);
 
@@ -221,7 +221,7 @@ public class Drive {
 
         bottomTurnRight.configPeakOutputForward(DRIVE.peakOutputForward);
         bottomTurnRight.configPeakOutputReverse(DRIVE.peakOutputReverse);
-
+*/
         //what this do?
         //topTurnRight.configAllowableClosedloopError(0, 1);
 
@@ -238,10 +238,10 @@ public class Drive {
 
         
         //during open loop, 0.5 seconds before motor go from 0 to selected output
-        topTurnLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
-        topTurnRight.configOpenloopRamp(DRIVE.driveOpenRampRate);
-        bottomTurnLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
-        bottomTurnRight.configOpenloopRamp(DRIVE.driveOpenRampRate);
+        topTurnLeft.configOpenloopRamp(TURN.turnOpenRampRate);
+        topTurnRight.configOpenloopRamp(TURN.turnOpenRampRate);
+        bottomTurnLeft.configOpenloopRamp(TURN.turnOpenRampRate);
+        bottomTurnRight.configOpenloopRamp(TURN.turnOpenRampRate);
 
         topDriveLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
         topDriveRight.configOpenloopRamp(DRIVE.driveOpenRampRate);
@@ -250,10 +250,10 @@ public class Drive {
 
 
         //during close loop, 0.5 seconds before motor go from 0 to selected output
-        topTurnLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
-        topTurnRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
-        bottomTurnLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
-        bottomTurnRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
+        topTurnLeft.configClosedloopRamp(TURN.turnCloseRampRate);
+        topTurnRight.configClosedloopRamp(TURN.turnCloseRampRate);
+        bottomTurnLeft.configClosedloopRamp(TURN.turnCloseRampRate);
+        bottomTurnRight.configClosedloopRamp(TURN.turnCloseRampRate);
 
         topDriveLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
         topDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
@@ -326,18 +326,18 @@ public class Drive {
 
     public void setTurnPercent(double topleft, double topright, double botleft, double botright)
     {
-        topTurnLeft.set(ControlMode.Position, topleft);
-        topTurnRight.set(ControlMode.Position, topright);
-        bottomTurnLeft.set(ControlMode.Position, botleft);
-        bottomTurnRight.set(ControlMode.Position, botright);
+        topTurnLeft.set(ControlMode.PercentOutput, topleft);
+        topTurnRight.set(ControlMode.PercentOutput, topright);
+        bottomTurnLeft.set(ControlMode.PercentOutput, botleft);
+        bottomTurnRight.set(ControlMode.PercentOutput, botright);
     }
 
     public void setDrivePerent(double topLeft, double topRight, double botLeft, double botRight)
     {
-        topDriveLeft.set(ControlMode.Position, topLeft);
-        topDriveRight.set(ControlMode.Position, topRight);
-        bottomDriveLeft.set(ControlMode.Position, botLeft);
-        bottomDriveRight.set(ControlMode.Position, botRight);
+        topDriveLeft.set(ControlMode.PercentOutput, topLeft);
+        topDriveRight.set(ControlMode.PercentOutput, topRight);
+        bottomDriveLeft.set(ControlMode.PercentOutput, botLeft);
+        bottomDriveRight.set(ControlMode.PercentOutput, botRight);
     }
 
     public void zeroSensors() {

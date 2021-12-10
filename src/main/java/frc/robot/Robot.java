@@ -38,7 +38,9 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    mDrive.setActualTurnPos(0);
+  }
 
   @Override
   public void teleopPeriodic() {
@@ -46,7 +48,11 @@ public class Robot extends TimedRobot {
     
     if(xbox.getAButton())
     {
-      mDrive.setActualTurnPos(60);
+      mDrive.setActualTurnPos(3000);
+    }
+    else if(xbox.getXButton())
+    {
+      mDrive.setActualTurnPos(1000);
     }
     else
     {
@@ -55,7 +61,7 @@ public class Robot extends TimedRobot {
 
     if(xbox.getBButton())
     {
-      mDrive.setDrivePerent(.5, .5, .5, .5);
+      mDrive.setDrivePerent(.1, .1, .1, .1);
     }
     else
     {
@@ -66,10 +72,14 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    mDrive.setActualTurnPos(0);
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    mDrive.setActualTurnPos(0);
+  }
 
   @Override
   public void testInit() {}

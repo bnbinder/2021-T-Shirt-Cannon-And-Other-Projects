@@ -12,10 +12,10 @@ public final class Constants {
 
     public static class DRIVE
     {
-        public static int topDriveRightCANID = 0;
-        public static int bottomDriveRightCANID = 0;
-        public static int topDriveLeftCANID = 0;
-        public static int bottomDriveLeftCANID = 0;
+        public static int topDriveRightCANID = 12;
+        public static int bottomDriveRightCANID = 3;
+        public static int topDriveLeftCANID = 9;
+        public static int bottomDriveLeftCANID = 6;
         
         public static double driveKP = 0.0000001;
         public static double driveKI = 0;
@@ -38,17 +38,17 @@ public final class Constants {
 
     public static class TURN
     {
-        public static int topTurnLeftCANID = 0;
-        public static int topTurnRightCANID = 0;
-        public static int bottomTurnLeftCANID = 0;
-        public static int bottomTurnRightCANID = 0;
+        public static int topTurnLeftCANID = 4; //top when standing behind elec trical board
+        public static int topTurnRightCANID = 7;
+        public static int bottomTurnLeftCANID = 2;
+        public static int bottomTurnRightCANID = 1;
 
 
-        public static double turnKP = 0.0000001;
+        public static double turnKP = 0.09;
         public static double turnKI = 0;
         public static double turnKD = 0;
         public static double turnKF = 0;
-        public static double turnOpenRampRate = 0;
-        public static double turnCloseRampRate = 0;
+        public static double turnOpenRampRate = 1;
+        public static double turnCloseRampRate = 1;
     }
 }

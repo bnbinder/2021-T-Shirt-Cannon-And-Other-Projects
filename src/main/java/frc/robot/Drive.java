@@ -13,6 +13,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.Constants.DRIVE;
@@ -40,8 +47,23 @@ public class Drive {
     private final ProfiledPIDController turning = new ProfiledPIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD, constraints);
 
     private double degrees = 0;
-
+    private ChassisSpeeds speeds;
     private double distance;
+    Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
+    Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
+    Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
+    Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
+
+    SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+  m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
+);
+
+SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics,
+navXshit(), new Pose2d(0, 0, new Rotation2d()));
+
+speeds = new ChassisSpeeds(3, 3, 0);
+SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
+
     private double leftTopPosNative, leftBottomPosNative, 
                    rightTopPosNative, rightBottomPosNative,
                    
@@ -316,6 +338,8 @@ public class Drive {
 
         degrees = MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
         SmartDashboard.putNumber("deg", degrees);
+        m_odometry.update(navXshit(), states);
+        SmartDashboard.putNumber("someething", m_odometry)
     }
 
     public void setTurnPos(double position)
@@ -394,6 +418,11 @@ public class Drive {
         return Math.abs(err) < 0.5 && Math.abs(avgVelInches) < 0.1;
     }
 
+    public Rotation2d navXshit()
+    {
+        return navX.getRotation2d();
+        
+    }
     private static class InstanceHolder
     {
         private static final Drive mInstance = new Drive();

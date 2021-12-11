@@ -4,11 +4,16 @@
 
 package frc.robot;
 
+
 /** Add your docs here. */
 public final class Constants {
 
     public static double kPi = 3.14159265359;
     public static double oneEncoderRotation = 2048;
+
+    public static double L = 36;
+    public static double W = 22;
+    public static double R = Math.sqrt(Math.pow(L, 2) + Math.pow(W, 2));
 
     public static class DRIVE
     {

@@ -29,6 +29,10 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+  private double one,two,three;
+  private boolean lol = true;
+
   private Drive mDrive = Drive.getInstance();
   private XboxController xbox = new XboxController(0);
 
@@ -69,14 +73,21 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
   @Override
   public void teleopInit() {
-    mDrive.setActualTurnPos(0);
+    mDrive.setTurnPos(0);
   }
 
   @Override
   public void teleopPeriodic() {
     
-   
-
+   if(xbox.getStartButtonPressed())
+   {
+     if(xbox.getStartButtonReleased())
+     {
+       lol = !lol;
+     }
+   }
+if(lol)
+{
     if(xbox.getAButton())
     {
       mDrive.setActualTurnPos(3000);
@@ -96,16 +107,38 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     }
     else
     {
-      mDrive.setDrivePerent(0, 0, 0, 0);
+      one = xbox.getRawAxis(0);
+      two = xbox.getRawAxis(1);
+      three = xbox.getRawAxis(2);
+      if(Math.abs(xbox.getRawAxis(0)) < 0.1)
+      {
+        one = 0;
+      }
+      if(Math.abs(xbox.getRawAxis(1)) < 0.1)
+      {
+        two = 0;
+      }
+      if(Math.abs(xbox.getRawAxis(2)) < 0.1)
+      {
+        three = 0;
+      }
+      //TODO find out xbox axis shit, and pray to god
+      //mDrive.strafeRotate(one,two,three);
     }
-    
     mDrive.updateDrive();
     //y / x, opp / adj
+    //but arctan uses x,y param (respectivley)
+    //but tan gets other hyp, not hyp i want
+    // so its y / x
     tan = Math.atan2(xbox.getRawAxis(0),xbox.getRawAxis(1));    
     SmartDashboard.putNumber("Tan", tan);
     degrees = MkUtil.degreesToNative(tan, TURN.greerRatio);
     SmartDashboard.putNumber("deg", degrees);
-    
+}
+else
+{
+  mDrive.troll();
+}
   }
 
   @Override

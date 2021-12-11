@@ -119,7 +119,6 @@ public class MkUtil {
   }
 
   //! this is ben binders mkutil extension, above is swerdlow code
-  //i hope this works
   public static double nativeToDegrees(double gimmeRots, double greerRatio)
   {
     return (gimmeRots * 360) / (greerRatio * Constants.oneEncoderRotation);
@@ -127,7 +126,6 @@ public class MkUtil {
 
   public static double degreesToNative(double gimmeDeg, double greerRatio)
   {
-    //! need to see if greer ratio affects degrees as it affects native
     return (gimmeDeg * Constants.oneEncoderRotation * greerRatio) / 360;
   }
 

@@ -46,8 +46,18 @@ public class Drive {
     private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
     private final ProfiledPIDController turning = new ProfiledPIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD, constraints);
 
+    private double temp, A, B, C, D, ws1, ws2, ws3, ws4, wa1, wa2, wa3, wa4, max;
+
     private double degrees = 0;
-    private double fff = 0;
+    /*
+    private double canIPutMy1 = 0;
+    private double canIPutMy2 = 0;
+    private double canIPutMy3 = 0;
+    private double canIPutMy4 = 0;
+    private double ballsInYoJaw = 0;
+    */
+    //failed attempt at unicorn drive
+
     private double distance;
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
     Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
@@ -63,7 +73,7 @@ public class Drive {
   m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
 );
 
-    SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, navXshit(), new Pose2d(0, 0, new Rotation2d()));
+    SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, navXshit2(), new Pose2d(0, 0, new Rotation2d()));
 
 ChassisSpeeds speeds = new ChassisSpeeds(0, 0, 0);
 SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
@@ -335,19 +345,26 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         avgVelInches = (leftTopVelInch + rightTopVelInch + leftBottomVelInch + rightBottomVelInch) / 4.0;
         //TODO for avg dist need to figure out how to do avg dist since four motors four wheels not tank drive
         //TODO same with avg vel
-        SmartDashboard.putNumber("top turn right", topTurnRight.getSelectedSensorPosition());
-        SmartDashboard.putNumber("top turn left", topTurnLeft.getSelectedSensorPosition());
-        SmartDashboard.putNumber("bot turn right", bottomTurnRight.getSelectedSensorPosition());
-        SmartDashboard.putNumber("bot turn left", bottomTurnLeft.getSelectedSensorPosition());
+        /*
+        SmartDashboard.putNumber("1top turn right", canIPutMy1);
+        SmartDashboard.putNumber("2top turn left", canIPutMy2);
+        SmartDashboard.putNumber("3bot turn right", canIPutMy3);
+        SmartDashboard.putNumber("4bot turn left", canIPutMy4);
 
-        degrees = MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
-        SmartDashboard.putNumber("deg", degrees);
+        SmartDashboard.putNumber("mr", ballsInYoJaw);
+        */
+
+        //degrees = MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
+        SmartDashboard.putNumber("topledeg", MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio));
+        SmartDashboard.putNumber("toprideg", MkUtil.nativeToDegrees(topTurnRight.getSelectedSensorPosition(), TURN.greerRatio));
+        SmartDashboard.putNumber("botledeg", MkUtil.nativeToDegrees(bottomTurnLeft.getSelectedSensorPosition(), TURN.greerRatio));
+        SmartDashboard.putNumber("botrideg", MkUtil.nativeToDegrees(bottomTurnRight.getSelectedSensorPosition(), TURN.greerRatio));
         //(frontLeft,frontRight,bottomLeft,bottomRight);
         frontLeft = new SwerveModuleState(leftTopVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio)));
         frontRight = new SwerveModuleState(rightTopVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(topTurnRight.getSelectedSensorPosition(), TURN.greerRatio)));
         bottomLeft = new SwerveModuleState(leftBottomVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(bottomTurnLeft.getSelectedSensorPosition(), TURN.greerRatio)));
         bottomRight = new SwerveModuleState(rightBottomVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(bottomTurnRight.getSelectedSensorPosition(), TURN.greerRatio)));
-        m_odometry.update(navXshit(), frontLeft,frontRight,bottomLeft,bottomRight);
+        m_odometry.update(navXshit2(), frontLeft,frontRight,bottomLeft,bottomRight);
         SmartDashboard.putNumber("x", m_odometry.getPoseMeters().getX());
         SmartDashboard.putNumber("y", m_odometry.getPoseMeters().getY());
     }
@@ -389,13 +406,14 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         return turning.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
     }
 
-    public void zeroSensors() {
+    public void zeroSensors() 
+    {
         navX.zeroYaw();
         topDriveLeft.setSelectedSensorPosition(0);
         topDriveRight.setSelectedSensorPosition(0);
         bottomDriveLeft.setSelectedSensorPosition(0);
         bottomDriveRight.setSelectedSensorPosition(0);
-      }    
+    }    
 
     public void setMagicStraight(double setpoint)
     {
@@ -428,11 +446,83 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         return Math.abs(err) < 0.5 && Math.abs(avgVelInches) < 0.1;
     }
 
-    public Rotation2d navXshit()
+    public Rotation2d navXshit2()
     {
         return navX.getRotation2d();
-        
     }
+
+    public double navXshit()
+    {
+        return navX.getRoll();
+    }
+
+    public void strafeRotate(double FWD, double STR, double RCW)
+    {
+        /*
+        double mrKrabs = Math.atan2(why,ex);
+
+        double amongusTL = (power1 / Math.abs(power1)) * (-45);
+        double amongusTR = (power1 / Math.abs(power1)) * (-135);
+        double amongusBL = (power1 / Math.abs(power1)) * (-225);
+        double amongusBR = (power1 / Math.abs(power1)) * (-315);
+
+        double length1 = Math.sqrt(Math.pow(ex, 2) + Math.pow(why, 2));
+        double length2 = Math.sqrt(Math.pow(power1, 2) + Math.pow(power2, 2));
+
+        double rottenFleschTL = Math.sqrt(Math.pow(amongusTL, 2) + Math.pow(mrKrabs, 2));
+        double rottenFleschTR = Math.sqrt(Math.pow(amongusTR, 2) + Math.pow(mrKrabs, 2));
+        double rottenFleschBL = Math.sqrt(Math.pow(amongusBL, 2) + Math.pow(mrKrabs, 2));
+        double rottenFleschBR = Math.sqrt(Math.pow(amongusBR, 2) + Math.pow(mrKrabs, 2));
+
+        double powerBros = Math.sqrt(Math.pow(length2, 2) + Math.pow(length1, 2));
+
+        canIPutMy1 = rottenFleschTL;
+        canIPutMy2 = rottenFleschTR;
+        canIPutMy3 = rottenFleschBL;
+        canIPutMy4 = rottenFleschBR;
+        ballsInYoJaw = powerBros;
+        */
+        //my version was somewhat close, gotta gimme some credit
+        temp = FWD*Math.cos(navXshit()) + STR*Math.sin(navXshit());
+        STR = -FWD*Math.sin(navXshit()) + STR*Math.cos(navXshit());
+        FWD = temp; 
+        A = STR - RCW*(Constants.L/Constants.R);
+        B = STR + RCW*(Constants.L/Constants.R);
+        C = FWD - RCW*(Constants.W/Constants.R);
+        D = FWD + RCW*(Constants.W/Constants.R);
+        ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   wa1 = Math.atan2(B,C)*180/Math.PI;
+        ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   wa2 = Math.atan2(B,D)*180/Math.PI;
+        ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   wa3 = Math.atan2(A,D)*180/Math.PI;
+        ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   wa4 = Math.atan2(A,C)*180/Math.PI;
+
+        //sus about this, very sus
+        max=ws1; if(ws2>max)max=ws2; if(ws3>max)max=ws3; if(ws4>max)max=ws4;
+        if(max>1){ws1/=max; ws2/=max; ws3/=max; ws4/=max;}
+
+        topDriveLeft.set(ControlMode.PercentOutput, ws1);
+        topDriveRight.set(ControlMode.PercentOutput, ws2);
+        bottomDriveRight.set(ControlMode.PercentOutput, ws3);
+        bottomDriveLeft.set(ControlMode.PercentOutput, ws4);
+
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculate(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculate(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculate(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculate(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
+    }
+
+    public void troll()
+    {
+        topDriveLeft.set(ControlMode.PercentOutput, 0);
+        topDriveRight.set(ControlMode.PercentOutput, 0);
+        bottomDriveRight.set(ControlMode.PercentOutput, 0);
+        bottomDriveLeft.set(ControlMode.PercentOutput, 0);
+
+        topTurnLeft.set(ControlMode.PercentOutput, 0);
+        topTurnRight.set(ControlMode.PercentOutput, 0);
+        bottomTurnRight.set(ControlMode.PercentOutput, 0);
+        bottomTurnLeft.set(ControlMode.PercentOutput, 0);
+    }
+
     private static class InstanceHolder
     {
         private static final Drive mInstance = new Drive();

@@ -406,6 +406,15 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         return turning.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
     }
 
+    public double turnDegCalculate(double setpoint)
+    {
+        setpoint = MkUtil.degreesToNative(setpoint, TURN.greerRatio);
+        return turning.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
+    }
+
+    //TODO may not need these
+
+
     public void zeroSensors() 
     {
         navX.zeroYaw();

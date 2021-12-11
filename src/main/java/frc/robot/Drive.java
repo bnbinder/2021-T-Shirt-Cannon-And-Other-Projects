@@ -47,21 +47,25 @@ public class Drive {
     private final ProfiledPIDController turning = new ProfiledPIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD, constraints);
 
     private double degrees = 0;
-    private ChassisSpeeds speeds;
+    private double fff = 0;
     private double distance;
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
     Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
     Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
     Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
+    SwerveModuleState frontLeft = new SwerveModuleState();
+    SwerveModuleState frontRight = new SwerveModuleState();
+    SwerveModuleState bottomLeft = new SwerveModuleState();
+    SwerveModuleState bottomRight = new SwerveModuleState();
+
     SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
   m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
 );
 
-SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics,
-navXshit(), new Pose2d(0, 0, new Rotation2d()));
+    SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
-speeds = new ChassisSpeeds(3, 3, 0);
+ChassisSpeeds speeds = new ChassisSpeeds(0, 0, 0);
 SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     private double leftTopPosNative, leftBottomPosNative, 
@@ -338,8 +342,14 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
         degrees = MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
         SmartDashboard.putNumber("deg", degrees);
-        m_odometry.update(navXshit(), states);
-        SmartDashboard.putNumber("someething", m_odometry)
+        //(frontLeft,frontRight,bottomLeft,bottomRight);
+        frontLeft = new SwerveModuleState(leftTopVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio)));
+        frontRight = new SwerveModuleState(rightTopVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(topTurnRight.getSelectedSensorPosition(), TURN.greerRatio)));
+        bottomLeft = new SwerveModuleState(leftBottomVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(bottomTurnLeft.getSelectedSensorPosition(), TURN.greerRatio)));
+        bottomRight = new SwerveModuleState(rightBottomVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(bottomTurnRight.getSelectedSensorPosition(), TURN.greerRatio)));
+        m_odometry.update(navXshit(), frontLeft,frontRight,bottomLeft,bottomRight);
+        SmartDashboard.putNumber("x", m_odometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("y", m_odometry.getPoseMeters().getY());
     }
 
     public void setTurnPos(double position)

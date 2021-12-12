@@ -41,6 +41,8 @@ public final class Constants {
 
         public static double kWheelDiameterInches = 5.9575;
         public static double kWheelCircumference = kWheelDiameterInches * kPi;
+
+        public static double voltComp = 12;
     }
 
     public static class TURN
@@ -67,5 +69,26 @@ public final class Constants {
     {
         public static int PWMPORT = 1; //TODO find this
         public static int bufferNum = 1; //TODO and this
+    }
+
+    public static class CANNON
+    {
+        public static int solenoidOneID = 0;
+        public static int solenoidTwoID = 0;
+        public static int compressorID = 0;
+        public static int genevaConventionCANID = 0;
+        public static int trunnionCANID = 0;
+
+        public static double voltComp = 12;
+        
+        public static double genevaKP = 0.000001;
+        public static double genevaKI = 0;
+        public static double genevaKD = 0;
+        public static double genevaKF = 0;
+
+        public static double trunnionKP = 0.000001;
+        public static double trunnionKI = 0;
+        public static double trunnionKD = 0;
+        public static double trunnionKF = 0;
     }
 }

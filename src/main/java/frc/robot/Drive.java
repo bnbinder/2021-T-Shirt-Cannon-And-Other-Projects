@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -191,29 +192,31 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnRight.configVelocityMeasurementWindow(32);
 
 
+        
+        topDriveLeft.configVoltageCompSaturation(DRIVE.voltComp);
         topDriveLeft.enableVoltageCompensation(true);
-        topDriveLeft.configVoltageCompSaturation(10);
-
+        
+        topTurnLeft.configVoltageCompSaturation(DRIVE.voltComp);
         topTurnLeft.enableVoltageCompensation(true);
-        topTurnLeft.configVoltageCompSaturation(10);
 
+        topDriveRight.configVoltageCompSaturation(DRIVE.voltComp);
         topDriveRight.enableVoltageCompensation(true);
-        topDriveRight.configVoltageCompSaturation(10);
 
+        topTurnRight.configVoltageCompSaturation(DRIVE.voltComp);
         topTurnRight.enableVoltageCompensation(true);
-        topTurnRight.configVoltageCompSaturation(10);
 
+        bottomDriveLeft.configVoltageCompSaturation(DRIVE.voltComp);
         bottomDriveLeft.enableVoltageCompensation(true);
-        bottomDriveLeft.configVoltageCompSaturation(10);
 
+        bottomTurnLeft.configVoltageCompSaturation(DRIVE.voltComp);
         bottomTurnLeft.enableVoltageCompensation(true);
-        bottomTurnLeft.configVoltageCompSaturation(10);
 
+        bottomDriveRight.configVoltageCompSaturation(DRIVE.voltComp);
         bottomDriveRight.enableVoltageCompensation(true);
-        bottomDriveRight.configVoltageCompSaturation(10);
 
+        bottomTurnRight.configVoltageCompSaturation(DRIVE.voltComp);
         bottomTurnRight.enableVoltageCompensation(true);
-        bottomTurnRight.configVoltageCompSaturation(10);
+
 
         topDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
         topDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
@@ -251,6 +254,16 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
         bottomDriveRight.configPeakOutputForward(DRIVE.peakOutputForward);
         bottomDriveRight.configPeakOutputReverse(DRIVE.peakOutputReverse);
+
+        topDriveLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        topDriveRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        bottomDriveLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        bottomDriveRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+
+        topTurnLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        topTurnRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        bottomTurnLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        bottomTurnRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
 /*
         topTurnLeft.configPeakOutputForward(DRIVE.peakOutputForward);

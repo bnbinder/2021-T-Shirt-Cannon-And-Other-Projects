@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
 
   private Drive mDrive = Drive.getInstance();
   private XboxController xbox = new XboxController(0);
+  private leds mleds = leds.getInstance();
 
   private double tan = 0;
   private double degrees = 0;
@@ -78,7 +79,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
   @Override
   public void teleopPeriodic() {
-    
+  mleds.french();
    if(xbox.getStartButtonPressed())
    {
      if(xbox.getStartButtonReleased())

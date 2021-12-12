@@ -62,4 +62,10 @@ public final class Constants {
         public static double turnOpenRampRate = 1;
         public static double turnCloseRampRate = 1;
     }
+
+    public static class LIGHTS
+    {
+        public static int PWMPORT = 1; //TODO find this
+        public static int bufferNum = 1; //TODO and this
+    }
 }

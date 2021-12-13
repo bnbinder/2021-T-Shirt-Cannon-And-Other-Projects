@@ -150,4 +150,20 @@ public class MkUtil {
       return false;
     }
   }
+
+  public static double isPositive(double number)
+  {
+    if(number < 0.0)
+    {
+      return -1.0;
+    }
+    else if(number > 0.0)
+    {
+      return 1.0;
+    }
+    else
+    {
+      return 0.0;
+    }
+  }
 }

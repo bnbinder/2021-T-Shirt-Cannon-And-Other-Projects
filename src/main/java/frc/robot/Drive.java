@@ -380,6 +380,11 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         m_odometry.update(navXshit2(), frontLeft,frontRight,bottomLeft,bottomRight);
         SmartDashboard.putNumber("x", m_odometry.getPoseMeters().getX());
         SmartDashboard.putNumber("y", m_odometry.getPoseMeters().getY());
+
+        SmartDashboard.putNumber("wa1", wa1);
+        SmartDashboard.putNumber("wa2", wa2);
+        SmartDashboard.putNumber("wa3", wa3);
+        SmartDashboard.putNumber("wa4", wa4);
     }
 
     public void setTurnPos(double position)

@@ -57,7 +57,7 @@ public final class Constants {
         public static int bottomTurnLeftCANID = 2;
         public static int bottomTurnRightCANID = 1;
 
-        public static double turnKP = 0.09;
+        public static double turnKP = 0.0001;
         public static double turnKI = 0;
         public static double turnKD = 0;
         public static double turnKF = 0;

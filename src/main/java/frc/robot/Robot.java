@@ -79,7 +79,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
   @Override
   public void teleopPeriodic() {
-  mleds.french();
+  //mleds.french();
    if(xbox.getStartButtonPressed())
    {
      if(xbox.getStartButtonReleased())
@@ -89,6 +89,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
    }
 if(lol)
 {
+  /*
     if(xbox.getAButton())
     {
       mDrive.setActualTurnPos(3000);
@@ -101,6 +102,7 @@ if(lol)
     {
       mDrive.setTurnPercent(0,0,0,0);
     }
+    */
 
     if(xbox.getBButton())
     {
@@ -108,23 +110,23 @@ if(lol)
     }
     else
     {
-      one = xbox.getRawAxis(0);
-      two = xbox.getRawAxis(1);
-      three = xbox.getRawAxis(2);
-      if(Math.abs(xbox.getRawAxis(0)) < 0.1)
+      one = xbox.getRawAxis(1);
+      two = xbox.getRawAxis(0);
+      three = xbox.getRawAxis(5);
+      if(Math.abs(xbox.getRawAxis(1)) < 0.1)
       {
         one = 0;
       }
-      if(Math.abs(xbox.getRawAxis(1)) < 0.1)
+      if(Math.abs(xbox.getRawAxis(0)) < 0.1)
       {
         two = 0;
       }
-      if(Math.abs(xbox.getRawAxis(2)) < 0.1)
+      if(Math.abs(xbox.getRawAxis(5)) < 0.1)
       {
         three = 0;
       }
       //TODO find out xbox axis shit, and pray to god
-      //mDrive.strafeRotate(one,two,three);
+      mDrive.strafeRotate(one,two,three);
     }
     mDrive.updateDrive();
     //y / x, opp / adj

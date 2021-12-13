@@ -17,6 +17,12 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.Constants.CANNON;
 /** Add your docs here. */
 public class Cannon {
+    /*
+
+
+
+
+    
     private Compressor compressor = new Compressor(CANNON.compressorID);
     private Solenoid solenoidOne = new Solenoid(CANNON.solenoidOneID);
     private Solenoid solenoidTwo = new Solenoid(CANNON.solenoidTwoID);
@@ -72,4 +78,8 @@ public class Cannon {
     {
         private static final Cannon mInstance = new Cannon();
     } 
+    
+
+
+    */
 }

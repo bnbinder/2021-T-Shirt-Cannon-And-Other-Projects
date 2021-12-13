@@ -505,17 +505,17 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         ballsInYoJaw = powerBros;
         */
         //my version was somewhat close, gotta gimme some credit
-        temp = FWD*Math.cos(navXshit()) + STR*Math.sin(navXshit());
-        STR = -FWD*Math.sin(navXshit()) + STR*Math.cos(navXshit());
+        temp = FWD*Math.cos(Math.toRadians(navXshit())) + STR*Math.sin(Math.toRadians(navXshit()));
+        STR = -FWD*Math.sin(Math.toRadians(navXshit())) + STR*Math.cos(Math.toRadians(navXshit()));
         FWD = temp; 
         A = STR - RCW*(Constants.L/Constants.R);
         B = STR + RCW*(Constants.L/Constants.R);
         C = FWD - RCW*(Constants.W/Constants.R);
         D = FWD + RCW*(Constants.W/Constants.R);
-        ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   wa1 = Math.atan2(B,C)*180/Math.PI;
-        ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   wa2 = Math.atan2(B,D)*180/Math.PI;
-        ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   wa3 = Math.atan2(A,D)*180/Math.PI;
-        ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   wa4 = Math.atan2(A,C)*180/Math.PI;
+        ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   wa1 = Math.atan2(B,C)*(180/Math.PI);
+        ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   wa2 = Math.atan2(B,D)*(180/Math.PI);
+        ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   wa3 = Math.atan2(A,D)*(180/Math.PI);
+        ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   wa4 = Math.atan2(A,C)*(180/Math.PI);
 
         //sus about this, very sus
         max=ws1; if(ws2>max)max=ws2; if(ws3>max)max=ws3; if(ws4>max)max=ws4;

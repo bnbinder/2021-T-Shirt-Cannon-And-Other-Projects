@@ -80,15 +80,6 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void teleopPeriodic() {
   //mleds.french();
-   if(xbox.getStartButtonPressed())
-   {
-     if(xbox.getStartButtonReleased())
-     {
-       lol = !lol;
-     }
-   }
-if(lol)
-{
   /*
     if(xbox.getAButton())
     {
@@ -103,13 +94,6 @@ if(lol)
       mDrive.setTurnPercent(0,0,0,0);
     }
     */
-
-    if(xbox.getBButton())
-    {
-      mDrive.setDrivePerent(.1, .1, .1, .1);
-    }
-    else
-    {
       one = xbox.getRawAxis(1);
       two = xbox.getRawAxis(0);
       three = xbox.getRawAxis(5);
@@ -127,7 +111,6 @@ if(lol)
       }
       //TODO find out xbox axis shit, and pray to god
       mDrive.strafeRotate(one,two,three);
-    }
     mDrive.updateDrive();
     //y / x, opp / adj
     //but arctan uses x,y param (respectivley)
@@ -137,11 +120,10 @@ if(lol)
     SmartDashboard.putNumber("Tan", tan);
     degrees = MkUtil.degreesToNative(tan, TURN.greerRatio);
     SmartDashboard.putNumber("deg", degrees);
-}
-else
-{
-  mDrive.troll();
-}
+
+    SmartDashboard.putNumber("one", one);
+    SmartDashboard.putNumber("two", two);
+    SmartDashboard.putNumber("three", three);
   }
 
   @Override

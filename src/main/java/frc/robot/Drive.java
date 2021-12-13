@@ -419,9 +419,21 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomDriveRight.set(ControlMode.PercentOutput, botRight);
     }
 
-    public double turnCalculate(double setpoint)
+    public double turnCalculateTopLeft(double setpoint)
     {
         return turning.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
+    }
+    public double turnCalculateTopRight(double setpoint)
+    {
+        return turning.calculate(topTurnRight.getSelectedSensorPosition(), setpoint);
+    }
+    public double turnCalculateBotLeft(double setpoint)
+    {
+        return turning.calculate(bottomTurnLeft.getSelectedSensorPosition(), setpoint);
+    }
+    public double turnCalculateBotRight(double setpoint)
+    {
+        return turning.calculate(bottomTurnRight.getSelectedSensorPosition(), setpoint);
     }
 
     public double turnDegCalculate(double setpoint)
@@ -531,10 +543,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomDriveRight.set(ControlMode.PercentOutput, ws3);
         bottomDriveLeft.set(ControlMode.PercentOutput, ws4);
 
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculate(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculate(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculate(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculate(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
     }
 
     public void troll()

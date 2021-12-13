@@ -47,8 +47,8 @@ public final class Constants {
 
     public static class TURN
     {
-        public static double maxVel = 300;
-        public static double maxAccel = 110;
+        public static double maxVel = 900;
+        public static double maxAccel = 300;
 
         public static double greerRatio = 12.8;
 
@@ -57,12 +57,12 @@ public final class Constants {
         public static int bottomTurnLeftCANID = 2;
         public static int bottomTurnRightCANID = 1;
 
-        public static double turnKP = 0.0001;
+        public static double turnKP = 0.00015;
         public static double turnKI = 0;
         public static double turnKD = 0;
         public static double turnKF = 0;
-        public static double turnOpenRampRate = 1;
-        public static double turnCloseRampRate = 1;
+        public static double turnOpenRampRate = 0;
+        public static double turnCloseRampRate = 0;
     }
 
     public static class LIGHTS

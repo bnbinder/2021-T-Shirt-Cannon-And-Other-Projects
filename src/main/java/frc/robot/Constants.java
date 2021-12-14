@@ -48,7 +48,7 @@ public final class Constants {
     public static class TURN
     {
         public static double maxVel = 2000; //TODO fuck this up
-        public static double maxAccel = 300;
+        public static double maxAccel = 300; //TODO dont use these
 
         public static double greerRatio = 12.8;
 

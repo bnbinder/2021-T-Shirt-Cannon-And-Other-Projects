@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -45,7 +46,7 @@ public class Drive {
     private final TalonFX bottomTurnLeft = new TalonFX(TURN.bottomTurnLeftCANID);
 
     private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
-    private final ProfiledPIDController turning = new ProfiledPIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD, constraints);
+    private final PIDController turning = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
 
     private double degrees = 0;
     /*
@@ -582,10 +583,13 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         double theta = Math.toDegrees(Math.atan2(leftY,leftX));
         if(theta < 0)
         {
-            theta += 360;
+            theta += 180; //TODO might be add 360 idk
         }
-        double speed = Math.sqrt(MkUtil.isPositive(leftX, Math.pow(leftX,2)) + MkUtil.isPositive(leftY, Math.pow(leftY,2)));
-
+        double speed = Math.sqrt(Math.pow(leftX,2) + Math.pow(leftY,2));
+        if(speed > 1)
+        {
+            speed = 1;
+        }
         topDriveLeft.set(ControlMode.PercentOutput, speed);
         topDriveRight.set(ControlMode.PercentOutput, speed);
         bottomDriveRight.set(ControlMode.PercentOutput, speed);
@@ -602,7 +606,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
     //!         do rotate later, figure out how og code vars work and react
     //!         also test handmade code as well
 
-
+    //!         create custom caveman math code that stephan and me went over 
 
 
 

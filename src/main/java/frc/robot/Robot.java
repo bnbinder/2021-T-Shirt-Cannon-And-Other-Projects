@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 import javax.lang.model.util.ElementScanner6;
 import javax.swing.event.MenuDragMouseEvent;
 
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Drive;
 import frc.robot.Constants.TURN;
+import edu.wpi.first.wpilibj.Timer;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -40,7 +42,10 @@ public class Robot extends TimedRobot {
   private double tan = 0;
   private double degrees = 0;
   private double what = 0;
-// Locations for the swerve drive modules relative to the robot center.
+
+  private Timer timer = new Timer();
+
+  // Locations for the swerve drive modules relative to the robot center.
 /*
 Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
 Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
@@ -75,6 +80,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void teleopInit() {
     mDrive.setTurnPos(0);
+    timer.reset();
   }
 
   @Override
@@ -110,7 +116,21 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
         three = 0;
       }
       //TODO find out xbox axis shit, and pray to god
-      mDrive.strafeRotate(one,two,three);
+      //mDrive.strafeRotate(one,two,three);
+
+      mDrive.forwardStrafe(one, two);
+      //TODO test this first to see if it works, then test straferotate and diagnose problemo
+      //TODO also tune pid, needs to happen. tune with stephan, your tuning method is ass, provides no results
+
+      
+
+      //!       god didnt heed my call
+
+
+
+
+
+
     mDrive.updateDrive();
     //y / x, opp / adj
     //but arctan uses x,y param (respectivley)
@@ -133,7 +153,11 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
   @Override
   public void disabledPeriodic() {
-    mDrive.setActualTurnPos(0);
+    timer.start();
+    if(timer.get() < 5)
+    {
+      mDrive.setActualTurnPos(0);
+    }
   }
 
   @Override

@@ -11,8 +11,8 @@ public final class Constants {
     public static double kPi = 3.14159265359;
     public static double oneEncoderRotation = 2048;
 
-    public static double L = 36;
-    public static double W = 22;
+    public static double L = 29;
+    public static double W = 17.625;
     public static double R = Math.sqrt(Math.pow(L, 2) + Math.pow(W, 2));
 
     public static class DRIVE
@@ -47,7 +47,7 @@ public final class Constants {
 
     public static class TURN
     {
-        public static double maxVel = 900;
+        public static double maxVel = 2000; //TODO fuck this up
         public static double maxAccel = 300;
 
         public static double greerRatio = 12.8;
@@ -59,7 +59,7 @@ public final class Constants {
 
         public static double turnKP = 0.00015;
         public static double turnKI = 0;
-        public static double turnKD = 0;
+        public static double turnKD = 0; //TODO implement this, mayy help
         public static double turnKF = 0;
         public static double turnOpenRampRate = 0;
         public static double turnCloseRampRate = 0;

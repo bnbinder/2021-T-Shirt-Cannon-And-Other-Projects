@@ -47,8 +47,6 @@ public class Drive {
     private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
     private final ProfiledPIDController turning = new ProfiledPIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD, constraints);
 
-    private double temp, A, B, C, D, ws1, ws2, ws3, ws4, wa1, wa2, wa3, wa4, max;
-
     private double degrees = 0;
     /*
     private double canIPutMy1 = 0;
@@ -381,10 +379,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         SmartDashboard.putNumber("x", m_odometry.getPoseMeters().getX());
         SmartDashboard.putNumber("y", m_odometry.getPoseMeters().getY());
 
-        SmartDashboard.putNumber("wa1", wa1);
-        SmartDashboard.putNumber("wa2", wa2);
-        SmartDashboard.putNumber("wa3", wa3);
-        SmartDashboard.putNumber("wa4", wa4);
+        
     }
 
     public void setTurnPos(double position)
@@ -522,32 +517,107 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         ballsInYoJaw = powerBros;
         */
         //my version was somewhat close, gotta gimme some credit
-        temp = FWD*Math.cos(Math.toRadians(navXshit())) + STR*Math.sin(Math.toRadians(navXshit()));
+        double temp = FWD*Math.cos(Math.toRadians(navXshit())) + STR*Math.sin(Math.toRadians(navXshit()));
         STR = -FWD*Math.sin(Math.toRadians(navXshit())) + STR*Math.cos(Math.toRadians(navXshit()));
         FWD = temp; 
-        A = STR - RCW*(Constants.L/Constants.R);
-        B = STR + RCW*(Constants.L/Constants.R);
-        C = FWD - RCW*(Constants.W/Constants.R);
-        D = FWD + RCW*(Constants.W/Constants.R);
-        ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   wa1 = Math.atan2(B,C)*(180/Math.PI);
-        ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   wa2 = Math.atan2(B,D)*(180/Math.PI);
-        ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   wa3 = Math.atan2(A,D)*(180/Math.PI);
-        ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   wa4 = Math.atan2(A,C)*(180/Math.PI);
+
+        SmartDashboard.putNumber("fwd", FWD);
+        SmartDashboard.putNumber("str", STR);
+
+        double A = STR - RCW*(Constants.L/Constants.R);
+        double B = STR + RCW*(Constants.L/Constants.R);
+        double C = FWD - RCW*(Constants.W/Constants.R);
+        double D = FWD + RCW*(Constants.W/Constants.R);
+
+        SmartDashboard.putNumber("a", A);
+        SmartDashboard.putNumber("b", B);
+        SmartDashboard.putNumber("c", C);
+        SmartDashboard.putNumber("d", D);
+
+        double ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   double wa1 = Math.atan2(B,C)*(180/Math.PI);
+        double ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   double wa2 = Math.atan2(B,D)*(180/Math.PI);
+        double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = Math.atan2(A,D)*(180/Math.PI);
+        double ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   double wa4 = Math.atan2(A,C)*(180/Math.PI);
 
         //sus about this, very sus
-        max=ws1; if(ws2>max)max=ws2; if(ws3>max)max=ws3; if(ws4>max)max=ws4;
+        //nvm its good doesnt break the code
+        double max=ws1; if(ws2>max)max=ws2; if(ws3>max)max=ws3; if(ws4>max)max=ws4;
         if(max>1){ws1/=max; ws2/=max; ws3/=max; ws4/=max;}
 
         topDriveLeft.set(ControlMode.PercentOutput, ws1);
         topDriveRight.set(ControlMode.PercentOutput, ws2);
         bottomDriveRight.set(ControlMode.PercentOutput, ws3);
         bottomDriveLeft.set(ControlMode.PercentOutput, ws4);
-
+        
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
+
+
+        SmartDashboard.putNumber("topturnleft", turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
+        SmartDashboard.putNumber("topturnright", turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
+        SmartDashboard.putNumber("bottomturnright", turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
+        SmartDashboard.putNumber("bottomturnleft", turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
+
+
+        SmartDashboard.putNumber("wa1", wa1);
+        SmartDashboard.putNumber("wa2", wa2);
+        SmartDashboard.putNumber("wa3", wa3);
+        SmartDashboard.putNumber("wa4", wa4);
     }
+
+    //!             figure above shit later, make simple cave man code
+  
+  
+    //!             caveman cannot figure out, figure out now
+
+
+    //!             caveman now write basic bitch code cuz caveman a basic bitch
+
+
+
+    public void forwardStrafe(double leftX, double leftY)
+    {
+        double theta = Math.toDegrees(Math.atan2(leftY,leftX));
+        if(theta < 0)
+        {
+            theta += 360;
+        }
+        double speed = Math.sqrt(MkUtil.isPositive(leftX, Math.pow(leftX,2)) + MkUtil.isPositive(leftY, Math.pow(leftY,2)));
+
+        topDriveLeft.set(ControlMode.PercentOutput, speed);
+        topDriveRight.set(ControlMode.PercentOutput, speed);
+        bottomDriveRight.set(ControlMode.PercentOutput, speed);
+        bottomDriveLeft.set(ControlMode.PercentOutput, speed);
+
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(theta, TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(theta, TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(theta, TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(theta, TURN.greerRatio)));
+    }
+
+
+
+    //!         do rotate later, figure out how og code vars work and react
+    //!         also test handmade code as well
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void troll()
     {

@@ -151,19 +151,19 @@ public class MkUtil {
     }
   }
 
-  public static double isPositive(double number)
+  public static double isPositive(double number, double numberTwo)
   {
     if(number < 0.0)
     {
-      return -1.0;
+      return -1.0 * numberTwo;
     }
     else if(number > 0.0)
     {
-      return 1.0;
+      return 1.0 * numberTwo;
     }
     else
     {
-      return 0.0;
+      return numberTwo;
     }
   }
 }

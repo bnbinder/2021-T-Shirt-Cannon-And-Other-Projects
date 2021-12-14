@@ -1,7 +1,10 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Constants.DRIVE;
+import frc.robot.Constants.TURN;
 import frc.robot.Constants;
 
 public class MkUtil {
@@ -166,4 +169,32 @@ public class MkUtil {
       return numberTwo;
     }
   }
+
+  //!stolen from team 6624
+  
+    /**
+ * Get the closest angle between the given angles.
+ */
+  public static double closestAngle(double a, double b)
+  {
+          // get direction
+          //!modulo = %, right?
+          double dir = (b % 360.0) - (a % 360.0);
+
+          // convert from -360 to 360 to -180 to 180
+          if (Math.abs(dir) > 180.0)
+          {
+                  dir = -(Math.signum(dir) * 360.0) + dir;
+          }
+          return dir;
+  }
+
+  //! also stolen from 6624
+  public static double setDirection(TalonFX talon, double setpoint, double greerRatio)
+  {
+    // use the fastest way
+    double currentAngle = MkUtil.nativeToDegrees(talon.getSelectedSensorPosition(), greerRatio);
+    return currentAngle + closestAngle(currentAngle, setpoint);
+  }
+
 }

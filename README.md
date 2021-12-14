@@ -1,2 +1,6 @@
 # I-cant-keep-making-new-projects-everytime-theres-a-new-robot
- lol lol lol lol lol lol lol
+ 
+ stolen code from -
+
+ team 6624
+ ether

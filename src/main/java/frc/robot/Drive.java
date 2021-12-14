@@ -540,6 +540,8 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = Math.atan2(A,D)*(180/Math.PI);
         double ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   double wa4 = Math.atan2(A,C)*(180/Math.PI);
 
+        //TODO add these ifs after testing if constraints fuck things up
+
         //sus about this, very sus
         //nvm its good doesnt break the code
         double max=ws1; if(ws2>max)max=ws2; if(ws3>max)max=ws3; if(ws4>max)max=ws4;
@@ -555,6 +557,8 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
 
+        SmartDashboard.putNumber("setDirection topleft", MkUtil.setDirection(topTurnLeft, wa2, TURN.greerRatio));
+        //TODO so many fucking things to test
 
         SmartDashboard.putNumber("topturnleft", turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
         SmartDashboard.putNumber("topturnright", turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
@@ -605,15 +609,6 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     //!         do rotate later, figure out how og code vars work and react
     //!         also test handmade code as well
-
-    //!         create custom caveman math code that stephan and me went over 
-
-
-
-
-
-
-
 
 
 

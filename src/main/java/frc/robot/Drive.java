@@ -551,13 +551,18 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         topDriveRight.set(ControlMode.PercentOutput, ws2);
         bottomDriveRight.set(ControlMode.PercentOutput, ws3);
         bottomDriveLeft.set(ControlMode.PercentOutput, ws4);
+
+        wa2 = MkUtil.setDirection(topTurnLeft, wa2, TURN.greerRatio));
+        wa1 = MkUtil.setDirection(topTurnRight, wa1, TURN.greerRatio));
+        wa4 = MkUtil.setDirection(bottomTurnRight, wa4, TURN.greerRatio));
+        wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, TURN.greerRatio));
         
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
 
-        SmartDashboard.putNumber("setDirection topleft", MkUtil.setDirection(topTurnLeft, wa2, TURN.greerRatio));
+        
         //TODO so many fucking things to test
 
         SmartDashboard.putNumber("topturnleft", turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio)));

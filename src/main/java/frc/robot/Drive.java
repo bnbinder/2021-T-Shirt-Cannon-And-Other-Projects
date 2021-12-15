@@ -521,8 +521,9 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         ballsInYoJaw = powerBros;
         */
         //my version was somewhat close, gotta gimme some credit
-        double temp = FWD*Math.cos(Math.toRadians(navXshit())) + STR*Math.sin(Math.toRadians(navXshit()));
-        STR = -FWD*Math.sin(Math.toRadians(navXshit())) + STR*Math.cos(Math.toRadians(navXshit()));
+        double nav = navXshit() + 180;
+        double temp = FWD*Math.cos(Math.toRadians(nav)) + STR*Math.sin(Math.toRadians(nav));
+        STR = -FWD*Math.sin(Math.toRadians(nav)) + STR*Math.cos(Math.toRadians(nav));
         FWD = temp; 
 
         SmartDashboard.putNumber("fwd", FWD);

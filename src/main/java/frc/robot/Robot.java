@@ -122,6 +122,10 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       }
       else if(xbox.getAButton())
       {
+        mDrive.trolltwo();
+      }
+      else if(xbox.getBButton())
+      {
         mDrive.troll();
       }
       else

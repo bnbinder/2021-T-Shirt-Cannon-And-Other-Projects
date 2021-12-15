@@ -47,6 +47,7 @@ public class Drive {
 
     private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
     private final PIDController turning = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
+    private final PIDController speedZero = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
 
     private double degrees = 0;
     /*
@@ -651,6 +652,11 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
             MkUtil.setDirection(bottomTurnRight, 0, TURN.greerRatio), TURN.greerRatio)));
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(
             MkUtil.setDirection(bottomTurnLeft, 0, TURN.greerRatio), TURN.greerRatio)));
+    }
+
+    public void zeroRobotNavx()
+    {
+         //TODO get tephlan and ask him how swerve work again
     }
 
     private static class InstanceHolder

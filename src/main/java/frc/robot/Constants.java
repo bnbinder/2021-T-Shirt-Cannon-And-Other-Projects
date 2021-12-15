@@ -57,9 +57,15 @@ public final class Constants {
         public static int bottomTurnLeftCANID = 2;
         public static int bottomTurnRightCANID = 1;
 
-        public static double turnKP = 0.00015;
+        //on table pid
+        /*
+        p - 0.00008
+        i - 0
+        d - 0.00000001
+        */
+        public static double turnKP = 0.00008;
         public static double turnKI = 0;
-        public static double turnKD = 0; //TODO implement this, mayy help
+        public static double turnKD = 0.00000001; //TODO implement this, mayy help
         public static double turnKF = 0;
         public static double turnOpenRampRate = 0;
         public static double turnCloseRampRate = 0;

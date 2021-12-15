@@ -116,9 +116,22 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
         three = 0;
       }
       //TODO find out xbox axis shit, and pray to god
-      //mDrive.strafeRotate(one,two,three);
+      if(one != 0 || two != 0 || three != 0)
+      {
+        mDrive.strafeRotate(-one/3,two/3,three/3);
+      }
+      else if(xbox.getAButton())
+      {
+        mDrive.troll();
+      }
+      else
+      {
+        mDrive.setTurnPercent(0,0,0,0);
+        mDrive.setDrivePerent(0,0,0,0);
+      }
+      
 
-      mDrive.forwardStrafe(one, two);
+      //mDrive.forwardStrafe(one, two);
       //TODO test this first to see if it works, then test straferotate and diagnose problemo
       //TODO also tune pid, needs to happen. tune with stephan, your tuning method is ass, provides no results
 

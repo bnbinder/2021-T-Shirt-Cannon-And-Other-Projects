@@ -323,6 +323,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     public void updateDrive()
     {
+        
         leftTopVelNative = topDriveLeft.getSelectedSensorVelocity();
         rightTopVelNative = topDriveRight.getSelectedSensorVelocity();
         leftBottomVelNative = bottomDriveLeft.getSelectedSensorVelocity();
@@ -379,6 +380,8 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         m_odometry.update(navXshit2(), frontLeft,frontRight,bottomLeft,bottomRight);
         SmartDashboard.putNumber("x", m_odometry.getPoseMeters().getX());
         SmartDashboard.putNumber("y", m_odometry.getPoseMeters().getY());
+
+        SmartDashboard.putNumber("navx", navX.getYaw());
 
         
     }
@@ -488,7 +491,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     public double navXshit()
     {
-        return navX.getRoll();
+        return navX.getYaw();
     }
 
     public void strafeRotate(double FWD, double STR, double RCW)
@@ -525,20 +528,20 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         SmartDashboard.putNumber("fwd", FWD);
         SmartDashboard.putNumber("str", STR);
 
-        double A = STR - RCW*(Constants.L/Constants.R);
-        double B = STR + RCW*(Constants.L/Constants.R);
-        double C = FWD - RCW*(Constants.W/Constants.R);
-        double D = FWD + RCW*(Constants.W/Constants.R);
+        double A = STR - RCW*(Constants.L/Constants.R); //-
+        double B = STR + RCW*(Constants.L/Constants.R); //+
+        double C = FWD - RCW*(Constants.W/Constants.R); //-
+        double D = FWD + RCW*(Constants.W/Constants.R); //+
 
         SmartDashboard.putNumber("a", A);
         SmartDashboard.putNumber("b", B);
         SmartDashboard.putNumber("c", C);
         SmartDashboard.putNumber("d", D);
 
-        double ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   double wa1 = Math.atan2(B,C)*(180/Math.PI);
-        double ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   double wa2 = Math.atan2(B,D)*(180/Math.PI);
-        double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = Math.atan2(A,D)*(180/Math.PI);
-        double ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   double wa4 = Math.atan2(A,C)*(180/Math.PI);
+        double ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   double wa1 = -Math.atan2(B,C)*(180/Math.PI);
+        double ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   double wa2 = -Math.atan2(B,D)*(180/Math.PI);
+        double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = -Math.atan2(A,D)*(180/Math.PI);
+        double ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   double wa4 = -Math.atan2(A,C)*(180/Math.PI);
 
         //TODO add these ifs after testing if constraints fuck things up
 
@@ -547,20 +550,20 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         double max=ws1; if(ws2>max)max=ws2; if(ws3>max)max=ws3; if(ws4>max)max=ws4;
         if(max>1){ws1/=max; ws2/=max; ws3/=max; ws4/=max;}
 
-        topDriveLeft.set(ControlMode.PercentOutput, ws1);
-        topDriveRight.set(ControlMode.PercentOutput, ws2);
-        bottomDriveRight.set(ControlMode.PercentOutput, ws3);
-        bottomDriveLeft.set(ControlMode.PercentOutput, ws4);
+        topDriveLeft.set(ControlMode.PercentOutput, ws2);
+        topDriveRight.set(ControlMode.PercentOutput, ws1);
+        bottomDriveRight.set(ControlMode.PercentOutput, ws4);
+        bottomDriveLeft.set(ControlMode.PercentOutput, ws3);
 
-        wa2 = MkUtil.setDirection(topTurnLeft, wa2, TURN.greerRatio));
-        wa1 = MkUtil.setDirection(topTurnRight, wa1, TURN.greerRatio));
-        wa4 = MkUtil.setDirection(bottomTurnRight, wa4, TURN.greerRatio));
-        wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, TURN.greerRatio));
+        wa2 = MkUtil.setDirection(topTurnLeft, wa2, TURN.greerRatio);
+        wa1 = MkUtil.setDirection(topTurnRight, wa1, TURN.greerRatio);
+        wa4 = MkUtil.setDirection(bottomTurnRight, wa4, TURN.greerRatio);
+        wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, TURN.greerRatio);
         
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio))); //wa2
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio))); //wa1
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio))); //wa3
 
         
         //TODO so many fucking things to test
@@ -575,6 +578,11 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         SmartDashboard.putNumber("wa2", wa2);
         SmartDashboard.putNumber("wa3", wa3);
         SmartDashboard.putNumber("wa4", wa4);
+
+        SmartDashboard.putNumber("ws1", ws1);
+        SmartDashboard.putNumber("ws2", ws2);
+        SmartDashboard.putNumber("ws3", ws3);
+        SmartDashboard.putNumber("ws4", ws4);
     }
 
     //!             figure above shit later, make simple cave man code
@@ -625,15 +633,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     public void troll()
     {
-        topDriveLeft.set(ControlMode.PercentOutput, 0);
-        topDriveRight.set(ControlMode.PercentOutput, 0);
-        bottomDriveRight.set(ControlMode.PercentOutput, 0);
-        bottomDriveLeft.set(ControlMode.PercentOutput, 0);
-
-        topTurnLeft.set(ControlMode.PercentOutput, 0);
-        topTurnRight.set(ControlMode.PercentOutput, 0);
-        bottomTurnRight.set(ControlMode.PercentOutput, 0);
-        bottomTurnLeft.set(ControlMode.PercentOutput, 0);
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(0, TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(0, TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(0, TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(0, TURN.greerRatio)));
     }
 
     private static class InstanceHolder

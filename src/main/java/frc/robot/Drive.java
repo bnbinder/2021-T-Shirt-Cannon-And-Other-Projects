@@ -639,6 +639,19 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(0, TURN.greerRatio)));
     }
 
+    public void zero()
+    {
+        //TODO use when we actually get the cancoders
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(
+            MkUtil.setDirection(topTurnLeft, 0, TURN.greerRatio), TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(
+            MkUtil.setDirection(topTurnRight, 0, TURN.greerRatio), TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(
+            MkUtil.setDirection(bottomTurnRight, 0, TURN.greerRatio), TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(
+            MkUtil.setDirection(bottomTurnLeft, 0, TURN.greerRatio), TURN.greerRatio)));
+    }
+
     private static class InstanceHolder
     {
         private static final Drive mInstance = new Drive();

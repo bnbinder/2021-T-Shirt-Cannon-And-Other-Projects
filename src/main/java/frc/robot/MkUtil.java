@@ -121,7 +121,8 @@ public class MkUtil {
     }
   }
 
-  //! this is ben binders mkutil extension, above is swerdlow code
+  //!     this is ben binders mkutil extension, above is swerdlow code
+
   public static double nativeToDegrees(double gimmeRots, double greerRatio)
   {
     return (gimmeRots * 360) / (greerRatio * Constants.oneEncoderRotation);
@@ -170,7 +171,7 @@ public class MkUtil {
     }
   }
 
-  //!stolen from team 6624
+  //!     stolen from team 6624
   
     /**
  * Get the closest angle between the given angles.
@@ -178,7 +179,8 @@ public class MkUtil {
   public static double closestAngle(double a, double b)
   {
           // get direction
-          //!modulo = %, right?
+          //!     modulo = %, right?
+          //!     has to be since it works lmao
           double dir = (b % 360.0) - (a % 360.0);
 
           // convert from -360 to 360 to -180 to 180
@@ -189,7 +191,7 @@ public class MkUtil {
           return dir;
   }
 
-  //! also stolen from 6624
+  //!     also stolen from 6624
   public static double setDirection(TalonFX talon, double setpoint, double greerRatio)
   {
     // use the fastest way

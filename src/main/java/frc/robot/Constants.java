@@ -8,6 +8,8 @@ package frc.robot;
 /** Add your docs here. */
 public final class Constants {
 
+    //?         some of these constants i dont use, so check them if you want to know
+
     public static double kPi = 3.14159265359;
     public static double oneEncoderRotation = 2048;
 

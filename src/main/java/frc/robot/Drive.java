@@ -495,6 +495,23 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         return navX.getYaw();
     }
 
+    public static void inversionAwarness(TalonFX talon, double wa)
+    {
+    double encoderw = talon.getSelectedSensorPosition();
+    double azimuthAngle = encoderw;
+    double azimuthError = azimuthAngle - wa;
+
+    if(Math.abs(azimuthError) > 90)//assuming our angles are in degrees
+    {
+      azimuthError = azimuthError - 180 * Math.signum(azimuthError);
+      talon.setInverted(true);
+    }
+      else
+      {
+        talon.setInverted(false);
+      }
+    }
+
     public void strafeRotate(double FWD, double STR, double RCW)
     {
         /*
@@ -585,6 +602,12 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
             wa4 = ((wa4 + 360) % 360) - 180;
         }
         */
+
+        inversionAwarness(topTurnLeft, wa2);
+        inversionAwarness(topTurnRight, wa1);
+        inversionAwarness(bottomTurnRight, wa4);
+        inversionAwarness(bottomTurnLeft, wa3);
+
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio))); //wa2
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio))); //wa1
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4

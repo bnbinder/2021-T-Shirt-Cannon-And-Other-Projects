@@ -199,4 +199,27 @@ public class MkUtil {
     return currentAngle + closestAngle(currentAngle, setpoint);
   }
 
+
+
+  //!     stolen from 1684
+  public static void inversionAwarness(TalonFX talon, double wa)
+  {
+    double encoderw = talon.getSelectedSensorPosition();
+    double azimuthAngle = encoderw;
+    double azimuthError = azimuthAngle - wa;
+
+    if(Math.abs(azimuthError) > 90)//assuming our angles are in degrees
+    {
+      azimuthError = azimuthError - 180 * Math.signum(azimuthError);
+      talon.setInverted(true);
+    }
+      else
+      {
+        talon.setInverted(false);
+      }
+
+  }
+  
+
+
 }

@@ -522,6 +522,8 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         ballsInYoJaw = powerBros;
         */
         //my version was somewhat close, gotta gimme some credit
+
+        
         double nav = navXshit() + 180;
         double temp = FWD*Math.cos(Math.toRadians(nav)) + STR*Math.sin(Math.toRadians(nav));
         STR = -FWD*Math.sin(Math.toRadians(nav)) + STR*Math.cos(Math.toRadians(nav));
@@ -540,10 +542,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         SmartDashboard.putNumber("c", C);
         SmartDashboard.putNumber("d", D);
 
-        double ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   double wa1 = -Math.atan2(B,C)*(180/Math.PI);
-        double ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   double wa2 = -Math.atan2(B,D)*(180/Math.PI);
-        double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = -Math.atan2(A,D)*(180/Math.PI);
-        double ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   double wa4 = -Math.atan2(A,C)*(180/Math.PI);
+        double ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   double wa1 = Math.atan2(B,C)*(180/Math.PI);
+        double ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   double wa2 = Math.atan2(B,D)*(180/Math.PI);
+        double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = Math.atan2(A,D)*(180/Math.PI);
+        double ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   double wa4 = Math.atan2(A,C)*(180/Math.PI);
 
         //TODO add these ifs after testing if constraints fuck things up
 
@@ -561,7 +563,28 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         wa1 = MkUtil.setDirection(topTurnRight, wa1, TURN.greerRatio);
         wa4 = MkUtil.setDirection(bottomTurnRight, wa4, TURN.greerRatio);
         wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, TURN.greerRatio);
-        
+/*
+        if(Math.abs(wa1) - Math.abs(topTurnRight.getSelectedSensorPosition()) > 90)
+        {
+            ws1 *= -1;
+            wa1 = ((wa1 + 360) % 360) - 180;
+        }
+        if(Math.abs(wa2) > 90)
+        {
+            ws2 *= -1;
+            wa2 = ((wa2 + 360) % 360) - 180;
+        }
+        if(Math.abs(wa3) > 90)
+        {
+            ws3 *= -1;
+            wa3 = ((wa3 + 360) % 360) - 180;
+        }
+        if(Math.abs(wa4) > 90)
+        {
+            ws4 *= -1;
+            wa4 = ((wa4 + 360) % 360) - 180;
+        }
+        */
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio))); //wa2
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio))); //wa1
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4

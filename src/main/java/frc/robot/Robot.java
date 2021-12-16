@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Drive;
+import frc.robot.Constants.DRIVE;
 import frc.robot.Constants.TURN;
 import edu.wpi.first.wpilibj.Timer;
 /**
@@ -106,9 +107,10 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       mDrive.setTurnPercent(0,0,0,0);
     }
     */
-      one = xbox.getRawAxis(1);
-      two = xbox.getRawAxis(0);
-      three = xbox.getRawAxis(5);
+      one = (xbox.getRawAxis(1) - DRIVE.deadband) / (1 - DRIVE.deadband);
+      two = (xbox.getRawAxis(0) - DRIVE.deadband) / (1 - DRIVE.deadband);
+      three = (xbox.getRawAxis(5) - TURN.deadband) / (1 - TURN.deadband);
+      
       if(Math.abs(xbox.getRawAxis(1)) < 0.1)
       {
         one = 0;
@@ -121,10 +123,11 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       {
         three = 0;
       }
+      
       //TODO find out xbox axis shit, and pray to god
       if(one != 0 || two != 0 || three != 0)
       {
-        mDrive.strafeRotate(one/the,-two/the,three/the);
+        mDrive.strafeRotate(one/the,two/the,three/the);
       }
       else if(xbox.getAButton())
       {
@@ -175,7 +178,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       //!       god didnt heed my call
 
 
-
+//we've been trying to reach you regarding your robot's extended warranty
 
 
 

@@ -45,10 +45,13 @@ public final class Constants {
         public static double kWheelCircumference = kWheelDiameterInches * kPi;
 
         public static double voltComp = 12;
+
+        public static double deadband = 0.1;
     }
 
     public static class TURN
     {
+        public static double deadband = 0.1;
         public static double maxVel = 2000; //TODO fuck this up
         public static double maxAccel = 300; //TODO dont use these
 

@@ -75,8 +75,8 @@ public final class Constants {
 
     public static class LIGHTS
     {
-        public static int PWMPORT = 1; //TODO find this
-        public static int bufferNum = 1; //TODO and this
+        public static int PWMPORT = 0; //TODO find this
+        public static int bufferNum = 100; //TODO and this
     }
 
     public static class CANNON

@@ -10,6 +10,7 @@ import javax.swing.event.MenuDragMouseEvent;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -34,6 +35,8 @@ public class Robot extends TimedRobot {
 
   private double one,two,three;
   private boolean lol = true;
+  private double the = 3;
+  private boolean poop = false;
 
   private Drive mDrive = Drive.getInstance();
   private XboxController xbox = new XboxController(0);
@@ -79,13 +82,15 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
   @Override
   public void teleopInit() {
-    mDrive.setTurnPos(0);
+    //mDrive.zeroSensors();
+    mDrive.zeroRobotNavx();
+    //mDrive.setTurnPos(0);
     timer.reset();
   }
 
   @Override
   public void teleopPeriodic() {
-  //mleds.french();
+  mleds.french();
   /*
     if(xbox.getAButton())
     {
@@ -118,20 +123,45 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       //TODO find out xbox axis shit, and pray to god
       if(one != 0 || two != 0 || three != 0)
       {
-        mDrive.strafeRotate(-one/3,two/3,three/3);
+        mDrive.strafeRotate(one/the,-two/the,three/the);
       }
       else if(xbox.getAButton())
       {
         mDrive.trolltwo();
+        mDrive.ifZero();
+        
       }
       else if(xbox.getBButton())
       {
         mDrive.troll();
       }
+      else if(xbox.getXButton())
+      {
+        mDrive.trollthree();
+      }
+      else if(xbox.getStartButton())
+      {
+        mDrive.setTurnPos(0);
+      }
+      else if(xbox.getBumperPressed(Hand.kLeft))
+      {
+        if(xbox.getBumperReleased(Hand.kLeft))
+        {
+          poop = !poop;
+        }
+      }
       else
       {
         mDrive.setTurnPercent(0,0,0,0);
         mDrive.setDrivePerent(0,0,0,0);
+      }
+      if(poop)
+      {
+        the = 1;
+      }
+      else
+      {
+        the = 3;
       }
       
 
@@ -165,16 +195,12 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
   @Override
   public void disabledInit() {
-    mDrive.setActualTurnPos(0);
+    //mDrive.setActualTurnPos(0);
   }
 
   @Override
   public void disabledPeriodic() {
-    timer.start();
-    if(timer.get() < 5)
-    {
-      mDrive.setActualTurnPos(0);
-    }
+    
   }
 
   @Override

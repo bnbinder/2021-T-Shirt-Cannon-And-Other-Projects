@@ -9,14 +9,17 @@ import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants.LIGHTS;
 /** Add your docs here. */
 public class leds {
+    private Timer timer = new Timer();
+    private int offset;
     private AddressableLED LEDS = new AddressableLED(LIGHTS.PWMPORT);
     private AddressableLEDBuffer buffer = new AddressableLEDBuffer(LIGHTS.bufferNum);
     private leds()
     {
-        LEDS.setLength(buffer.getLength());
+        LEDS.setLength(LIGHTS.bufferNum);
         LEDS.setData(buffer);
         LEDS.start();
     }
@@ -28,21 +31,29 @@ public class leds {
     
     public void french() {
         // For every pixel
-        for (var i = 0; i < buffer.getLength(); i++) 
-        {
-            if(i < (buffer.getLength() / 3))
-            {
-                buffer.setRGB(i, 0, 0, 255);
-            }
-            else if(i >= (buffer.getLength() / 3) && i < ((2 * buffer.getLength()) / 3))
-            {
-                buffer.setRGB(i, 255, 255, 255);
-            }
-            else
-            {
-                buffer.setRGB(i, 255, 0, 0);
-            }
-            LEDS.setData(buffer);
+        
+        for (var i = 0; i < LIGHTS.bufferNum; i++) 
+        {   
+                timer.start();
+                if(i < (LIGHTS.bufferNum / 3))
+                {
+                    buffer.setRGB((i+offset)%LIGHTS.bufferNum, 0, 0, 255);
+                }
+                else if(i >= (LIGHTS.bufferNum / 3) && i < ((2 * LIGHTS.bufferNum) / 3))
+                {
+                    buffer.setRGB((i+offset)%LIGHTS.bufferNum, 255, 255, 255);
+                }
+                else
+                {
+                    buffer.setRGB((i+offset)% LIGHTS.bufferNum, 255, 0, 0);
+                }
+                if(timer.get() > 0.08)
+                {
+                    offset = (offset + 1) % LIGHTS.bufferNum;
+                    timer.reset();
+                    LEDS.setData(buffer);
+                }
+            
         }
         // Increase by to make the rainbow "move"
 

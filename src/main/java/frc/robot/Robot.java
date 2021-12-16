@@ -90,7 +90,8 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
   @Override
   public void teleopPeriodic() {
-  mleds.french();
+  //mleds.french();
+  mleds.lilNavX();
   /*
     if(xbox.getAButton())
     {

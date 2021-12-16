@@ -71,6 +71,8 @@ public final class Constants {
         public static double turnKF = 0;
         public static double turnOpenRampRate = 0;
         public static double turnCloseRampRate = 0;
+
+        public static double maxRot = 180;
     }
 
     public static class LIGHTS

@@ -15,8 +15,10 @@ import frc.robot.Constants.LIGHTS;
 public class leds {
     private Timer timer = new Timer();
     private int offset;
+    private Drive mDrive = Drive.getInstance();
     private AddressableLED LEDS = new AddressableLED(LIGHTS.PWMPORT);
     private AddressableLEDBuffer buffer = new AddressableLEDBuffer(LIGHTS.bufferNum);
+    private int navXRot = 0;
     private leds()
     {
         LEDS.setLength(LIGHTS.bufferNum);
@@ -57,6 +59,17 @@ public class leds {
         }
         // Increase by to make the rainbow "move"
 
+      }
+
+      public void lilNavX()
+      {
+          navXRot = (int)mDrive.navXshit();
+          for(int i = navXRot - 30; i < 30 + navXRot; i++)
+          {
+            buffer.setRGB(i, 255, 255, 255);
+          }
+          LEDS.setData(buffer);
+          
       }
 
     private static class InstanceHolder

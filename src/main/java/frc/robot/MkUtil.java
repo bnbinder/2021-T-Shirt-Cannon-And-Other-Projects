@@ -181,15 +181,13 @@ public class MkUtil {
           // get direction
           //!     modulo = %, right?
           //!     has to be since it works lmao
-          double dir = (b % TURN.maxRot) - (a % TURN.maxRot);
+          double dir = (b % 360.0) - (a % 360.0);
 
           // convert from -360 to 360 to -180 to 180
-          /*
           if (Math.abs(dir) > 180.0)
           {
                   dir = -(Math.signum(dir) * 360.0) + dir;
           }
-          */ //TODO already 180 -180, change back when 360 cancoder
           return dir;
   }
 

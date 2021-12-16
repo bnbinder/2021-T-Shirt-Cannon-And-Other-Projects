@@ -63,13 +63,15 @@ public class leds {
 
       public void lilNavX()
       {
+      
+      /*
           navXRot = (int)mDrive.navXshit();
-          for(int i = navXRot - 30; i < 30 + navXRot; i++)
+          for(int i = navXRot; i < navXRot; i++)
           {
             buffer.setRGB(i, 255, 255, 255);
           }
           LEDS.setData(buffer);
-          
+          */
       }
 
     private static class InstanceHolder

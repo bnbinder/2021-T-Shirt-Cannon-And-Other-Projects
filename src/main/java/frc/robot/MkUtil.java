@@ -202,6 +202,7 @@ public class MkUtil {
 
 
   //!     stolen from 1684
+  /*
   public static void inversionAwarness(TalonFX talon, double wa)
   {
     double encoderw = talon.getSelectedSensorPosition();
@@ -219,7 +220,7 @@ public class MkUtil {
       }
 
   }
-  
+  */
 
 
 }

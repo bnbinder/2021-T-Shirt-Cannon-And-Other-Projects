@@ -602,12 +602,12 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
             wa4 = ((wa4 + 360) % 360) - 180;
         }
         */
-
+/*
         inversionAwarness(topTurnLeft, wa2);
         inversionAwarness(topTurnRight, wa1);
         inversionAwarness(bottomTurnRight, wa4);
         inversionAwarness(bottomTurnLeft, wa3);
-
+*/
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio))); //wa2
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio))); //wa1
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4

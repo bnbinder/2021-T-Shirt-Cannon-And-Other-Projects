@@ -129,20 +129,23 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       {
         mDrive.strafeRotate(one/the,two/the,three/the);
       }
+      else if(xbox.getYButton())
+      {
+        mDrive.turnZero();
+      }      
+      else if(xbox.getXButton())
+      {
+        mDrive.turnNine();
+      }
       else if(xbox.getAButton())
       {
-        mDrive.trolltwo();
-        mDrive.ifZero();
-        
+        mDrive.turnEight();
       }
       else if(xbox.getBButton())
       {
-        mDrive.trollfour();
+        mDrive.turnSeventy();
       }
-      else if(xbox.getXButton())
-      {
-        mDrive.trollthree();
-      }
+
       else if(xbox.getStartButton())
       {
         mDrive.setTurnPos(0);

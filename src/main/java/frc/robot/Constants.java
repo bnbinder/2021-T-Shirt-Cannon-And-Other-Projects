@@ -51,6 +51,12 @@ public final class Constants {
 
     public static class TURN
     {
+        public static int topTurnLeftCANCoderCANID = 16;
+        public static int topTurnRightCANCoderCANID = 14;
+        public static int bottomTurnLeftCANCoderCANID = 15;
+        public static int bottomTurnRightCANCoderCANID = 13;
+
+
         public static double deadband = 0.1;
         public static double maxVel = 2000; //TODO fuck this up
         public static double maxAccel = 300; //TODO dont use these

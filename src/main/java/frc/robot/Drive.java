@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -44,6 +45,11 @@ public class Drive {
     
     private final TalonFX bottomDriveLeft = new TalonFX(DRIVE.bottomDriveLeftCANID);
     private final TalonFX bottomTurnLeft = new TalonFX(TURN.bottomTurnLeftCANID);
+
+    private final CANCoder topTurnLeftEncoder = new CANCoder(TURN.topTurnLeftCANCoderCANID);
+    private final CANCoder topTurnRightEncoder = new CANCoder(TURN.topTurnRightCANCoderCANID);
+    private final CANCoder bottomTurnLeftEncoder = new CANCoder(TURN.bottomTurnLeftCANCoderCANID);
+    private final CANCoder bottomTurnRightEncoder = new CANCoder(TURN.bottomTurnRightCANCoderCANID);
 
     private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
     private final PIDController turning = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
@@ -384,7 +390,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
         SmartDashboard.putNumber("navx", navX.getYaw());
 
-        
+        SmartDashboard.putNumber("encoder right", topTurnLeftEncoder.get)
     }
 
     public void setTurnPos(double position)

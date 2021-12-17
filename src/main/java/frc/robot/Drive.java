@@ -390,7 +390,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
         SmartDashboard.putNumber("navx", navX.getYaw());
 
-        SmartDashboard.putNumber("encoder right", topTurnLeftEncoder.get)
+        SmartDashboard.putNumber("encoder t left", topTurnLeftEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("encoder t right", topTurnRightEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("encoder b left", bottomTurnLeftEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("encoder b right", bottomTurnRightEncoder.getAbsolutePosition());
     }
 
     public void setTurnPos(double position)

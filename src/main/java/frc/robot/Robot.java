@@ -137,7 +137,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       }
       else if(xbox.getBButton())
       {
-        mDrive.troll();
+        mDrive.trollfour();
       }
       else if(xbox.getXButton())
       {

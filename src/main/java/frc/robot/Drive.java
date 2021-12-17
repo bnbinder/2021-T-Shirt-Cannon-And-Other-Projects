@@ -54,6 +54,7 @@ public class Drive {
     private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
     private final PIDController turning = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
     private final PIDController speedZero = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
+    private final PIDController turningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
 
     private double degrees = 0;
     /*
@@ -321,6 +322,11 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         topDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
         bottomDriveLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
         bottomDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
+
+        topTurnLeftEncoder.configFactoryDefault();
+        topTurnRightEncoder.configFactoryDefault();
+        bottomTurnLeftEncoder.configFactoryDefault();
+        bottomTurnRightEncoder.configFactoryDefault();
     }
 
     public static Drive getInstance()
@@ -444,6 +450,31 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
     {
         return turning.calculate(bottomTurnRight.getSelectedSensorPosition(), setpoint);
     }
+
+
+
+
+
+    public double turnCalculateTopLeftEncoder(double setpoint)
+    {
+        return turningEncoder.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
+    }
+    public double turnCalculateTopRightEncoder(double setpoint)
+    {
+        return turningEncoder.calculate(topTurnRight.getSelectedSensorPosition(), setpoint);
+    }
+    public double turnCalculateBotLeftEncoder(double setpoint)
+    {
+        return turningEncoder.calculate(bottomTurnLeft.getSelectedSensorPosition(), setpoint);
+    }
+    public double turnCalculateBotRightEncoder(double setpoint)
+    {
+        return turningEncoder.calculate(bottomTurnRight.getSelectedSensorPosition(), setpoint);
+    }
+
+
+
+
 
     public double turnDegCalculate(double setpoint)
     {
@@ -709,6 +740,15 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(navXshit(), TURN.greerRatio)));
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(navXshit(), TURN.greerRatio)));
     }
+    
+    public void trollfour()
+    {
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeftEncoder(MkUtil.degreesToNative(topTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRightEncoder(MkUtil.degreesToNative(topTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRightEncoder(MkUtil.degreesToNative(bottomTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(bottomTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio)));
+    }
+
 
 
     public void ifZero()

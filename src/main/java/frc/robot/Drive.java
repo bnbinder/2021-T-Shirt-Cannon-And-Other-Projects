@@ -818,17 +818,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(navXshit(), TURN.greerRatio)));
     }
 
-    /*
-    ////? leaving this here to showcase my idiocy
-    
-    public void trollfour()
-    {
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeftEncoder(MkUtil.degreesToNative(topTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRightEncoder(MkUtil.degreesToNative(topTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRightEncoder(MkUtil.degreesToNative(bottomTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(bottomTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio)));
-    }
-*/
+ 
 
     public void turnEncoderZero()
     {

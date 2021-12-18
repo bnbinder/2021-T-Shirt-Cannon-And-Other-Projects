@@ -57,6 +57,11 @@ public class Drive {
     private final PIDController turningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
 
     private double degrees = 0;
+
+    private double lastwa1 = 0;
+    private double lastwa2 = 0;
+    private double lastwa3 = 0;
+    private double lastwa4 = 0;
     
     private double offsetTopLeftCANCoder = topTurnRightEncoder.getAbsolutePosition();
     private double offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition();
@@ -175,6 +180,17 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomDriveRight.config_kI(0, DRIVE.driveKI);
         bottomDriveRight.config_kD(0, DRIVE.driveKD);
         bottomDriveRight.config_kF(0, DRIVE.driveKF);
+
+        topDriveLeft.setInverted(false);
+        topDriveRight.setInverted(false);
+        bottomDriveLeft.setInverted(false);
+        bottomDriveRight.setInverted(false);
+
+        topTurnLeft.setInverted(false);
+        topTurnRight.setInverted(false);
+        bottomTurnLeft.setInverted(false);
+        bottomTurnRight.setInverted(false);
+
 
 
         topDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
@@ -406,10 +422,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
         SmartDashboard.putNumber("navx", navX.getYaw());
 
-        SmartDashboard.putNumber("encoder t left", topTurnLeftEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("encoder t right", topTurnRightEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("encoder b left", bottomTurnLeftEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("encoder b right", bottomTurnRightEncoder.getAbsolutePosition());
+        SmartDashboard.putBoolean("encoder t left", topTurnLeft.getInverted());
+        SmartDashboard.putBoolean("encoder t right", topTurnRight.getInverted());
+        SmartDashboard.putBoolean("encoder b left", bottomTurnLeft.getInverted());
+        SmartDashboard.putBoolean("encoder b right", bottomTurnRight.getInverted());
     }
 
     public void setTurnPos(double position)
@@ -545,6 +561,26 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         return navX.getYaw();
     }
 
+    public void inversionOne(double last, double wa, TalonFX talon)
+    {
+        if(Math.abs(last - wa) > 70)
+        {
+            talon.setInverted(!talon.getInverted());
+        }
+    }
+
+    public double inversionTwo(double last, double wa, TalonFX talon)
+    {
+        if(talon.getInverted())
+        {
+            return ((wa + 360) % 360) - 180;
+        }
+        else
+        {
+            return wa;
+        }
+    }
+
     public static void inversionAwarness(TalonFX talon, double wa)
     {
     double encoderw = talon.getSelectedSensorPosition();
@@ -589,9 +625,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         ballsInYoJaw = powerBros;
         */
         //my version was somewhat close, gotta gimme some credit
-
-        
-        double nav = navXshit() + 180;
+        double nav = navXshit();
         double temp = FWD*Math.cos(Math.toRadians(nav)) + STR*Math.sin(Math.toRadians(nav));
         STR = -FWD*Math.sin(Math.toRadians(nav)) + STR*Math.cos(Math.toRadians(nav));
         FWD = temp; 
@@ -625,7 +659,20 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         topDriveRight.set(ControlMode.PercentOutput, ws1);
         bottomDriveRight.set(ControlMode.PercentOutput, ws4);
         bottomDriveLeft.set(ControlMode.PercentOutput, ws3);
-
+/*
+        inversionOne(lastwa1,wa1,topDriveRight);
+        inversionOne(lastwa2,wa2,topDriveLeft);
+        inversionOne(lastwa3,wa3,bottomDriveLeft);
+        inversionOne(lastwa4,wa4,bottomDriveRight);
+        lastwa1 = wa1;
+        lastwa2 = wa2;
+        lastwa3 = wa3;
+        lastwa4 = wa4;
+        inversionTwo(lastwa1,wa1,topDriveRight);
+        inversionTwo(lastwa2,wa2,topDriveLeft);
+        inversionTwo(lastwa3,wa3,bottomDriveLeft);
+        inversionTwo(lastwa4,wa4,bottomDriveRight);
+*/
         wa2 = MkUtil.setDirection(topTurnLeft, wa2, TURN.greerRatio);
         wa1 = MkUtil.setDirection(topTurnRight, wa1, TURN.greerRatio);
         wa4 = MkUtil.setDirection(bottomTurnRight, wa4, TURN.greerRatio);
@@ -657,7 +704,9 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         inversionAwarness(topTurnRight, wa1);
         inversionAwarness(bottomTurnRight, wa4);
         inversionAwarness(bottomTurnLeft, wa3);
-*/
+*/      
+
+        
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio))); //wa2
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio))); //wa1
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4
@@ -677,10 +726,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         SmartDashboard.putNumber("wa3", wa3);
         SmartDashboard.putNumber("wa4", wa4);
 
-        SmartDashboard.putNumber("ws1", ws1);
-        SmartDashboard.putNumber("ws2", ws2);
-        SmartDashboard.putNumber("ws3", ws3);
-        SmartDashboard.putNumber("ws4", ws4);
+        SmartDashboard.putNumber("lastwa1", lastwa1);
+        SmartDashboard.putNumber("lastwa2", lastwa2);
+        SmartDashboard.putNumber("lastwa3", lastwa3);
+        SmartDashboard.putNumber("lastwa4", lastwa4);
     }
 
     //!             figure above shit later, make simple cave man code

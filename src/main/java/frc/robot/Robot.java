@@ -84,7 +84,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void teleopInit() {
     //mDrive.zeroSensors();
-    //mDrive.zeroRobotNavx();
+    mDrive.zeroRobotNavx();
     //mDrive.setTurnPos(0);
     timer.reset();
   }
@@ -127,7 +127,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       //TODO find out xbox axis shit, and pray to god
       if(one != 0 || two != 0 || three != 0)
       {
-        mDrive.strafeRotate(one/the,two/the,three/the);
+        mDrive.strafeRotate(one/the,two/the,(three/the));
       }
       else if(xbox.getYButton())
       {

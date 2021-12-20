@@ -186,10 +186,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomDriveLeft.setInverted(false);
         bottomDriveRight.setInverted(false);
 
-        topTurnLeft.setInverted(false);
-        topTurnRight.setInverted(false);
-        bottomTurnLeft.setInverted(false);
-        bottomTurnRight.setInverted(false);
+        topTurnLeft.setInverted(true);
+        topTurnRight.setInverted(true);
+        bottomTurnLeft.setInverted(true);
+        bottomTurnRight.setInverted(true);
 
 
 

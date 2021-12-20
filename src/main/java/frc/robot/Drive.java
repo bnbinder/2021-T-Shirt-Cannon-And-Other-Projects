@@ -52,7 +52,15 @@ public class Drive {
     private final CANCoder bottomTurnRightEncoder = new CANCoder(TURN.bottomTurnRightCANCoderCANID);
 
     private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
+
     private final PIDController turning = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
+
+    private final PIDController turningTopLeft = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
+    private final PIDController turningTopRight = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
+    private final PIDController turningBotLeft = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
+    private final PIDController turningBotRight = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
+
+
     private final PIDController speedZero = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
     private final PIDController turningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
 
@@ -462,19 +470,19 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     public double turnCalculateTopLeft(double setpoint)
     {
-        return turning.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
+        return turningTopLeft.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
     }
     public double turnCalculateTopRight(double setpoint)
     {
-        return turning.calculate(topTurnRight.getSelectedSensorPosition(), setpoint);
+        return turningTopRight.calculate(topTurnRight.getSelectedSensorPosition(), setpoint);
     }
     public double turnCalculateBotLeft(double setpoint)
     {
-        return turning.calculate(bottomTurnLeft.getSelectedSensorPosition(), setpoint);
+        return turningBotLeft.calculate(bottomTurnLeft.getSelectedSensorPosition(), setpoint);
     }
     public double turnCalculateBotRight(double setpoint)
     {
-        return turning.calculate(bottomTurnRight.getSelectedSensorPosition(), setpoint);
+        return turningBotRight.calculate(bottomTurnRight.getSelectedSensorPosition(), setpoint);
     }
 
 
@@ -673,10 +681,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         inversionTwo(lastwa3,wa3,bottomDriveLeft);
         inversionTwo(lastwa4,wa4,bottomDriveRight);
 */
-        wa2 = MkUtil.setDirection(topTurnLeft, wa2, TURN.greerRatio);
-        wa1 = MkUtil.setDirection(topTurnRight, wa1, TURN.greerRatio);
-        wa4 = MkUtil.setDirection(bottomTurnRight, wa4, TURN.greerRatio);
-        wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, TURN.greerRatio);
+        wa2 = MkUtil.setDirection(topTurnLeft, wa2, turningTopLeft);
+        wa1 = MkUtil.setDirection(topTurnRight, wa1, turningTopRight);
+        wa4 = MkUtil.setDirection(bottomTurnRight, wa4, turningBotRight);
+        wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, turningBotLeft);
         //TODO implement the code i didnt fucking look at even though it was one scroll away god damn it
 /*
         if(Math.abs(wa1) - Math.abs(topTurnRight.getSelectedSensorPosition()) > 90)
@@ -707,11 +715,16 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         inversionAwarness(bottomTurnLeft, wa3);
 */      
 
-        
+        /*
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio))); //wa2
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio))); //wa1
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio))); //wa3
+*/
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(wa2)); //wa2
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(wa1)); //wa1
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(wa4)); //wa4
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(wa3)); //wa3
 
         
         //TODO so many fucking things to test

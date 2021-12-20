@@ -677,6 +677,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         wa1 = MkUtil.setDirection(topTurnRight, wa1, TURN.greerRatio);
         wa4 = MkUtil.setDirection(bottomTurnRight, wa4, TURN.greerRatio);
         wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, TURN.greerRatio);
+        //TODO implement the code i didnt fucking look at even though it was one scroll away god damn it
 /*
         if(Math.abs(wa1) - Math.abs(topTurnRight.getSelectedSensorPosition()) > 90)
         {
@@ -741,7 +742,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
     //!             caveman now write basic bitch code cuz caveman a basic bitch
 
 
-
+/*
     public void forwardStrafe(double leftX, double leftY)
     {
         double theta = Math.toDegrees(Math.atan2(leftY,leftX));
@@ -764,7 +765,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(theta, TURN.greerRatio)));
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(theta, TURN.greerRatio)));
     }
-
+*/
 
 
     //!         do rotate later, figure out how og code vars work and react

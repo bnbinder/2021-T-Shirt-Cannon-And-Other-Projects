@@ -66,7 +66,7 @@ public final class Constants {
 
         public static double greerRatio = 12.8;
 
-        public static int topTurnLeftCANID = 4; //top when standing behind elec trical board
+        public static int topTurnLeftCANID = 4; //top when standing behind electrical board
         public static int topTurnRightCANID = 7;
         public static int bottomTurnLeftCANID = 2;
         public static int bottomTurnRightCANID = 1;
@@ -112,5 +112,13 @@ public final class Constants {
         public static double trunnionKI = 0;
         public static double trunnionKD = 0;
         public static double trunnionKF = 0;
+
+        public static double trunnionGreerRatio = 0;
+
+        //!tester constants for feedforward
+
+        public static double horizontalPosition = 0;
+        public static double weight = 0;
+        public static double cannonDistance = 0;
     }
 }

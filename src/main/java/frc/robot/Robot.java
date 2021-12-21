@@ -145,7 +145,10 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       {
         mDrive.turnSeventy();
       }
-
+      else if(Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0)
+      {
+        mDrive.turnEncoderZero();
+      }
       else if(xbox.getStartButton())
       {
         mDrive.setTurnPos(0);

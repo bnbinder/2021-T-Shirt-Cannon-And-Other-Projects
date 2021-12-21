@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.swing.plaf.multi.MultiDesktopIconUI;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -60,6 +62,11 @@ public class Drive {
     private final PIDController turningBotLeft = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
     private final PIDController turningBotRight = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
 
+    private final PIDController driveTopLeft = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
+    private final PIDController driveTopRight = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
+    private final PIDController driveBotLeft = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
+    private final PIDController driveBotRight = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
+
 
     private final PIDController speedZero = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
     private final PIDController turningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
@@ -71,10 +78,10 @@ public class Drive {
     private double lastwa3 = 0;
     private double lastwa4 = 0;
     
-    private double offsetTopLeftCANCoder = topTurnRightEncoder.getAbsolutePosition();
-    private double offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition();
-    private double offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition();
-    private double offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition();
+    private double offsetTopLeftCANCoder = 78.75;
+    private double offsetTopRightCANCoder = 115.224;
+    private double offsetBottomLeftCANCoder = 121.289;
+    private double offsetBottomRightCANCoder = 320.361;
     /*
     private double canIPutMy1 = 0;
     private double canIPutMy2 = 0;
@@ -357,10 +364,11 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnLeftEncoder.configFactoryDefault();
         bottomTurnRightEncoder.configFactoryDefault();
 
-        topTurnLeftEncoder.configMagnetOffset(offsetTopLeftCANCoder);
-        topTurnRightEncoder.configMagnetOffset(offsetTopRightCANCoder);
-        bottomTurnLeftEncoder.configMagnetOffset(offsetBottomLeftCANCoder);
-        bottomTurnRightEncoder.configMagnetOffset(offsetBottomRightCANCoder);
+    //    topTurnLeftEncoder.configMagnetOffset(-offsetTopLeftCANCoder/*251.2*/);
+  //      topTurnRightEncoder.configMagnetOffset(-offsetTopRightCANCoder/*286.7*/);
+//     bottomTurnLeftEncoder.configMagnetOffset(-offsetBottomLeftCANCoder/*298.3*/);
+  //      bottomTurnRightEncoder.configMagnetOffset(-offsetBottomRightCANCoder/*130.4*/);
+
     }
 
     public static Drive getInstance()
@@ -430,10 +438,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
         SmartDashboard.putNumber("navx", navX.getYaw());
 
-        SmartDashboard.putBoolean("encoder t left", topTurnLeft.getInverted());
-        SmartDashboard.putBoolean("encoder t right", topTurnRight.getInverted());
-        SmartDashboard.putBoolean("encoder b left", bottomTurnLeft.getInverted());
-        SmartDashboard.putBoolean("encoder b right", bottomTurnRight.getInverted());
+        SmartDashboard.putNumber("encoder t left", topTurnLeftEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("encoder t right", topTurnRightEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("encoder b left", bottomTurnLeftEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("encoder b right", bottomTurnRightEncoder.getAbsolutePosition());
     }
 
     public void setTurnPos(double position)
@@ -468,6 +476,8 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomDriveRight.set(ControlMode.PercentOutput, botRight);
     }
 
+
+
     public double turnCalculateTopLeft(double setpoint)
     {
         return turningTopLeft.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
@@ -483,6 +493,25 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
     public double turnCalculateBotRight(double setpoint)
     {
         return turningBotRight.calculate(bottomTurnRight.getSelectedSensorPosition(), setpoint);
+    }
+
+
+
+    public double driveCalculateTopLeft(double setpoint)
+    {
+        return driveTopLeft.calculate(topDriveLeft.getMotorOutputPercent(), setpoint);
+    }
+    public double driveCalculateTopRight(double setpoint)
+    {
+        return driveTopRight.calculate(topDriveRight.getMotorOutputPercent(), setpoint);
+    }
+    public double driveCalculateBotLeft(double setpoint)
+    {
+        return driveBotLeft.calculate(bottomDriveLeft.getMotorOutputPercent(), setpoint);
+    }
+    public double driveCalculateBotRight(double setpoint)
+    {
+        return driveBotRight.calculate(bottomDriveRight.getMotorOutputPercent(), setpoint);
     }
 
 
@@ -660,8 +689,19 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
         //sus about this, very sus
         //nvm its good doesnt break the code
+        /*
         double max=ws1; if(ws2>max)max=ws2; if(ws3>max)max=ws3; if(ws4>max)max=ws4;
         if(max>1){ws1/=max; ws2/=max; ws3/=max; ws4/=max;}
+*/
+        wa2 = MkUtil.setDirection(topTurnLeft, wa2, driveTopLeft);
+        wa1 = MkUtil.setDirection(topTurnRight, wa1, driveTopRight);
+        wa4 = MkUtil.setDirection(bottomTurnRight, wa4, driveBotRight);
+        wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, driveBotLeft);
+
+        ws2 = MkUtil.isPositive(driveTopLeft.getP(), ws2);
+        ws1 = MkUtil.isPositive(driveTopRight.getP(), ws1);
+        ws4 = MkUtil.isPositive(driveBotRight.getP(), ws4);
+        ws3 = MkUtil.isPositive(driveBotLeft.getP(), ws3);
 
         topDriveLeft.set(ControlMode.PercentOutput, ws2);
         topDriveRight.set(ControlMode.PercentOutput, ws1);
@@ -681,10 +721,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         inversionTwo(lastwa3,wa3,bottomDriveLeft);
         inversionTwo(lastwa4,wa4,bottomDriveRight);
 */
-        wa2 = MkUtil.setDirection(topTurnLeft, wa2, turningTopLeft);
-        wa1 = MkUtil.setDirection(topTurnRight, wa1, turningTopRight);
-        wa4 = MkUtil.setDirection(bottomTurnRight, wa4, turningBotRight);
-        wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, turningBotLeft);
+      
         //TODO implement the code i didnt fucking look at even though it was one scroll away god damn it
 /*
         if(Math.abs(wa1) - Math.abs(topTurnRight.getSelectedSensorPosition()) > 90)
@@ -721,29 +758,29 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio))); //wa3
 */
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(wa2)); //wa2
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(wa1)); //wa1
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(wa4)); //wa4
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(wa3)); //wa3
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio))); //wa2
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio))); //wa1
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio))); //wa3
 
         
         //TODO so many fucking things to test
 
-        SmartDashboard.putNumber("topturnleft", turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio)));
-        SmartDashboard.putNumber("topturnright", turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio)));
-        SmartDashboard.putNumber("bottomturnright", turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio)));
-        SmartDashboard.putNumber("bottomturnleft", turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio)));
+        SmartDashboard.putNumber("speedtopright", topDriveRight.getMotorOutputPercent());
+        SmartDashboard.putNumber("speedtopleft", topDriveLeft.getMotorOutputPercent());
+        SmartDashboard.putNumber("speedbotleft", bottomDriveLeft.getMotorOutputPercent());
+        SmartDashboard.putNumber("speedbotright", bottomDriveRight.getMotorOutputPercent());
 
 
-        SmartDashboard.putNumber("wa1", wa1);
-        SmartDashboard.putNumber("wa2", wa2);
-        SmartDashboard.putNumber("wa3", wa3);
-        SmartDashboard.putNumber("wa4", wa4);
+        SmartDashboard.putNumber("ws1", ws1);
+        SmartDashboard.putNumber("ws2", ws2);
+        SmartDashboard.putNumber("ws3", ws3);
+        SmartDashboard.putNumber("ws4", ws4);
 
-        SmartDashboard.putNumber("lastwa1", lastwa1);
-        SmartDashboard.putNumber("lastwa2", lastwa2);
-        SmartDashboard.putNumber("lastwa3", lastwa3);
-        SmartDashboard.putNumber("lastwa4", lastwa4);
+        SmartDashboard.putNumber("ptopl", driveTopLeft.getP());
+        SmartDashboard.putNumber("ptopr", driveTopRight.getP());
+        SmartDashboard.putNumber("pbotl", driveBotLeft.getP());
+        SmartDashboard.putNumber("pbotr", driveBotRight.getP());
     }
 
     //!             figure above shit later, make simple cave man code
@@ -836,10 +873,10 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     public void turnEncoderZero()
     {
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeftEncoder(MkUtil.degreesToNative(topTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRightEncoder(MkUtil.degreesToNative(topTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(bottomTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRightEncoder(MkUtil.degreesToNative(bottomTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio)));
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeftEncoder(offsetTopLeftCANCoder));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRightEncoder(offsetTopRightCANCoder));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(offsetBottomLeftCANCoder));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRightEncoder(offsetBottomRightCANCoder));
     }
 
 

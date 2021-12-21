@@ -10,6 +10,7 @@ import javax.swing.text.DefaultStyledDocument.ElementSpec;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.LIGHTS;
 /** Add your docs here. */
 public class leds {
@@ -18,7 +19,12 @@ public class leds {
     private Drive mDrive = Drive.getInstance();
     private AddressableLED LEDS = new AddressableLED(LIGHTS.PWMPORT);
     private AddressableLEDBuffer buffer = new AddressableLEDBuffer(LIGHTS.bufferNum);
-    private int navXRot = 0;
+    private double navXRot = 0;
+
+    private boolean yesManOne = false;
+    private boolean yesManTwo = false;
+
+
     private leds()
     {
         LEDS.setLength(LIGHTS.bufferNum);
@@ -64,14 +70,27 @@ public class leds {
       public void lilNavX()
       {
       
-      /*
-          navXRot = (int)mDrive.navXshit();
-          for(int i = navXRot; i < navXRot; i++)
+      
+          navXRot = (((mDrive.navXshit() + 360) % 360) * LIGHTS.bufferNum/360);
+          SmartDashboard.putNumber("navxrrr", navXRot);
+          for(double i = 0; i < LIGHTS.bufferNum; i++)
           {
-            buffer.setRGB(i, 255, 255, 255);
+              buffer.setRGB(((int)i + 100) % 100, 0, 0, 0);
+              if(!(i > (((navXRot + LIGHTS.bufferNum) % LIGHTS.bufferNum) + 5) || i < (((navXRot + LIGHTS.bufferNum) % LIGHTS.bufferNum) - 5)))
+              {
+                buffer.setRGB(((int)i + 100) % 100, 255, 255, 255);
+              }
+              if(navXRot < 5 || navXRot > 95)
+              {
+                for(double j = navXRot - 5; j < navXRot + 5; j++)
+                {
+                    buffer.setRGB(((int)j + 100) % 100, 255, 255, 255);
+                }
+              } 
+                
           }
           LEDS.setData(buffer);
-          */
+          
       }
 
     private static class InstanceHolder

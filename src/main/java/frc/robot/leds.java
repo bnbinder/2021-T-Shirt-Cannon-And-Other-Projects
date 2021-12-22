@@ -93,6 +93,33 @@ public class leds {
           
       }
 
+      public void lilNavXTWO()
+      {
+        navXRot = (((mDrive.navXshit() + 360) % 360) * LIGHTS.bufferNum/360);
+        SmartDashboard.putNumber("navxrrr", navXRot);
+        for(int i = 0; i < LIGHTS.bufferNum; i++)
+        {
+            if(((i + 10 / 2 - (int)navXRot) + LIGHTS.bufferNum) % LIGHTS.bufferNum < 10)
+            {
+                buffer.setRGB(i, 255/2, 255/2, 255/2);
+            }
+            else
+            {
+                buffer.setRGB(i, 0, 0, 0);
+            }
+        }
+        LEDS.setData(buffer);
+      }
+
+      public void voltage(double volts)
+      {
+          for(int i = 0; i < LIGHTS.bufferNum; i++)
+          {
+              buffer.setRGB(i, (int)(((((volts - 11)/13) * 255))/2), 0, 0);
+          }
+          LEDS.setData(buffer);
+      }
+
     private static class InstanceHolder
     {
         private static final leds mInstance = new leds();

@@ -8,6 +8,8 @@ package frc.robot;
 import javax.lang.model.util.ElementScanner6;
 import javax.swing.event.MenuDragMouseEvent;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -48,6 +50,10 @@ public class Robot extends TimedRobot {
   private double what = 0;
 
   private Timer timer = new Timer();
+
+  private boolean rightBump = false;
+
+  private double volts = 0;
 
   // Locations for the swerve drive modules relative to the robot center.
 /*
@@ -92,7 +98,8 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void teleopPeriodic() {
   //mleds.french();
-  mleds.lilNavX();
+  //mleds.lilNavXTWO();
+  mleds.voltage(volts);
   /*
     if(xbox.getAButton())
     {
@@ -135,7 +142,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       }      
       else if(xbox.getXButton())
       {
-        mDrive.turnNine();
+        mDrive.turnNine(0);
       }
       else if(xbox.getAButton())
       {
@@ -147,7 +154,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       }
       else if(Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0)
       {
-        mDrive.turnEncoderZero();
+        
       }
       else if(xbox.getStartButton())
       {
@@ -194,13 +201,13 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     //but tan gets other hyp, not hyp i want
     // so its y / x
     tan = Math.atan2(xbox.getRawAxis(0),xbox.getRawAxis(1));    
-    SmartDashboard.putNumber("Tan", tan);
+    //SmartDashboard.putNumber("Tan", tan);
     degrees = MkUtil.degreesToNative(tan, TURN.greerRatio);
-    SmartDashboard.putNumber("deg", degrees);
+    //SmartDashboard.putNumber("deg", degrees);
 
-    SmartDashboard.putNumber("one", one);
-    SmartDashboard.putNumber("two", two);
-    SmartDashboard.putNumber("three", three);
+    //SmartDashboard.putNumber("one", one);
+    //SmartDashboard.putNumber("two", two);
+    volts = RobotController.getBatteryVoltage();
   }
 
   @Override

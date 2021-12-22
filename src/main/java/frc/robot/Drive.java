@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
@@ -69,7 +71,11 @@ public class Drive {
 
 
     private final PIDController speedZero = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
-    private final PIDController turningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
+
+    private final PIDController topLeftTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
+    private final PIDController topRightTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
+    private final PIDController bottomLeftTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
+    private final PIDController bottomRightTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
 
     private double degrees = 0;
 
@@ -78,10 +84,10 @@ public class Drive {
     private double lastwa3 = 0;
     private double lastwa4 = 0;
     
-    private double offsetTopLeftCANCoder = 78.75;
-    private double offsetTopRightCANCoder = 115.224;
-    private double offsetBottomLeftCANCoder = 121.289;
-    private double offsetBottomRightCANCoder = 320.361;
+    private double offsetTopLeftCANCoder = topTurnLeftEncoder.getAbsolutePosition() - -107.050781;//78.75;
+    private double offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition() - -67.3242187;//115.224;
+    private double offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition() - -63.89648437; //117.0703125;//121.289;
+    private double offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1210937;//320.361;
     /*
     private double canIPutMy1 = 0;
     private double canIPutMy2 = 0;
@@ -359,16 +365,21 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomDriveLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
         bottomDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
 
-        topTurnLeftEncoder.configFactoryDefault();
-        topTurnRightEncoder.configFactoryDefault();
-        bottomTurnLeftEncoder.configFactoryDefault();
-        bottomTurnRightEncoder.configFactoryDefault();
+        topTurnLeftEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        topTurnRightEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        bottomTurnLeftEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        bottomTurnRightEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
 
     //    topTurnLeftEncoder.configMagnetOffset(-offsetTopLeftCANCoder/*251.2*/);
   //      topTurnRightEncoder.configMagnetOffset(-offsetTopRightCANCoder/*286.7*/);
 //     bottomTurnLeftEncoder.configMagnetOffset(-offsetBottomLeftCANCoder/*298.3*/);
   //      bottomTurnRightEncoder.configMagnetOffset(-offsetBottomRightCANCoder/*130.4*/);
 
+
+        topTurnLeft.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopLeftCANCoder, TURN.greerRatio));
+        topTurnRight.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopRightCANCoder, TURN.greerRatio));
+        bottomTurnLeft.setSelectedSensorPosition(MkUtil.degreesToNative(offsetBottomLeftCANCoder, TURN.greerRatio));
+        bottomTurnRight.setSelectedSensorPosition(MkUtil.degreesToNative(offsetBottomRightCANCoder, TURN.greerRatio));
     }
 
     public static Drive getInstance()
@@ -442,6 +453,8 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         SmartDashboard.putNumber("encoder t right", topTurnRightEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("encoder b left", bottomTurnLeftEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("encoder b right", bottomTurnRightEncoder.getAbsolutePosition());
+
+        SmartDashboard.putNumber("off", topTurnLeftEncoder.configGetMagnetOffset());
     }
 
     public void setTurnPos(double position)
@@ -520,21 +533,20 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     public double turnCalculateTopLeftEncoder(double setpoint)
     {
-        return turningEncoder.calculate(topTurnLeftEncoder.getAbsolutePosition(), setpoint);
+        return topLeftTurningEncoder.calculate((topTurnLeft.getSelectedSensorPosition() + 2048) % 2048, (MkUtil.degreesToNative(MkUtil.setDirection(topTurnLeft, setpoint, TURN.greerRatio),TURN.greerRatio) + 2048) % 2048);
     }
     public double turnCalculateTopRightEncoder(double setpoint)
     {
-        return turningEncoder.calculate(topTurnRightEncoder.getAbsolutePosition(), setpoint);
+        return topRightTurningEncoder.calculate((topTurnRight.getSelectedSensorPosition() + 2048) % 2048, (MkUtil.degreesToNative(MkUtil.setDirection(topTurnRight, setpoint, TURN.greerRatio),TURN.greerRatio) + 2048) % 2048);
     }
     public double turnCalculateBotLeftEncoder(double setpoint)
     {
-        return turningEncoder.calculate(bottomTurnLeftEncoder.getAbsolutePosition(), setpoint);
+        return bottomLeftTurningEncoder.calculate((bottomTurnLeft.getSelectedSensorPosition() + 2048) % 2048, (MkUtil.degreesToNative(MkUtil.setDirection(bottomTurnLeft, setpoint, TURN.greerRatio),TURN.greerRatio) + 2048) % 2048);
     }
     public double turnCalculateBotRightEncoder(double setpoint)
     {
-        return turningEncoder.calculate(bottomTurnRightEncoder.getAbsolutePosition(), setpoint);
+        return bottomRightTurningEncoder.calculate((bottomTurnRight.getSelectedSensorPosition() + 2048) % 2048, (MkUtil.degreesToNative(MkUtil.setDirection(bottomTurnRight, setpoint, TURN.greerRatio),TURN.greerRatio) + 2048) % 2048);
     }
-
 
 
 
@@ -829,12 +841,12 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
 
 
-    public void turnNine()
+    public void turnNine(double setpoint)
     {
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(90, TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(90, TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(90, TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(90, TURN.greerRatio)));
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRightEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRightEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
     }   
     
     public void turnEight()
@@ -870,7 +882,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
     }
 
  
-
+/*
     public void turnEncoderZero()
     {
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeftEncoder(offsetTopLeftCANCoder));
@@ -879,7 +891,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRightEncoder(offsetBottomRightCANCoder));
     }
 
-
+*/
 
 
 

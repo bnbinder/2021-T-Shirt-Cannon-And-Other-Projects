@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.util.Units;
@@ -202,6 +203,15 @@ public class MkUtil {
 
 
 
+  public static double setDirection(CANCoder coder, double setpoint)
+  {
+    // use the fastest way
+    double currentAngle = coder.getAbsolutePosition();
+    return currentAngle + closestAngle(currentAngle, setpoint);
+  }
+
+
+
   //!     stolen from 1684
   /*
   public static void inversionAwarness(TalonFX talon, double wa)
@@ -226,6 +236,34 @@ public class MkUtil {
   public static double setDirection(TalonFX talon, double setpoint, PIDController pid)
     {
         double currentAngle = nativeToDegrees(talon.getSelectedSensorPosition(), TURN.greerRatio);
+        // find closest angle to setpoint
+        double setpointAngle = closestAngle(currentAngle, setpoint);
+        // find closest angle to setpoint + 180
+        double setpointAngleFlipped = closestAngle(currentAngle, setpoint + 180.0);
+        // if the closest angle to setpoint is shorter
+        if (Math.abs(setpointAngle) <= Math.abs(setpointAngleFlipped))
+        {
+            // unflip the motor direction use the setpoint
+            pid.setP(Math.abs(pid.getP()) * 1.0);
+            return (currentAngle + setpointAngle);
+        }
+        // if the closest angle to setpoint + 180 is shorter
+        else
+        {
+            // flip the motor direction and use the setpoint + 180
+            pid.setP(Math.abs(pid.getP()) * -1.0);
+            return (currentAngle + setpointAngleFlipped);
+        }
+    }
+
+
+
+
+
+
+    public static double setDirection(CANCoder coder, double setpoint, PIDController pid)
+    {
+        double currentAngle = coder.getAbsolutePosition();
         // find closest angle to setpoint
         double setpointAngle = closestAngle(currentAngle, setpoint);
         // find closest angle to setpoint + 180

@@ -56,9 +56,9 @@ public final class Constants {
         public static int bottomTurnLeftCANCoderCANID = 15;
         public static int bottomTurnRightCANCoderCANID = 13;
 
-        public static double turnEncoderKP = 0.0006;
+        public static double turnEncoderKP = 0.00008;
         public static double turnEncoderKI = 0;
-        public static double turnEncoderKD = 0.00000000;
+        public static double turnEncoderKD = 0.00000001;
 
         public static double deadband = 0.1;
         public static double maxVel = 2000; //TODO fuck this up

@@ -142,6 +142,11 @@ public class SimpleAudioPlayer
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
 		return (float) Math.pow(10f, gainControl.getValue() / 20f);
 	}
+
+	public float getDeci() {
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
+		return gainControl.getValue();
+	}
 	
 	public void setVolume(float volume) {
 		if (volume < 0f || volume > 1f)

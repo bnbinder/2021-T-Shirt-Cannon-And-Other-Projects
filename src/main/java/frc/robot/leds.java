@@ -9,6 +9,7 @@ import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.LIGHTS;
@@ -118,6 +119,14 @@ public class leds {
               buffer.setRGB(i, (int)(((((volts - 11)/13) * 255))/2), 0, 0);
           }
           LEDS.setData(buffer);
+      }
+
+      public void rickRoss(int rickroller)
+      {
+          for(int i = 0; i < LIGHTS.bufferNum; i++)
+          {
+              buffer.setRGB(i, 0, rickroller, 0);
+          }
       }
 
     private static class InstanceHolder

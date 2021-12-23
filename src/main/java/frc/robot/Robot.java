@@ -71,6 +71,7 @@ public class Robot extends TimedRobot {
   private Timer audioTimer = new Timer();
 
   private double audio = 1;
+  private double decib = 0;
 
   private boolean rightBump = false;
 
@@ -114,8 +115,6 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     mDrive.zeroRobotNavx();
     //mDrive.setTurnPos(0);
     timer.reset();
-    audioTimer.reset();
-    audioTimer.start();
 
     //TODO figure out path
     //mAudio.setPath("path");
@@ -130,17 +129,21 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   
   
   //TODO test this bad boy
+  //also fix how bright leds are in leds based on max deci and /2 shit
   
   
 /*
-  if(audioTimer.get() == audio)
-  {
-    audio++;
-    SmartDashboard.putNumber("audioooooo", mAudio.getVolume());
-  }
-    */
+   //mleds.rickRoss(mAudio.getDeci);
 
+    SmartDashboard.putNumber("vol", mAudio.getVolume());
+    SmartDashboard.putNumber("deci", mAudio.getDeci());
+    if(mAudio.getDeci() > decib)
+    {
+      decib = mAudio.getDeci();
+    }
+    SmartDashboard.putNumber("highest", decib);
 
+*/
 
   mleds.voltage(volts);
   /*

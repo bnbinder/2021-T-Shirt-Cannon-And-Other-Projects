@@ -134,7 +134,6 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   
 /*
    //mleds.rickRoss(mAudio.getDeci);
-
     SmartDashboard.putNumber("vol", mAudio.getVolume());
     SmartDashboard.putNumber("deci", mAudio.getDeci());
     if(mAudio.getDeci() > decib)
@@ -142,10 +141,9 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       decib = mAudio.getDeci();
     }
     SmartDashboard.putNumber("highest", decib);
-
 */
 
-  mleds.voltage(volts);
+  //!mleds.voltage(volts);
   /*
     if(xbox.getAButton())
     {

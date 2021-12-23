@@ -5,9 +5,23 @@
 package frc.robot;
 
 
+import java.applet.AudioClip;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+
 import javax.lang.model.util.ElementScanner6;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.AudioFileFormat.Type;
+import javax.sound.sampled.spi.AudioFileReader;
 import javax.swing.event.MenuDragMouseEvent;
 
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -36,6 +50,9 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
 
+  //private File file = new File("c:/Users/bossMaster/Pictures/VXOP4165.MP4");
+  
+
   private double one,two,three;
   private boolean lol = true;
   private double the = 3;
@@ -44,12 +61,16 @@ public class Robot extends TimedRobot {
   private Drive mDrive = Drive.getInstance();
   private XboxController xbox = new XboxController(0);
   private leds mleds = leds.getInstance();
+  private SimpleAudioPlayer mAudio = SimpleAudioPlayer.getInstance();
 
   private double tan = 0;
   private double degrees = 0;
   private double what = 0;
 
   private Timer timer = new Timer();
+  private Timer audioTimer = new Timer();
+
+  private double audio = 1;
 
   private boolean rightBump = false;
 
@@ -93,12 +114,34 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     mDrive.zeroRobotNavx();
     //mDrive.setTurnPos(0);
     timer.reset();
+    audioTimer.reset();
+    audioTimer.start();
+
+    //TODO figure out path
+    //mAudio.setPath("path");
+    
   }
 
   @Override
   public void teleopPeriodic() {
   //mleds.french();
   //mleds.lilNavXTWO();
+  
+  
+  
+  //TODO test this bad boy
+  
+  
+/*
+  if(audioTimer.get() == audio)
+  {
+    audio++;
+    SmartDashboard.putNumber("audioooooo", mAudio.getVolume());
+  }
+    */
+
+
+
   mleds.voltage(volts);
   /*
     if(xbox.getAButton())
@@ -114,6 +157,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       mDrive.setTurnPercent(0,0,0,0);
     }
     */
+      
       one = (xbox.getRawAxis(1) - DRIVE.deadband) / (1 - DRIVE.deadband);
       two = (xbox.getRawAxis(0) - DRIVE.deadband) / (1 - DRIVE.deadband);
       three = (xbox.getRawAxis(5) - TURN.deadband) / (1 - TURN.deadband);
@@ -152,9 +196,9 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       {
         mDrive.turnSeventy();
       }
-      else if(Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0)
+      else if(Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0.8)
       {
-        
+        mAudio.play();
       }
       else if(xbox.getStartButton())
       {
@@ -192,8 +236,6 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
 
 //we've been trying to reach you regarding your robot's extended warranty
-
-
 
     mDrive.updateDrive();
     //y / x, opp / adj

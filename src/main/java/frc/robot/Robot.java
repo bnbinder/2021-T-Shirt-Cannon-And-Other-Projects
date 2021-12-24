@@ -5,10 +5,12 @@
 package frc.robot;
 
 
-import java.applet.AudioClip;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+
 
 import javax.lang.model.util.ElementScanner6;
 import javax.sound.sampled.AudioFileFormat;
@@ -16,10 +18,14 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.AudioFileFormat.Type;
 import javax.sound.sampled.spi.AudioFileReader;
 import javax.swing.event.MenuDragMouseEvent;
+
+import com.fasterxml.jackson.databind.module.SimpleKeyDeserializers;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -38,6 +44,18 @@ import frc.robot.Drive;
 import frc.robot.Constants.DRIVE;
 import frc.robot.Constants.TURN;
 import edu.wpi.first.wpilibj.Timer;
+
+import java.io.File; 
+import java.io.IOException; 
+import javax.sound.sampled.AudioFormat; 
+import javax.sound.sampled.AudioInputStream; 
+import javax.sound.sampled.AudioSystem; 
+import javax.sound.sampled.DataLine; 
+import javax.sound.sampled.FloatControl; 
+import javax.sound.sampled.LineUnavailableException; 
+import javax.sound.sampled.SourceDataLine; 
+import javax.sound.sampled.UnsupportedAudioFileException; 
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -51,7 +69,11 @@ public class Robot extends TimedRobot {
    */
 
   //private File file = new File("c:/Users/bossMaster/Pictures/VXOP4165.MP4");
-  
+  ///"C:/Users/bossMaster/Documents/GitHub/I cant keep making new projects everytime theres a new robot/src/main/java/frc/robot/thhhh.wav";
+
+	// constructor to initialize streams and clip
+
+ //"C:/Users/bossMaster/Documents/GitHub/I cant keep making new projects everytime theres a new robot/src/main/java/frc/robot/thhhh.wav");
 
   private double one,two,three;
   private boolean lol = true;
@@ -61,9 +83,12 @@ public class Robot extends TimedRobot {
   private Drive mDrive = Drive.getInstance();
   private XboxController xbox = new XboxController(0);
   private leds mleds = leds.getInstance();
-  private SimpleAudioPlayer mAudio = SimpleAudioPlayer.getInstance();
+  
 
   private double tan = 0;
+
+  
+
   private double degrees = 0;
   private double what = 0;
 
@@ -96,12 +121,19 @@ SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics,
 mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 */
 
+  
+
 
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+    
+
+  }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+
+  }
 
   @Override
   public void autonomousInit() {}
@@ -115,17 +147,18 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     mDrive.zeroRobotNavx();
     //mDrive.setTurnPos(0);
     timer.reset();
-
-    //TODO figure out path
-    //mAudio.setPath("path");
-    
+   
   }
 
+  
   @Override
   public void teleopPeriodic() {
+ 
+    
+    //SimpleAudioPlayer.getInstance().setPath("c:/I cant keep making new projects everytime theres a new robot/src/main/java/frc/robot/thhhh.wav");
   //mleds.french();
   //mleds.lilNavXTWO();
-  
+
   
   
   //TODO test this bad boy
@@ -199,7 +232,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       }
       else if(Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0.8)
       {
-        mAudio.play();
+        //mAudio.play();
       }
       else if(xbox.getStartButton())
       {
@@ -256,6 +289,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void disabledInit() {
     //mDrive.setActualTurnPos(0);
+
   }
 
   @Override
@@ -268,4 +302,12 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
   @Override
   public void testPeriodic() {}
+
+  public boolean bringTheFightToThem()
+  {
+     return Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0.8;
+  }
+
+ 
+ 
 }

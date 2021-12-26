@@ -27,50 +27,53 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class SimpleAudioPlayer
 {
 
 	// to store current position
-	Long currentFrame;
-	Clip clip;
+	 Long currentFrame;
+	 Clip clip;
 
+	leds mLeds = leds.getInstance();
     FloatControl control;
 	
 	// current status of clip
-	String status;
+	static String status;
 
-    static File file;
+     File file;
 
 	static int i = 0;
 
     static boolean stopped = true;
 
-	InputStream input;
+	 InputStream input;
     
-    public static TargetDataLine line;
+    public  TargetDataLine line;
     DataLine.Info info; // format is an AudioFormat object
 	
-	AudioInputStream audioInputStream;
-	AudioInputStream audioBitch;
-	static String filePath;
+	 AudioInputStream audioInputStream;
+	 AudioInputStream audioBitch;
+	 static String filePath;
 
 	private static final float MAX_REPORTABLE_DB = 90.3087f;
     private static final float MAX_REPORTABLE_AMP = 32767f;
 
-    static ByteArrayOutputStream output;
-    static int numBytesRead;
-    static byte[] data;
+     ByteArrayOutputStream output;
+     int numBytesRead;
+     byte[] data;
 
-	SourceDataLine source;
+	 SourceDataLine source;
 
 	//static OutputStream output;
 
 	// constructor to initialize streams and clip
 	public SimpleAudioPlayer()
-		throws UnsupportedAudioFileException,
-		IOException, LineUnavailableException
+		
 	{
-
+try
+{
         file = new File(filePath).getAbsoluteFile();
 		// create AudioInputStream object
 		audioInputStream = AudioSystem.getAudioInputStream(file);
@@ -113,6 +116,11 @@ public class SimpleAudioPlayer
 
        // Assume that the TargetDataLine, line, has already
 // been obtained and opened.
+}
+catch(Exception e)
+{
+	throw new StackOverflowError("bitch");
+}
 	}
 
 	public static void main(String[] args)
@@ -190,11 +198,11 @@ while (!stopped) {
 				jump(c1);
 				break;
             case 6:
-				System.out.println(Math.abs(data[clip.getFramePosition() * 4]));
-				System.out.println(clip.getFramePosition() * 4);
-				//System.out.println(line.getLevel());
+				System.out.println(Math.abs(data[(int)clip.getLongFramePosition() * 4]));
+				System.out.println(clip.getLongFramePosition() * 4);
+				System.out.println(getBytesPositionFromMilliseconds(clip.getMicrosecondPosition(), 2, 2, (int)clip.getFormat().getSampleRate()));
 				//System.out.println(clip.getFrameLength());
-				//System.out.println(data.length);
+				System.out.println(data.length);
 				break;
                 
             
@@ -220,8 +228,8 @@ while (!stopped) {
 			System.out.println("audio is already paused");
 			return;
 		}
-		this.currentFrame =
-		this.clip.getMicrosecondPosition();
+		currentFrame =
+		clip.getMicrosecondPosition();
 		clip.stop();
 		status = "paused";
 	}
@@ -239,7 +247,7 @@ while (!stopped) {
 		clip.close();
 		resetAudioStream();
 		clip.setMicrosecondPosition(currentFrame);
-		this.play();
+		play();
 	}
 	
 	// Method to restart the audio
@@ -251,7 +259,7 @@ while (!stopped) {
 		resetAudioStream();
 		currentFrame = 0L;
 		clip.setMicrosecondPosition(0);
-		this.play();
+		play();
 	}
 	
 	// Method to stop the audio
@@ -291,7 +299,7 @@ while (!stopped) {
 			resetAudioStream();
 			currentFrame = c;
 			clip.setMicrosecondPosition(c);
-			this.play();
+			play();
 		}
 	}
 	
@@ -360,6 +368,23 @@ while (!stopped) {
 	public static int getFrequency(int k, int samplingrate, int captureSize) {
         return Math.abs((k * samplingrate) / captureSize);
     }
+	
+	public double returnToSender()
+	{
+		return Math.abs(data[(int)clip.getLongFramePosition() * 4]);
+	}
+
+	public static long getBytesPositionFromMilliseconds(long ms, int bytesPerSample, int numberOfChannels,
+	int sampleRate) {
+long position = (long) (bytesPerSample * numberOfChannels * ((ms) * sampleRate));
+//Dirty hack. Do not ask anything about it.
+position -= position % 4;
+return position;
+}
+
+public static long getBytesPositionFromMilliseconds(long ms, int numberOfChannels) {
+return getBytesPositionFromMilliseconds(ms, 2, numberOfChannels, 44100);
+}
 }
 
 

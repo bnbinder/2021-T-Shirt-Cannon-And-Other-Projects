@@ -83,6 +83,7 @@ public class Robot extends TimedRobot {
   private Drive mDrive = Drive.getInstance();
   private XboxController xbox = new XboxController(0);
   private leds mleds = leds.getInstance();
+  private SimpleAudioPlayer mAudio = new SimpleAudioPlayer();
   
 
   private double tan = 0;
@@ -95,7 +96,7 @@ public class Robot extends TimedRobot {
   private Timer timer = new Timer();
   private Timer audioTimer = new Timer();
 
-  private double audio = 1;
+  //private double audio = 1;
   private double decib = 0;
 
   private boolean rightBump = false;
@@ -147,7 +148,10 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     mDrive.zeroRobotNavx();
     //mDrive.setTurnPos(0);
     timer.reset();
-   
+
+    
+    //TODO TEST AND PRAY
+    //!mAudio.play();
   }
 
   

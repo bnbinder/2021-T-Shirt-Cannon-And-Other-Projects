@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch Series",
+      "request": "launch",
+      "mainClass": "frc.robot.Series",
+      "projectName": "I cant keep making new projects everytime theres a new robot"
+    },
+    {
+      "type": "java",
+      "name": "Launch AudioWaveformCreator",
+      "request": "launch",
+      "mainClass": "frc.robot.AudioWaveformCreator",
+      "projectName": "I cant keep making new projects everytime theres a new robot"
+    },
+    {
+      "type": "java",
       "name": "Launch Main",
       "request": "launch",
       "mainClass": "frc.robot.Main",

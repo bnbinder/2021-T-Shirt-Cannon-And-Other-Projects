@@ -158,7 +158,9 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void teleopPeriodic() {
  
-    
+    //!AND THIS
+   //! SmartDashboard.putNumber("hope", mAudio.returnToSender());
+//! ALSO ADD STOP AT END IF IT WORKS (UNLIKELY)
     //SimpleAudioPlayer.getInstance().setPath("c:/I cant keep making new projects everytime theres a new robot/src/main/java/frc/robot/thhhh.wav");
   //mleds.french();
   //mleds.lilNavXTWO();

@@ -7,9 +7,10 @@ stolen code from -
   team 1684 - 180 awarness code
   ether (chief delphi) - swerve drive
 
- FAILED LED MUSIC PROJECT
+ FAILED LED MUSIC PROJECT (MAYBE):
   Vishal Garg (geeks for geeks) - wav audio
   Steven Eynon (stackoverflow) - get clip volume
   BalusC (stackoverflow) - getInstance with throws (for audio)
   countless other code samples i forgot
+  demo2s for some conversion things
 

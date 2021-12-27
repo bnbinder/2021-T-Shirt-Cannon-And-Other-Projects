@@ -56,6 +56,7 @@ public class Drive {
     private final CANCoder bottomTurnRightEncoder = new CANCoder(TURN.bottomTurnRightCANCoderCANID);
 
     private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(TURN.maxVel, TURN.maxAccel);
+    //only use this for autonomous, you moron
 
     private final PIDController turning = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
 
@@ -68,36 +69,20 @@ public class Drive {
     private final PIDController driveTopRight = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
     private final PIDController driveBotLeft = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
     private final PIDController driveBotRight = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
-
-
-    private final PIDController speedZero = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
+    //TODO you dont need multiple controllers, calculating only takes the current state and goal. they arent wired into them, only inputted, you moron
 
     private final PIDController topLeftTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
     private final PIDController topRightTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
     private final PIDController bottomLeftTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
     private final PIDController bottomRightTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
-
-    private double degrees = 0;
-
-    private double lastwa1 = 0;
-    private double lastwa2 = 0;
-    private double lastwa3 = 0;
-    private double lastwa4 = 0;
     
     private double offsetTopLeftCANCoder = topTurnLeftEncoder.getAbsolutePosition() - -107.050781;//78.75;
     private double offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition() - -67.3242187;//115.224;
     private double offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition() - -63.89648437; //117.0703125;//121.289;
     private double offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1210937;//320.361;
-    /*
-    private double canIPutMy1 = 0;
-    private double canIPutMy2 = 0;
-    private double canIPutMy3 = 0;
-    private double canIPutMy4 = 0;
-    private double ballsInYoJaw = 0;
-    */
-    //failed attempt at unicorn drive
 
     private double distance;
+    
     Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
     Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
     Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
@@ -109,13 +94,12 @@ public class Drive {
     SwerveModuleState bottomRight = new SwerveModuleState();
 
     SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
-  m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
-);
+     m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
     SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, navXshit2(), new Pose2d(0, 0, new Rotation2d()));
 
-ChassisSpeeds speeds = new ChassisSpeeds(0, 0, 0);
-SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
+    ChassisSpeeds speeds = new ChassisSpeeds(0, 0, 0);
+    SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
 
     private double leftTopPosNative, leftBottomPosNative, 
                    rightTopPosNative, rightBottomPosNative,
@@ -212,8 +196,7 @@ SwerveModuleState states[] = m_kinematics.toSwerveModuleStates(speeds);
         bottomTurnLeft.setInverted(true);
         bottomTurnRight.setInverted(true);
 
-
-
+        
         topDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
         topDriveLeft.configVelocityMeasurementWindow(32);
 

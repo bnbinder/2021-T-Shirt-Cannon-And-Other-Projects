@@ -11,9 +11,12 @@ public final class Constants {
     //?         some of these constants i dont use, so check them if you want to know
 
     public static double kPi = 3.14159265359;
+    //according to wpilib (i think)
     public static double oneEncoderRotation = 2048;
 
+    //length between two front center of wheels
     public static double L = 29;
+    //length between two side center of wheels
     public static double W = 17.625;
     public static double R = Math.sqrt(Math.pow(L, 2) + Math.pow(W, 2));
 
@@ -34,6 +37,7 @@ public final class Constants {
         public static double driveCloseRampRate = 0;
 
         public static double maxNativeVelocity = 2084; //TODO make sure this is right for talon fx
+                                                        //dont even know where i pulled this number
 
         public static double peakOutputForward = 1;
         public static double peakOutputReverse = -1;
@@ -42,11 +46,14 @@ public final class Constants {
         public static double magicAccel = 674;
 
         public static double kWheelDiameterInches = 5.9575;
+                                            //need to fix this
         public static double kWheelCircumference = kWheelDiameterInches * kPi;
 
         public static double voltComp = 12;
+                                    //change this to 10?
 
         public static double deadband = 0.1;
+                                //xbox controller sticks are sensitive
     }
 
     public static class TURN
@@ -89,8 +96,8 @@ public final class Constants {
 
     public static class LIGHTS
     {
-        public static int PWMPORT = 0; //TODO find this
-        public static int bufferNum = 100; //TODO and this
+        public static int PWMPORT = 0; 
+        public static int bufferNum = 100; 
     }
 
     public static class CANNON

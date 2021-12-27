@@ -22,9 +22,6 @@ public class leds {
     private AddressableLEDBuffer buffer = new AddressableLEDBuffer(LIGHTS.bufferNum);
     private double navXRot = 0;
 
-    private boolean yesManOne = false;
-    private boolean yesManTwo = false;
-
 
     private leds()
     {
@@ -33,14 +30,15 @@ public class leds {
         LEDS.start();
     }
 
+
     public static leds getInstance()
     {
         return InstanceHolder.mInstance;
     }
     
+
     public void french() {
         // For every pixel
-        
         for (var i = 0; i < LIGHTS.bufferNum; i++) 
         {   
                 timer.start();
@@ -65,13 +63,11 @@ public class leds {
             
         }
         // Increase by to make the rainbow "move"
-
       }
+
 
       public void lilNavX()
       {
-      
-      
           navXRot = (((mDrive.navXshit() + 360) % 360) * LIGHTS.bufferNum/360);
           SmartDashboard.putNumber("navxrrr", navXRot);
           for(double i = 0; i < LIGHTS.bufferNum; i++)
@@ -91,8 +87,8 @@ public class leds {
                 
           }
           LEDS.setData(buffer);
-          
       }
+
 
       public void lilNavXTWO()
       {
@@ -112,6 +108,7 @@ public class leds {
         LEDS.setData(buffer);
       }
 
+
       public void voltage(double volts)
       {
           for(int i = 0; i < LIGHTS.bufferNum; i++)
@@ -120,6 +117,7 @@ public class leds {
           }
           LEDS.setData(buffer);
       }
+
 
       public void rickRoss(int rickroller)
       {

@@ -38,11 +38,21 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+//! IMPORTANT: IMPORT WPILIBJ2 (>>>>2<<<<) YES WITH A 2 NOT ONE BUT 2 FOR COMMAND
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Drive;
 import frc.robot.Constants.DRIVE;
 import frc.robot.Constants.TURN;
+import frc.robot.commands.DriveStr8;
 import edu.wpi.first.wpilibj.Timer;
 
 import java.io.File; 
@@ -55,6 +65,10 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException; 
 import javax.sound.sampled.SourceDataLine; 
 import javax.sound.sampled.UnsupportedAudioFileException; 
+import frc.robot.commands.DriveStr8;
+
+//im not going to organize these
+//deal with it (please dont)
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -84,7 +98,17 @@ public class Robot extends TimedRobot {
   private XboxController xbox = new XboxController(0);
   private leds mleds = leds.getInstance();
   private SimpleAudioPlayer mAudio = new SimpleAudioPlayer();
+
+  //TODO after dababy deal get auto working
   
+  private Command m_autonomousCommand;
+  private SendableChooser<AutoPosition> positionChooser = new SendableChooser<>();
+  private ShuffleboardTab mTab = Shuffleboard.getTab("Match");
+  private ComplexWidget positionChooserTab = mTab.add("Auto Chooser", positionChooser).withWidget(BuiltInWidgets.kSplitButtonChooser);
+  
+  public enum AutoPosition {
+    LEFT, NOTHING
+  }
 
   private double tan = 0;
 
@@ -128,22 +152,46 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void robotInit() {
     
-
+    //Shuffleboard.startRecording();
+    //Shuffleboard.selectTab("Match");
+    positionChooser.addOption("Nothing", AutoPosition.NOTHING);
+    positionChooser.setDefaultOption("Left Trench", AutoPosition.LEFT);
   }
 
   @Override
   public void robotPeriodic() {
-
+    CommandScheduler.getInstance().run();
+    Shuffle.getInstance().update();
   }
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    Shuffleboard.addEventMarker("Auto Init", EventImportance.kNormal);
+    mDrive.zeroSensors();
+    switch (positionChooser.getSelected()) {
+      case LEFT:
+        m_autonomousCommand = new DriveStr8();
+        break;
+      case NOTHING:
+        
+        break;
+    }
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    mDrive.updateDrive();
+  }
 
   @Override
   public void teleopInit() {
+    Shuffleboard.addEventMarker("Teleop Init", EventImportance.kNormal);
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
     //mDrive.zeroSensors();
     mDrive.zeroRobotNavx();
     //mDrive.setTurnPos(0);
@@ -151,12 +199,14 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
     
     //TODO TEST AND PRAY
-    //!mAudio.play();
+    mAudio.play();
+    mDrive.zeroSensors();
   }
 
   
   @Override
   public void teleopPeriodic() {
+    mDrive.updateDrive();
  
     //!AND THIS
    //! SmartDashboard.putNumber("hope", mAudio.returnToSender());
@@ -165,7 +215,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   //mleds.french();
   //mleds.lilNavXTWO();
 
-  
+  //?test below, not above
   
   //TODO test this bad boy
   //also fix how bright leds are in leds based on max deci and /2 shit
@@ -181,6 +231,10 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     }
     SmartDashboard.putNumber("highest", decib);
 */
+
+
+
+
 
   //!mleds.voltage(volts);
   /*
@@ -215,7 +269,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
         three = 0;
       }
       
-      //TODO find out xbox axis shit, and pray to god
+      //// find out xbox axis shit, and pray to god
       if(one != 0 || two != 0 || three != 0)
       {
         mDrive.strafeRotate(-one/the,two/the,three/the);
@@ -267,12 +321,13 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       
 
       //mDrive.forwardStrafe(one, two);
-      //TODO test this first to see if it works, then test straferotate and diagnose problemo
-      //TODO also tune pid, needs to happen. tune with stephan, your tuning method is ass, provides no results
+      //// test this first to see if it works, then test straferotate and diagnose problemo
+      //// also tune pid, needs to happen. tune with stephan, your tuning method is ass, provides no results
 
       
 
-      //!       god didnt heed my call
+      ////       god didnt heed my call
+      //gods service provider is ass
 
 
 //we've been trying to reach you regarding your robot's extended warranty
@@ -295,6 +350,16 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void disabledInit() {
     //mDrive.setActualTurnPos(0);
+
+    /*
+    try {
+      mAudio.stop();
+    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+      TODO IF TEST FAILS SEE IF MAKING ALL FUNCS STATIC IS AN ISSUE
+      e.printStackTrace();
+    }
+    */
+
 
   }
 

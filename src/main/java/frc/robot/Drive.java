@@ -70,6 +70,7 @@ public class Drive {
     private final PIDController driveBotLeft = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
     private final PIDController driveBotRight = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
     //TODO you dont need multiple controllers, calculating only takes the current state and goal. they arent wired into them, only inputted, you moron
+    //!do it at guerin to see if it fucks things up tho, saftey first
 
     private final PIDController topLeftTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
     private final PIDController topRightTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
@@ -150,15 +151,19 @@ public class Drive {
                    
                    avgVelInches, avgDistInches,
 
-                   leftTopDeg, leftBotDeg,
-                   rightTopDeg, rightBotDeg;
+                   leftTopDeg, leftBottomDeg,
+                   rightTopDeg, rightBottomDeg,
+
+                   leftTopOutput, leftBottomOutput,
+                   rightTopOutput, rightBottomOutput;
 
     SwerveModuleState frontLeftState, frontRightState, backLeftState, backRightState;
     ChassisSpeeds chassisSpeeds;
     double forward, sideways, angular;
     
     private Drive()
-    { //TODO set integrated sensor for all thingies 
+    { 
+        //// set integrated sensor for all thingies 
         topDriveLeft.configFactoryDefault();
         bottomDriveLeft.configFactoryDefault();
         topDriveRight.configFactoryDefault();
@@ -169,6 +174,7 @@ public class Drive {
         topTurnRight.configFactoryDefault();
         bottomTurnRight.configFactoryDefault();
     
+
         topDriveLeft.setNeutralMode(NeutralMode.Coast);
         topDriveRight.setNeutralMode(NeutralMode.Coast);
         bottomDriveLeft.setNeutralMode(NeutralMode.Coast);
@@ -178,6 +184,7 @@ public class Drive {
         topTurnRight.setNeutralMode(NeutralMode.Brake);
         bottomTurnLeft.setNeutralMode(NeutralMode.Brake);
         bottomTurnRight.setNeutralMode(NeutralMode.Brake);
+
 
         topTurnLeft.config_kP(0, TURN.turnKP);
         topTurnLeft.config_kI(0, TURN.turnKI);
@@ -220,6 +227,7 @@ public class Drive {
         bottomDriveRight.config_kD(0, DRIVE.driveKD);
         bottomDriveRight.config_kF(0, DRIVE.driveKF);
 
+
         topDriveLeft.setInverted(false);
         topDriveRight.setInverted(false);
         bottomDriveLeft.setInverted(false);
@@ -230,6 +238,11 @@ public class Drive {
         bottomTurnLeft.setInverted(true);
         bottomTurnRight.setInverted(true);
 
+        topDriveLeft.configMotionSCurveStrength(4);
+        topDriveRight.configMotionSCurveStrength(4);
+        bottomDriveLeft.configMotionSCurveStrength(4);
+        bottomDriveRight.configMotionSCurveStrength(4);
+        //TODO see how scurve changes accuracy
         
         topDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
         topDriveLeft.configVelocityMeasurementWindow(32);
@@ -244,7 +257,6 @@ public class Drive {
         bottomDriveRight.configVelocityMeasurementWindow(32);
 
 
-
         topTurnLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
         topTurnLeft.configVelocityMeasurementWindow(32);
 
@@ -256,7 +268,6 @@ public class Drive {
 
         bottomTurnRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
         bottomTurnRight.configVelocityMeasurementWindow(32);
-
 
         
         topDriveLeft.configVoltageCompSaturation(DRIVE.voltComp);
@@ -321,6 +332,7 @@ public class Drive {
         bottomDriveRight.configPeakOutputForward(DRIVE.peakOutputForward);
         bottomDriveRight.configPeakOutputReverse(DRIVE.peakOutputReverse);
 
+
         topDriveLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         topDriveRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         bottomDriveLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -377,10 +389,12 @@ public class Drive {
         bottomTurnLeft.configClosedloopRamp(TURN.turnCloseRampRate);
         bottomTurnRight.configClosedloopRamp(TURN.turnCloseRampRate);
 
+
         topDriveLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
         topDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
         bottomDriveLeft.configClosedloopRamp(DRIVE.driveCloseRampRate);
         bottomDriveRight.configClosedloopRamp(DRIVE.driveCloseRampRate);
+
 
         topTurnLeftEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
         topTurnRightEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
@@ -439,18 +453,19 @@ public class Drive {
 
         avgDistInches = (leftTopPosInch + rightTopPosInch + leftBottomPosInch + rightBottomPosInch) /4.0;
         avgVelInches = (leftTopVelInch + rightTopVelInch + leftBottomVelInch + rightBottomVelInch) / 4.0;
-        //TODO for avg dist need to figure out how to do avg dist since four motors four wheels not tank drive
-        //TODO same with avg vel
+        //TODO for avg dist need to figure out how to do avg dist since four motors four wheels not tank drive, same with avg vel
+        //!this is only for if i have the brains to implement swerve unicorn auto drive, doesnt affect reg tank drive activities
 
         leftTopDeg = MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
         rightTopDeg = MkUtil.nativeToDegrees(topTurnRight.getSelectedSensorPosition(), TURN.greerRatio);
-        leftBotDeg = MkUtil.nativeToDegrees(bottomTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
-        rightBotDeg = MkUtil.nativeToDegrees(bottomTurnRight.getSelectedSensorPosition(), TURN.greerRatio);
+        leftBottomDeg = MkUtil.nativeToDegrees(bottomTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
+        rightBottomDeg = MkUtil.nativeToDegrees(bottomTurnRight.getSelectedSensorPosition(), TURN.greerRatio);
+        //!invalid, go above 360, use the cancoders
 
         frontLeftState = new SwerveModuleState(leftTopVelMeters, Rotation2d.fromDegrees(leftTopDeg));
         frontRightState = new SwerveModuleState(rightTopVelMeters, Rotation2d.fromDegrees(rightTopDeg));
-        backLeftState = new SwerveModuleState(leftBottomVelMeters, Rotation2d.fromDegrees(leftBotDeg));
-        backRightState = new SwerveModuleState(rightBottomVelMeters, Rotation2d.fromDegrees(rightBotDeg));
+        backLeftState = new SwerveModuleState(leftBottomVelMeters, Rotation2d.fromDegrees(leftBottomDeg));
+        backRightState = new SwerveModuleState(rightBottomVelMeters, Rotation2d.fromDegrees(rightBottomDeg));
 
         // Convert to chassis speeds
         chassisSpeeds = m_kinematics.toChassisSpeeds(
@@ -612,15 +627,17 @@ public class Drive {
 
 
 
-
+/*
     public double turnDegCalculate(double setpoint)
     {
         setpoint = MkUtil.degreesToNative(setpoint, TURN.greerRatio);
         return turning.calculate(topTurnLeft.getSelectedSensorPosition(), setpoint);
     }
 
-    //TODO may not need these
-
+    ////may not need these
+    and not need these i didnt
+    does this even make sense
+*/
 
     public void zeroSensors() 
     {
@@ -645,15 +662,20 @@ public class Drive {
         bottomDriveLeft.configMotionAcceleration(DRIVE.magicAccel);
         bottomDriveRight.configMotionAcceleration(DRIVE.magicAccel);
 
-        zeroSensors();
+        //zeroSensors();
     }
 
     public void updateMagicStraight()
     {
-        topDriveLeft.set(ControlMode.MotionMagic, distance);
-        topDriveRight.set(ControlMode.MotionMagic, distance);
-        bottomDriveLeft.set(ControlMode.MotionMagic, distance);
-        bottomDriveRight.set(ControlMode.MotionMagic, distance);
+        topDriveLeft.set(ControlMode.MotionMagic, MkUtil.inchesToNative(distance));
+        topDriveRight.set(ControlMode.MotionMagic, MkUtil.inchesToNative(distance));
+        bottomDriveLeft.set(ControlMode.MotionMagic, MkUtil.inchesToNative(distance));
+        bottomDriveRight.set(ControlMode.MotionMagic, MkUtil.inchesToNative(distance));
+
+        leftTopOutput = MkUtil.inchesToNative(distance);
+        rightTopOutput = MkUtil.inchesToNative(distance);
+        leftBottomOutput = MkUtil.inchesToNative(distance);
+        rightBottomOutput = MkUtil.inchesToNative(distance);
     }
 
     public boolean isMagicStraightDone()
@@ -759,7 +781,7 @@ public class Drive {
         double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = Math.atan2(A,D)*(180/Math.PI);
         double ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   double wa4 = Math.atan2(A,C)*(180/Math.PI);
 
-        //TODO add these ifs after testing if constraints fuck things up
+        //// add these ifs after testing if constraints fuck things up
 
         //sus about this, very sus
         //nvm its good doesnt break the code
@@ -796,7 +818,8 @@ public class Drive {
         inversionTwo(lastwa4,wa4,bottomDriveRight);
 */
       
-        //TODO implement the code i didnt fucking look at even though it was one scroll away god damn it
+        //// implement the code i didnt fucking look at even though it was one scroll away god damn it
+        //did and it worked
 /*
         if(Math.abs(wa1) - Math.abs(topTurnRight.getSelectedSensorPosition()) > 90)
         {
@@ -838,7 +861,8 @@ public class Drive {
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio))); //wa3
 
         
-        //TODO so many fucking things to test
+        //// so many fucking things to test
+            //yes, but not here
 
         SmartDashboard.putNumber("speedtopright", topDriveRight.getMotorOutputPercent());
         SmartDashboard.putNumber("speedtopleft", topDriveLeft.getMotorOutputPercent());
@@ -872,7 +896,8 @@ public class Drive {
         double theta = Math.toDegrees(Math.atan2(leftY,leftX));
         if(theta < 0)
         {
-            theta += 180; //TODO might be add 360 idk
+            theta += 180; //// might be add 360 idk
+                                    abandoned
         }
         double speed = Math.sqrt(Math.pow(leftX,2) + Math.pow(leftY,2));
         if(speed > 1)
@@ -974,7 +999,8 @@ public class Drive {
 
     public void zero()
     {
-        //TODO use when we actually get the cancoders
+        //// use when we actually get the cancoders
+        //dont use cancoders other than to get starting position
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(
             MkUtil.setDirection(topTurnLeft, 0, TURN.greerRatio), TURN.greerRatio)));
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(
@@ -988,7 +1014,7 @@ public class Drive {
     public void zeroRobotNavx()
     {
         navX.reset();
-         //TODO get tephlan and ask him how swerve work again
+         //// get tephlan and ask him how swerve work again
     }
 
     private static class InstanceHolder

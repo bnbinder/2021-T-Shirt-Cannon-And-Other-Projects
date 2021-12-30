@@ -68,8 +68,9 @@ public final class Constants {
         public static double turnEncoderKD = 0.00000001;
 
         public static double deadband = 0.1;
-        public static double maxVel = 2000; //TODO fuck this up
-        public static double maxAccel = 300; //TODO dont use these
+        public static double maxVel = 2000; //// fuck this up
+        public static double maxAccel = 300; //// dont use these
+                                        //these dont need to be here, only for drive tho
 
         public static double greerRatio = 12.8;
 
@@ -86,7 +87,7 @@ public final class Constants {
         */
         public static double turnKP = 0.00008;
         public static double turnKI = 0;
-        public static double turnKD = 0.00000001; //TODO implement this, mayy help
+        public static double turnKD = 0.00000001; //// implement this, mayy help
         public static double turnKF = 0;
         public static double turnOpenRampRate = 0;
         public static double turnCloseRampRate = 0;

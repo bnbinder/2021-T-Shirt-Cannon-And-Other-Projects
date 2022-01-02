@@ -60,9 +60,9 @@ public class SimpleAudioPlayer
 	private static final float MAX_REPORTABLE_DB = 90.3087f;
     private static final float MAX_REPORTABLE_AMP = 32767f;
 
-     ByteArrayOutputStream output;
-     int numBytesRead;
-     byte[] data;
+    ByteArrayOutputStream output;
+    int numBytesRead;
+    byte[] data;
 
 	 SourceDataLine source;
 

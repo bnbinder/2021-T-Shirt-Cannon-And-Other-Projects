@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Scanner;
 
 import javax.naming.ldap.SortControl;
@@ -24,6 +26,7 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.AudioFormat.Encoding;
 
 import com.revrobotics.ControlType;
 
@@ -36,7 +39,7 @@ public class SimpleAudioPlayer
 	 Long currentFrame;
 	 Clip clip;
 
-	leds mLeds = leds.getInstance();
+	//leds mLeds = leds.getInstance();
     FloatControl control;
 	
 	// current status of clip
@@ -66,6 +69,20 @@ public class SimpleAudioPlayer
 
 	 SourceDataLine source;
 
+	 AudioInputStream in;
+AudioFormat baseFormat;
+AudioFormat decodedFormat;
+AudioInputStream audiolol;
+AudioInputStream din;
+
+byte[] array;
+int read ;
+
+    ByteBuffer bb;
+    
+    float amplitude;
+
+
 	//static OutputStream output;
 
 	// constructor to initialize streams and clip
@@ -74,9 +91,11 @@ public class SimpleAudioPlayer
 	{
 try
 {
+	filePath = "c:/Users/bossMaster/Desktop/thhhh.wav";
         file = new File(filePath).getAbsoluteFile();
 		// create AudioInputStream object
 		audioInputStream = AudioSystem.getAudioInputStream(file);
+		audiolol = AudioSystem.getAudioInputStream(file);
 		audioBitch = AudioSystem.getAudioInputStream(file);
 		input = AudioSystem.getAudioInputStream(file);
 		// create clip reference
@@ -92,17 +111,32 @@ try
         
 		output = new ByteArrayOutputStream();
         
-
 		
 		line.open(audioBitch.getFormat());
 		
 		source = AudioSystem.getSourceDataLine(audioBitch.getFormat());
 		source.open();
 		source.start();
+		line.start();
 		//Control control = line.getControl(FloatControl.Type.VOLUME);
 		//System.out.println(source.isControlSupported(FloatControl.Type.VOLUME));
 
 		info = (DataLine.Info) line.getLineInfo();
+
+		in = AudioSystem.getAudioInputStream(file);
+ baseFormat = in.getFormat();
+ decodedFormat = new AudioFormat(Encoding.PCM_FLOAT, 44100, 32, 1, 4, 44100, false);
+ din = AudioSystem.getAudioInputStream(decodedFormat, in);
+
+array = new byte[clip.getBufferSize()];
+ read = din.read(array);
+     bb = ByteBuffer.wrap(array);
+    bb.order(ByteOrder.LITTLE_ENDIAN);
+     amplitude = bb.asFloatBuffer().get();
+
+    
+
+    read = din.read(array);
 		// data = new byte[1];
 
 		 //audioInputStream.transferTo(output);
@@ -148,12 +182,6 @@ while (!stopped) {
 */
 			while (true)
 			{
-				
-				System.out.println("1. pause");
-				System.out.println("2. resume");
-				System.out.println("3. restart");
-				System.out.println("4. stop");
-				System.out.println("5. Jump to specific time");
 				int c = sc.nextInt();
 				audioPlayer.gotoChoice(c);
 				if (c == 4)
@@ -198,15 +226,50 @@ while (!stopped) {
 				jump(c1);
 				break;
             case 6:
-				System.out.println(Math.abs(data[(int)clip.getLongFramePosition() * 4]));
+				//System.out.println(Math.abs(data[(int)(getBytesPositionFromMilliseconds(clip.getMicrosecondPosition(), 2, 2, (int)clip.getFormat().getSampleRate()))]));
 				System.out.println(clip.getLongFramePosition() * 4);
 				System.out.println(getBytesPositionFromMilliseconds(clip.getMicrosecondPosition(), 2, 2, (int)clip.getFormat().getSampleRate()));
 				//System.out.println(clip.getFrameLength());
-				System.out.println(data.length);
+				byte[] buf = new byte[2048];
+				float[] samples = new float[2048/2];
+				float lastPeak = 0f;
+				for(int b; (b = audiolol.read(buf, 0, buf.length)) > -1;) {
+
+					// convert bytes to samples here
+					for(int i = 0, s = 0; i < b;) {
+						int sample = 0;
+	
+						sample |= buf[i++] & 0xFF; // (reverse these two lines
+						sample |= buf[i++] << 8;   //  if the format is big endian)
+	
+						// normalize to range of +/-1.0f
+						samples[s++] = sample / 32768f;
+					}
+	
+					float rms = 0f;
+					float peak = 0f;
+					for(float sample : samples) {
+	
+						float abs = Math.abs(sample);
+						if(abs > peak) {
+							peak = abs;
+						}
+	
+						rms += sample * sample;
+					}
+	
+					rms = (float)Math.sqrt(rms / samples.length);
+					System.out.println(rms);
+					if(lastPeak > peak) {
+						peak = lastPeak * 0.875f;
+					}
+	
+					lastPeak = peak;
 				break;
                 
             
 		}
+	}
 	
 	}
 	
@@ -385,8 +448,21 @@ return position;
 public static long getBytesPositionFromMilliseconds(long ms, int numberOfChannels) {
 return getBytesPositionFromMilliseconds(ms, 2, numberOfChannels, 44100);
 }
+
+public void amp() throws IOException
+{
+	bb = ByteBuffer.wrap(array);
+    bb.order(ByteOrder.LITTLE_ENDIAN);
+     amplitude = bb.asFloatBuffer().get();
+	 System.out.println(amplitude);
+    read = din.read(array);
 }
 
 
+public AudioFormat audi()
+{
+	return clip.getFormat();
+}
+}
 
 

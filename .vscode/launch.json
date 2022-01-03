@@ -6,6 +6,27 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch Help",
+      "request": "launch",
+      "mainClass": "frc.robot.Help",
+      "projectName": "I cant keep making new projects everytime theres a new robot"
+    },
+    {
+      "type": "java",
+      "name": "Launch LevelMeter",
+      "request": "launch",
+      "mainClass": "frc.robot.LevelMeter",
+      "projectName": "I cant keep making new projects everytime theres a new robot"
+    },
+    {
+      "type": "java",
+      "name": "Launch WaveFile",
+      "request": "launch",
+      "mainClass": "frc.robot.WaveFile",
+      "projectName": "I cant keep making new projects everytime theres a new robot"
+    },
+    {
+      "type": "java",
       "name": "Launch Series",
       "request": "launch",
       "mainClass": "frc.robot.Series",

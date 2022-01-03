@@ -7,10 +7,12 @@ stolen code from -
   team 1684 - 180 awarness code
   ether (chief delphi) - swerve drive
 
- FAILED LED MUSIC PROJECT (MAYBE):
+ FAILED LED MUSIC PROJECT (MAYBE) (NVM TOTALLY FAILED):
   Vishal Garg (geeks for geeks) - wav audio
   Steven Eynon (stackoverflow) - get clip volume
   BalusC (stackoverflow) - getInstance with throws (for audio)
   countless other code samples i forgot
   demo2s for some conversion things
+  John Valentino II for confusing dft equation
+  Radiodef (stackoverflow) for somehow working mic to db level meter
 

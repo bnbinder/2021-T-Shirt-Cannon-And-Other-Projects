@@ -97,10 +97,9 @@ public class Robot extends TimedRobot {
   private Drive mDrive = Drive.getInstance();
   private XboxController xbox = new XboxController(0);
   private leds mleds = leds.getInstance();
-  private SimpleAudioPlayer mAudio = new SimpleAudioPlayer();
 
-  //TODO after dababy deal get auto working
-  
+ //// after dababy deal get auto working
+  //dababy sound to led will never work, not enough knowledge and/or resources
   private Command m_autonomousCommand;
   private SendableChooser<AutoPosition> positionChooser = new SendableChooser<>();
   private ShuffleboardTab mTab = Shuffleboard.getTab("Match");
@@ -198,8 +197,9 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     timer.reset();
 
     
-    //TODO TEST AND PRAY
-    //TODO dont actually play it
+    //// TEST AND PRAY
+    //// dont actually play it
+    //abandon project
 
     mDrive.zeroSensors();
   }
@@ -219,16 +219,22 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   //?test below, not above
   
 
-  //TODO too tired to do this now so future me do it. create a function in the 
-  //!simple sound file that takes a number (timer seconds) and returns the base
-  //! from the byte array. since the roborio can take the file, not play it, 
-  //! transfer the wav file to the robiro and turn the sound into byte array.
-  //!then start a timer here and input that number into the function so then
-  //! you can get sound data and then put it here. dont actually play the sound
-  //! get it and shit. ok bye.
+  //// too tired to do this now so future me do it. create a function in the 
+  /*
+  //simple sound file that takes a number (timer seconds) and returns the base
+  // from the byte array. since the roborio can take the file, not play it, 
+  // transfer the wav file to the robiro and turn the sound into byte array.
+  //then start a timer here and input that number into the function so then
+  // you can get sound data and then put it here. dont actually play the sound
+  // get it and shit. ok bye.
+  */
 
 
-  //TODO test this bad boy
+  //// test this bad boy
+
+    //TODO dababy project cancelled, see top for details
+
+
   //also fix how bright leds are in leds based on max deci and /2 shit
   
   
@@ -362,15 +368,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   public void disabledInit() {
     //mDrive.setActualTurnPos(0);
 
-    /*
-    try {
-      mAudio.stop();
-    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-      TODO IF TEST FAILS SEE IF MAKING ALL FUNCS STATIC IS AN ISSUE
-      e.printStackTrace();
-    }
-    */
-
+   
 
   }
 

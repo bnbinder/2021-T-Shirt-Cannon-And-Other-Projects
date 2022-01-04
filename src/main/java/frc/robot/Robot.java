@@ -100,6 +100,7 @@ public class Robot extends TimedRobot {
 
  //// after dababy deal get auto working
   //dababy sound to led will never work, not enough knowledge and/or resources
+  //update: dababy works, meter works, but sound to led still no go. sorry
   private Command m_autonomousCommand;
   private SendableChooser<AutoPosition> positionChooser = new SendableChooser<>();
   private ShuffleboardTab mTab = Shuffleboard.getTab("Match");
@@ -122,7 +123,7 @@ public class Robot extends TimedRobot {
   //private double audio = 1;
   private double decib = 0;
 
-  private LevelMeter level = new LevelMeter();
+  //private LevelMeter level = new LevelMeter();
 
   private boolean rightBump = false;
 
@@ -364,6 +365,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     //SmartDashboard.putNumber("one", one);
     //SmartDashboard.putNumber("two", two);
     volts = RobotController.getBatteryVoltage();
+    
   }
 
   @Override
@@ -385,10 +387,10 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   @Override
   public void testPeriodic() {}
 
-  public boolean bringTheFightToThem()
+  /*public boolean bringTheFightToThem()
   {
      return Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0.8;
-  }
+  }*/
 
  
  

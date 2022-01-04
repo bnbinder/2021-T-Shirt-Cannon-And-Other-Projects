@@ -119,13 +119,14 @@ public class leds {
       }
 
 
-      public void rickRoss(int rickroller)
+      /*public void rickRoss(int rickroller)
       {
           for(int i = 0; i < LIGHTS.bufferNum; i++)
           {
               buffer.setRGB(i, 0, rickroller, 0);
           }
-      }
+      }*/
+      //music project never gonna happen, never gonna be complete, im deserting and giving up on it.
 
     private static class InstanceHolder
     {

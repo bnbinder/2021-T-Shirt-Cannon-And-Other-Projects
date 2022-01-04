@@ -1016,6 +1016,53 @@ public class Drive {
         navX.reset();
          //// get tephlan and ask him how swerve work again
     }
+                        //mouse, so funny
+    public double semiAutonomouseTurn(double desiredAngle, double currentTime, double desiredTime, double spinInPlace)
+    {
+        double angle = currentTime * (desiredAngle/desiredTime);
+        double FWD = Math.sin(angle);
+        double STR = Math.cos(angle);
+        double RCW = spinInPlace;
+        double nav = navXshit();
+        double temp = FWD*Math.cos(Math.toRadians(nav)) + STR*Math.sin(Math.toRadians(nav));
+        STR = -FWD*Math.sin(Math.toRadians(nav)) + STR*Math.cos(Math.toRadians(nav));
+        FWD = temp; 
+
+        double A = STR - RCW*(Constants.L/Constants.R); //-
+        double B = STR + RCW*(Constants.L/Constants.R); //+
+        double C = FWD - RCW*(Constants.W/Constants.R); //-
+        double D = FWD + RCW*(Constants.W/Constants.R); //+
+
+        double ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   double wa1 = Math.atan2(B,C)*(180/Math.PI);
+        double ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   double wa2 = Math.atan2(B,D)*(180/Math.PI);
+        double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = Math.atan2(A,D)*(180/Math.PI);
+        double ws4 = Math.sqrt(Math.pow(A,2)+Math.pow(C,2));   double wa4 = Math.atan2(A,C)*(180/Math.PI);
+
+       
+        wa2 = MkUtil.setDirection(topTurnLeft, wa2, driveTopLeft);
+        wa1 = MkUtil.setDirection(topTurnRight, wa1, driveTopRight);
+        wa4 = MkUtil.setDirection(bottomTurnRight, wa4, driveBotRight);
+        wa3 = MkUtil.setDirection(bottomTurnLeft, wa3, driveBotLeft);
+
+        ws2 = MkUtil.isPositive(driveTopLeft.getP(), ws2);
+        ws1 = MkUtil.isPositive(driveTopRight.getP(), ws1);
+        ws4 = MkUtil.isPositive(driveBotRight.getP(), ws4);
+        ws3 = MkUtil.isPositive(driveBotLeft.getP(), ws3);
+
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(wa2, TURN.greerRatio))); //wa2
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(wa1, TURN.greerRatio))); //wa1
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(wa4, TURN.greerRatio))); //wa4
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(wa3, TURN.greerRatio))); //wa3
+
+        if(angle == desiredAngle)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
     private static class InstanceHolder
     {

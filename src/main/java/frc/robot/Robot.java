@@ -122,6 +122,8 @@ public class Robot extends TimedRobot {
   //private double audio = 1;
   private double decib = 0;
 
+  private LevelMeter level = new LevelMeter();
+
   private boolean rightBump = false;
 
   private double volts = 0;

@@ -19,10 +19,10 @@ import frc.robot.Constants.CANNON;
 /** Add your docs here. */
 public class Cannon {
     
+
+
+
 /*
-
-
-
     
     private Compressor compressor = new Compressor(CANNON.compressorID);
     private Solenoid solenoidOne = new Solenoid(CANNON.solenoidOneID);
@@ -35,6 +35,8 @@ public class Cannon {
 
     private PIDController PIDtrunnion = new PIDController(CANNON.trunnionKP, CANNON.trunnionKI, CANNON.trunnionKD);
 
+    public int slot;
+
     //private TimerTask
     //!found this goo gaw when sifting through the different timers, neat. may look into using this sometime
 
@@ -42,6 +44,7 @@ public class Cannon {
     {
         solenoidOne.set(false);
         solenoidTwo.set(false);
+        compressorStart();
 
         genevaConvention.configFactoryDefault();
         genevaConvention.configVoltageCompSaturation(CANNON.voltComp);
@@ -77,6 +80,25 @@ public class Cannon {
 
     }
 
+    public void russianRoulette()
+    {
+        slot = (int)((Math.random() * 6) + 1);
+    }
+
+    /*
+    public double trunnionCalculate(double setpoint, mode modes)
+    {
+        switch(modes)
+        {
+            case angle:
+            return PIDtrunnion.calculate(measurement, setpoint);
+
+            case internal:
+            return PIDtrunnion.calculate(measurement, setpoint)
+        }
+    }
+    */
+    /*
     public void trunnionFeedOptionOne(double setpointDegrees)
     {
                                     //degrees or native, probably native
@@ -99,7 +121,8 @@ public class Cannon {
                                          //is set point degrees or native, probably degrees
         trunnion.set(ControlMode.MotionMagic, setpointDegrees, DemandType.ArbitraryFeedForward, maxGravityFF * cosineScalar);
     }
-
+    */
+    /*
     public void trunnionFeedOptionTwo(double setpointDegrees)
     {                                                                                              //is theta current angle or setpoint angle?
         double FF = (Arm Weight) * (Distance to arm center of mass) / (Motor stall torque) * (Number of motors) * (Gear Ratio) * cos(theta);
@@ -107,13 +130,17 @@ public class Cannon {
                                                                     //figure out torque with stephan
         double FF = (CANNON.weight) * (CANNON.cannonDistance) / (Motor stall torque) * (1) * (CANNON.trunnionGreerRatio) * Math.cos(theta);
     }
+    public enum mode
+    {
+        angle, internal
+    }
 
     private static class InstanceHolder
     {
         private static final Cannon mInstance = new Cannon();
     } 
-    
+    */
 
-*/
+
     
 }

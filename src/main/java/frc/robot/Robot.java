@@ -82,12 +82,12 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
 
-  //private File file = new File("c:/Users/bossMaster/Pictures/VXOP4165.MP4");
-  ///"C:/Users/bossMaster/Documents/GitHub/I cant keep making new projects everytime theres a new robot/src/main/java/frc/robot/thhhh.wav";
+  ////private File file = new File("c:/Users/bossMaster/Pictures/VXOP4165.MP4");
+  /////"C:/Users/bossMaster/Documents/GitHub/I cant keep making new projects everytime theres a new robot/src/main/java/frc/robot/thhhh.wav";
 
-	// constructor to initialize streams and clip
+	//// constructor to initialize streams and clip
 
- //"C:/Users/bossMaster/Documents/GitHub/I cant keep making new projects everytime theres a new robot/src/main/java/frc/robot/thhhh.wav");
+ ////"C:/Users/bossMaster/Documents/GitHub/I cant keep making new projects everytime theres a new robot/src/main/java/frc/robot/thhhh.wav");
 
   private double one,two,three;
   private boolean lol = true;
@@ -120,10 +120,10 @@ public class Robot extends TimedRobot {
   private Timer timer = new Timer();
   private Timer audioTimer = new Timer();
 
-  //private double audio = 1;
+  ////private double audio = 1;
   private double decib = 0;
 
-  //private LevelMeter level = new LevelMeter();
+  ////private LevelMeter level = new LevelMeter();
 
   private boolean rightBump = false;
 
@@ -155,7 +155,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   public void robotInit() {
     
     //Shuffleboard.startRecording();
-    //Shuffleboard.selectTab("Match");
+    Shuffleboard.selectTab("Match");
     positionChooser.addOption("Nothing", AutoPosition.NOTHING);
     positionChooser.setDefaultOption("Left Trench", AutoPosition.LEFT);
   }

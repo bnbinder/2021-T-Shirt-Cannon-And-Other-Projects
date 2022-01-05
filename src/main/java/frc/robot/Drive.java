@@ -641,7 +641,6 @@ public class Drive {
 
     public void zeroSensors() 
     {
-        navX.zeroYaw();
         topDriveLeft.setSelectedSensorPosition(0);
         topDriveRight.setSelectedSensorPosition(0);
         bottomDriveLeft.setSelectedSensorPosition(0);
@@ -928,7 +927,7 @@ public class Drive {
 
 
 
-    public void turnNine(double setpoint)
+    public void turnEncoder(double setpoint)
     {
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRightEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
@@ -936,30 +935,14 @@ public class Drive {
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
     }   
     
-    public void turnEight()
+    public void turnInternalEncoder(double setpoint)
     {
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(180, TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(180, TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(180, TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(180, TURN.greerRatio)));
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
     }   
 
-    public void turnSeventy()
-    {
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(270, TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(270, TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(270, TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(270, TURN.greerRatio)));
-    } 
-
-
-    public void turnZero()
-    {
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(0, TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(0, TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(0, TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(0, TURN.greerRatio)));
-    }
     public void turnRotateNavX()
     {
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(navXshit(), TURN.greerRatio)));

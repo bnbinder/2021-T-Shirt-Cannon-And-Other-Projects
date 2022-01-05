@@ -194,15 +194,15 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    //mDrive.zeroSensors();
+    mDrive.zeroSensors();
     mDrive.zeroRobotNavx();
-    //mDrive.setTurnPos(0);
+    ////mDrive.setTurnPos(0);
     timer.reset();
 
     
     //// TEST AND PRAY
     //// dont actually play it
-    //abandon project
+    //!abandon project
 
     mDrive.zeroSensors();
   }
@@ -212,9 +212,9 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   public void teleopPeriodic() {
     mDrive.updateDrive();
  
-    //!AND THIS
-   //! SmartDashboard.putNumber("hope", mAudio.returnToSender());
-//! ALSO ADD STOP AT END IF IT WORKS (UNLIKELY)
+    //////AND THIS
+   //// SmartDashboard.putNumber("hope", mAudio.returnToSender());
+////ALSO ADD STOP AT END IF IT WORKS (UNLIKELY)
     
   //mleds.french();
   //mleds.lilNavXTWO();
@@ -243,13 +243,13 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
   
 /*
    //mleds.rickRoss(mAudio.getDeci);
-    SmartDashboard.putNumber("vol", mAudio.getVolume());
-    SmartDashboard.putNumber("deci", mAudio.getDeci());
-    if(mAudio.getDeci() > decib)
-    {
-      decib = mAudio.getDeci();
-    }
-    SmartDashboard.putNumber("highest", decib);
+    //SmartDashboard.putNumber("vol", mAudio.getVolume());
+    //SmartDashboard.putNumber("deci", mAudio.getDeci());
+    //if(mAudio.getDeci() > decib)
+    //{
+    //  decib = mAudio.getDeci();
+    //}
+    //SmartDashboard.putNumber("highest", decib);
 */
 
 
@@ -257,20 +257,21 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
 
   //!mleds.voltage(volts);
-  /*
-    if(xbox.getAButton())
-    {
-      mDrive.setActualTurnPos(3000);
-    }
-    else if(xbox.getXButton())
-    {
-      mDrive.setActualTurnPos(1000);
-    }
-    else
-    {
-      mDrive.setTurnPercent(0,0,0,0);
-    }
+    /*
+    //if(xbox.getAButton())
+    //{
+    //  mDrive.setActualTurnPos(3000);
+    //}
+    //else if(xbox.getXButton())
+    //{
+    //  mDrive.setActualTurnPos(1000);
+    //}
+    //else
+    //{
+    //  mDrive.setTurnPercent(0,0,0,0);
+    //}
     */
+    
       
       one = (xbox.getRawAxis(1) - DRIVE.deadband) / (1 - DRIVE.deadband);
       two = (xbox.getRawAxis(0) - DRIVE.deadband) / (1 - DRIVE.deadband);
@@ -296,28 +297,30 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       }
       else if(xbox.getYButton())
       {
-        mDrive.turnZero();
+        mDrive.turnEncoder(0);
       }      
       else if(xbox.getXButton())
       {
-        mDrive.turnNine(0);
+        mDrive.turnInternalEncoder(180);
       }
       else if(xbox.getAButton())
       {
-        mDrive.turnEight();
+        mDrive.turnInternalEncoder(0);
       }
       else if(xbox.getBButton())
       {
-        mDrive.turnSeventy();
+        mDrive.turnEncoder(180);
       }
       else if(Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0.8)
       {
-        //mAudio.play();
+        ////mAudio.play();
       }
       else if(xbox.getStartButton())
       {
         mDrive.setTurnPos(0);
       }
+
+
       else if(xbox.getBumperPressed(Hand.kLeft))
       {
         if(xbox.getBumperReleased(Hand.kLeft))
@@ -325,11 +328,15 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
           poop = !poop;
         }
       }
+
+
       else
       {
         mDrive.setTurnPercent(0,0,0,0);
         mDrive.setDrivePerent(0,0,0,0);
       }
+
+
       if(poop)
       {
         the = 1;
@@ -340,7 +347,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       }
       
 
-      //mDrive.forwardStrafe(one, two);
+      ////mDrive.forwardStrafe(one, two);
       //// test this first to see if it works, then test straferotate and diagnose problemo
       //// also tune pid, needs to happen. tune with stephan, your tuning method is ass, provides no results
 
@@ -353,26 +360,28 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 //we've been trying to reach you regarding your robot's extended warranty
 
     mDrive.updateDrive();
+    /*
     //y / x, opp / adj
     //but arctan uses x,y param (respectivley)
     //but tan gets other hyp, not hyp i want
     // so its y / x
+    */
     tan = Math.atan2(xbox.getRawAxis(0),xbox.getRawAxis(1));    
-    //SmartDashboard.putNumber("Tan", tan);
+    ////SmartDashboard.putNumber("Tan", tan);
     degrees = MkUtil.degreesToNative(tan, TURN.greerRatio);
+    /*
     //SmartDashboard.putNumber("deg", degrees);
 
     //SmartDashboard.putNumber("one", one);
     //SmartDashboard.putNumber("two", two);
+    */
     volts = RobotController.getBatteryVoltage();
     
   }
 
   @Override
   public void disabledInit() {
-    //mDrive.setActualTurnPos(0);
-
-   
+    ////mDrive.setActualTurnPos(0);
 
   }
 

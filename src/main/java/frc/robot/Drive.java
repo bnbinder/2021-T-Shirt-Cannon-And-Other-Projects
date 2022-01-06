@@ -475,7 +475,8 @@ public class Drive {
         rightTopDeg = MkUtil.nativeToDegrees(topTurnRight.getSelectedSensorPosition(), TURN.greerRatio);
         leftBottomDeg = MkUtil.nativeToDegrees(bottomTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
         rightBottomDeg = MkUtil.nativeToDegrees(bottomTurnRight.getSelectedSensorPosition(), TURN.greerRatio);
-        //!invalid, go above 360, use the cancoders
+        ////invalid, go above 360, use the cancoders
+        //! or just use % you moron
 
         frontLeftState = new SwerveModuleState(leftTopVelMeters, Rotation2d.fromDegrees(leftTopDeg));
         frontRightState = new SwerveModuleState(rightTopVelMeters, Rotation2d.fromDegrees(rightTopDeg));

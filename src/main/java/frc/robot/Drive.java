@@ -164,9 +164,9 @@ public class Drive {
     SwerveModuleState frontLeftState, frontRightState, backLeftState, backRightState;
     ChassisSpeeds chassisSpeeds;
     double forward, sideways, angular;
-    public Collection<TalonFX> collect;
+    //public Collection<TalonFX> collect;
     public Orchestra dababy;
-    public String path = "C:/Users/bossMaster/Desktop/h.wav";
+    public String path = "h.wav";//"C:/Users/bossMaster/Desktop/h.wav";
     
     private Drive()
     { 
@@ -419,12 +419,13 @@ public class Drive {
         bottomTurnLeft.setSelectedSensorPosition(MkUtil.degreesToNative(offsetBottomLeftCANCoder, TURN.greerRatio));
         bottomTurnRight.setSelectedSensorPosition(MkUtil.degreesToNative(offsetBottomRightCANCoder, TURN.greerRatio));
 
-        collect.add(topDriveLeft);
-        collect.add(topDriveRight);
-        collect.add(bottomDriveLeft);
-        collect.add(bottomDriveRight);
+        
 
-        dababy = new Orchestra(collect);
+        dababy = new Orchestra();
+        dababy.addInstrument(topDriveLeft);
+        dababy.addInstrument(topDriveRight);
+        dababy.addInstrument(bottomDriveLeft);
+        dababy.addInstrument(bottomDriveRight);
         dababy.loadMusic(path);
     }
 
@@ -533,7 +534,7 @@ public class Drive {
         //frontRight = new SwerveModuleState(rightTopVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(topTurnRight.getSelectedSensorPosition(), TURN.greerRatio)));
         //bottomLeft = new SwerveModuleState(leftBottomVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(bottomTurnLeft.getSelectedSensorPosition(), TURN.greerRatio)));
         //bottomRight = new SwerveModuleState(rightBottomVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(bottomTurnRight.getSelectedSensorPosition(), TURN.greerRatio)));
-        m_odometry.update(Rotation2d.fromDegrees(navXshit()), frontLeft,frontRight,bottomLeft,bottomRight);
+        m_odometry.update(Rotation2d.fromDegrees(navXshit()), frontLeftState,frontRightState,backLeftState,backRightState);
         
 
        SmartDashboard.putNumber("x", m_odometry.getPoseMeters().getX());

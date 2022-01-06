@@ -37,7 +37,7 @@ public final class Constants {
         public static double driveCloseRampRate = 0;
 
         public static double maxNativeVelocity = 2084; //TODO make sure this is right for talon fx
-                                                        //dont even know where i pulled this number
+                                                        //dont even know where i pulled this number, prob from swerve code
 
         public static double peakOutputForward = 1;
         public static double peakOutputReverse = -1;

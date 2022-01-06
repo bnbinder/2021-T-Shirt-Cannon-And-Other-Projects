@@ -6,13 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch Help",
-      "request": "launch",
-      "mainClass": "frc.robot.Help",
-      "projectName": "I cant keep making new projects everytime theres a new robot"
-    },
-    {
-      "type": "java",
       "name": "Launch LevelMeter",
       "request": "launch",
       "mainClass": "frc.robot.LevelMeter",
@@ -20,37 +13,9 @@
     },
     {
       "type": "java",
-      "name": "Launch WaveFile",
-      "request": "launch",
-      "mainClass": "frc.robot.WaveFile",
-      "projectName": "I cant keep making new projects everytime theres a new robot"
-    },
-    {
-      "type": "java",
-      "name": "Launch Series",
-      "request": "launch",
-      "mainClass": "frc.robot.Series",
-      "projectName": "I cant keep making new projects everytime theres a new robot"
-    },
-    {
-      "type": "java",
-      "name": "Launch AudioWaveformCreator",
-      "request": "launch",
-      "mainClass": "frc.robot.AudioWaveformCreator",
-      "projectName": "I cant keep making new projects everytime theres a new robot"
-    },
-    {
-      "type": "java",
       "name": "Launch Main",
       "request": "launch",
       "mainClass": "frc.robot.Main",
-      "projectName": "I cant keep making new projects everytime theres a new robot"
-    },
-    {
-      "type": "java",
-      "name": "Launch SimpleAudioPlayer",
-      "request": "launch",
-      "mainClass": "frc.robot.SimpleAudioPlayer",
       "projectName": "I cant keep making new projects everytime theres a new robot"
     },
     {

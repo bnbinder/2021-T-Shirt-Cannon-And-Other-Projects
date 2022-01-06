@@ -103,6 +103,7 @@ public final class Constants {
 
     public static class CANNON
     {
+        //TODO fix all of these
         public static int solenoidOneID = 0;
         public static int solenoidTwoID = 0;
         public static int compressorID = 0;
@@ -122,6 +123,8 @@ public final class Constants {
         public static double trunnionKF = 0;
 
         public static double trunnionGreerRatio = 0;
+
+        public static double maxRotTalonSRX = 0;
 
         //!tester constants for feedforward
 

@@ -22,7 +22,7 @@ public class Cannon {
 
 
 
-/*
+
     
     private Compressor compressor = new Compressor(CANNON.compressorID);
     private Solenoid solenoidOne = new Solenoid(CANNON.solenoidOneID);
@@ -57,7 +57,6 @@ public class Cannon {
         trunnion.setNeutralMode(NeutralMode.Brake);
 
         genevaTimer.reset();
-        
     }
 
     public static Cannon getInstance()
@@ -84,7 +83,13 @@ public class Cannon {
     {
         slot = (int)((Math.random() * 6) + 1);
     }
-
+    /*
+    public void updateCannon()
+    {
+                //greer ratio thing might not do what i want, test when cannon is done (so never lol)
+        slot = (int)(((_motorcontroller.getSelectedSensorPosition() % CANNON.maxRotTalonSRX) / CANNON.trunnionGreerRatio) / ((CANNON.maxRotTalonSRX / 6) / CANNON.trunnionGreerRatio));
+    }
+    */
     /*
     public double trunnionCalculate(double setpoint, mode modes)
     {
@@ -134,12 +139,14 @@ public class Cannon {
     {
         angle, internal
     }
+    */
 
+    
     private static class InstanceHolder
     {
         private static final Cannon mInstance = new Cannon();
     } 
-    */
+    
 
 
     

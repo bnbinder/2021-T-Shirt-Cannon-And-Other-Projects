@@ -9,8 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
-
+import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.lang.model.util.ElementScanner6;
 import javax.sound.sampled.AudioFileFormat;
@@ -46,6 +45,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 //! IMPORTANT: IMPORT WPILIBJ2 (>>>>2<<<<) YES WITH A 2 NOT ONE BUT 2 FOR COMMAND
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -92,7 +92,13 @@ public class Robot extends TimedRobot {
   private double one,two,three;
   private boolean lol = true;
   private double the = 3;
+
   private boolean poop = false;
+  private boolean poopTwo = false;
+
+  private boolean play = false;
+  private boolean stop = false;
+  private boolean pause = false;
 
   private Drive mDrive = Drive.getInstance();
   private XboxController xbox = new XboxController(0);
@@ -291,6 +297,8 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       }
       
       //// find out xbox axis shit, and pray to god
+    if(poopTwo == false)
+    {
       if(one != 0 || two != 0 || three != 0)
       {
         mDrive.strafeRotate(-one/the,two/the,three/the);
@@ -311,29 +319,89 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       {
         mDrive.turnEncoder(180);
       }
-      else if(Math.abs(xbox.getTriggerAxis(Hand.kLeft)) > 0.8)
-      {
-        ////mAudio.play();
-      }
       else if(xbox.getStartButton())
       {
         mDrive.setTurnPos(0);
       }
+      else
+      {
+        mDrive.setTurnPercent(0,0,0,0);
+        mDrive.setDrivePerent(0,0,0,0);
+      }
+    }
 
 
-      else if(xbox.getBumperPressed(Hand.kLeft))
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    if(poopTwo == true)
+    {
+      if(xbox.getAButtonPressed())
+      {
+        if(xbox.getAButtonReleased())
+        {
+          mDrive.playSong();
+          play = true;
+          stop = false;
+        }
+      }
+      if(xbox.getBButtonPressed())
+      {
+        if(xbox.getBButtonReleased())
+        {
+          mDrive.pauseSong();
+          stop = true;
+          play = false;
+        }
+      }
+      if(xbox.getXButtonPressed())
+      {
+        if(xbox.getXButtonReleased())
+        {
+          mDrive.stopSong();
+          stop = true;
+          play = false;
+        }
+      }
+      if(stop && !play)
+      {
+        mDrive.setTurnPercent(0,0,0,0);
+        mDrive.setDrivePerent(0,0,0,0);
+      }
+    }
+
+
+      if(xbox.getBumperPressed(Hand.kLeft))
       {
         if(xbox.getBumperReleased(Hand.kLeft))
         {
           poop = !poop;
         }
       }
-
-
-      else
+      if(xbox.getBumperPressed(Hand.kRight))
       {
-        mDrive.setTurnPercent(0,0,0,0);
-        mDrive.setDrivePerent(0,0,0,0);
+        if(xbox.getBumperReleased(Hand.kRight))
+        {
+          poopTwo = !poopTwo;
+        }
+      }
+      if(xbox.getBumperPressed(Hand.kRight) && poopTwo)
+      {
+        if(xbox.getBumperReleased(Hand.kRight) && poopTwo)
+        {
+          mDrive.stopSong();
+        }
       }
 
 
@@ -345,7 +413,6 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
       {
         the = 3;
       }
-      
 
       ////mDrive.forwardStrafe(one, two);
       //// test this first to see if it works, then test straferotate and diagnose problemo

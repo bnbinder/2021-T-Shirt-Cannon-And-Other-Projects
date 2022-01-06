@@ -42,6 +42,7 @@ public class Cannon {
 
     private Cannon() //TODO this may fuck things up, in swerd code it was public in all solenoid related things
     {
+        /*
         solenoidOne.set(false);
         solenoidTwo.set(false);
         compressorStart();
@@ -139,15 +140,15 @@ public class Cannon {
     {
         angle, internal
     }
-    */
+    
 
     
     private static class InstanceHolder
     {
         private static final Cannon mInstance = new Cannon();
-    } 
-    
+    }
+    */
 
-
+    }
     
 }

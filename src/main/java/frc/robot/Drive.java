@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Collection;
+
 import javax.swing.plaf.multi.MultiDesktopIconUI;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -13,10 +15,12 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.music.Orchestra;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -160,6 +164,9 @@ public class Drive {
     SwerveModuleState frontLeftState, frontRightState, backLeftState, backRightState;
     ChassisSpeeds chassisSpeeds;
     double forward, sideways, angular;
+    public Collection<TalonFX> collect;
+    public Orchestra dababy;
+    public String path = "C:/Users/bossMaster/Desktop/h.wav";
     
     private Drive()
     { 
@@ -411,6 +418,14 @@ public class Drive {
         topTurnRight.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopRightCANCoder, TURN.greerRatio));
         bottomTurnLeft.setSelectedSensorPosition(MkUtil.degreesToNative(offsetBottomLeftCANCoder, TURN.greerRatio));
         bottomTurnRight.setSelectedSensorPosition(MkUtil.degreesToNative(offsetBottomRightCANCoder, TURN.greerRatio));
+
+        collect.add(topDriveLeft);
+        collect.add(topDriveRight);
+        collect.add(bottomDriveLeft);
+        collect.add(bottomDriveRight);
+
+        dababy = new Orchestra(collect);
+        dababy.loadMusic(path);
     }
 
     public static Drive getInstance()
@@ -533,6 +548,26 @@ public class Drive {
 
         SmartDashboard.putNumber("off", topTurnLeftEncoder.configGetMagnetOffset());
     }
+
+
+
+    public void playSong()
+    {
+        dababy.play();
+    }
+
+    public void stopSong()
+    {
+        dababy.stop();
+    }
+
+    public void pauseSong()
+    {
+        dababy.pause();
+    }
+
+
+
 
     public void setTurnPos(double position)
     {

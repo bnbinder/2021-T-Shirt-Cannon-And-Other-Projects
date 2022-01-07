@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.plaf.multi.MultiDesktopIconUI;
@@ -422,12 +423,15 @@ public class Drive {
         
 
         dababy = new Orchestra();
-        dababy.addInstrument(topDriveLeft);
-        dababy.addInstrument(topDriveRight);
-        dababy.addInstrument(bottomDriveLeft);
-        dababy.addInstrument(bottomDriveRight);
+        TalonFX [] _fxes = {new TalonFX(DRIVE.topDriveLeftCANID), new TalonFX(DRIVE.topDriveRightCANID), new TalonFX(DRIVE.bottomDriveLeftCANID), new TalonFX(DRIVE.bottomDriveRightCANID)};
+        ArrayList<TalonFX> _instruments = new ArrayList<TalonFX>();
+        for(int i = 0; i < _fxes.length; ++i)
+        {
+            _instruments.add(_fxes[i]);
+        }
+        dababy = new Orchestra(_instruments);
         dababy.loadMusic(path);
-        dababy.notifyAll();
+       
     }
 
     public static Drive getInstance()

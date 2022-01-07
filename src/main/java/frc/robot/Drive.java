@@ -423,7 +423,7 @@ public class Drive {
         
 
         dababy = new Orchestra();
-        TalonFX [] _fxes = {new TalonFX(DRIVE.topDriveLeftCANID), new TalonFX(DRIVE.topDriveRightCANID), new TalonFX(DRIVE.bottomDriveLeftCANID), new TalonFX(DRIVE.bottomDriveRightCANID)};
+        TalonFX [] _fxes = {new TalonFX(DRIVE.topDriveLeftCANID), new TalonFX(DRIVE.topDriveRightCANID), new TalonFX(DRIVE.bottomDriveLeftCANID), new TalonFX(DRIVE.bottomDriveRightCANID), new TalonFX(TURN.topTurnLeftCANID), new TalonFX(TURN.topTurnRightCANID), new TalonFX(TURN.bottomTurnLeftCANID), new TalonFX(TURN.bottomTurnRightCANID)};
         ArrayList<TalonFX> _instruments = new ArrayList<TalonFX>();
         for(int i = 0; i < _fxes.length; ++i)
         {

@@ -443,7 +443,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     //SmartDashboard.putNumber("two", two);
     */
     volts = RobotController.getBatteryVoltage();
-    
+    SmartDashboard.putBoolean("p", poopTwo);
   }
 
   @Override

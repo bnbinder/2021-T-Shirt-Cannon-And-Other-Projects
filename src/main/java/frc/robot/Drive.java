@@ -166,7 +166,7 @@ public class Drive {
     double forward, sideways, angular;
     //public Collection<TalonFX> collect;
     public Orchestra dababy;
-    public String path = "h.wav";//"C:/Users/bossMaster/Desktop/h.wav";
+    public String path = "chirp.chrp";//"C:/Users/bossMaster/Desktop/h.wav";
     
     private Drive()
     { 
@@ -427,6 +427,7 @@ public class Drive {
         dababy.addInstrument(bottomDriveLeft);
         dababy.addInstrument(bottomDriveRight);
         dababy.loadMusic(path);
+        dababy.notifyAll();
     }
 
     public static Drive getInstance()

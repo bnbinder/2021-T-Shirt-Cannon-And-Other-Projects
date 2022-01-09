@@ -54,7 +54,7 @@ public final class Constants {
         public static double peakOutputReverse = -1;
 
         public static double magicVel = .75 * maxNativeVelocity;
-        public static double magicAccel = 674;
+        public static double magicAccel = 2000;
 
         public static double kWheelDiameterInches = 4; //old wheels 5.9575;
                                             //need to fix this

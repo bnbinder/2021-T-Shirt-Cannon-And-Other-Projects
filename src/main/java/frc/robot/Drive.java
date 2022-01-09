@@ -70,10 +70,10 @@ public class Drive {
     private final PIDController turningBotLeft = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
     private final PIDController turningBotRight = new PIDController(TURN.turnKP, TURN.turnKI, TURN.turnKD);
 
-    private final PIDController driveTopLeft = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
-    private final PIDController driveTopRight = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
-    private final PIDController driveBotLeft = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
-    private final PIDController driveBotRight = new PIDController(DRIVE.driveKP, DRIVE.driveKI, DRIVE.driveKD);
+    private final PIDController driveTopLeft = new PIDController(DRIVE.driveKPCalc, DRIVE.driveKICalc, DRIVE.driveKDCalc);
+    private final PIDController driveTopRight = new PIDController(DRIVE.driveKPCalc, DRIVE.driveKICalc, DRIVE.driveKDCalc);
+    private final PIDController driveBotLeft = new PIDController(DRIVE.driveKPCalc, DRIVE.driveKICalc, DRIVE.driveKDCalc);
+    private final PIDController driveBotRight = new PIDController(DRIVE.driveKPCalc, DRIVE.driveKICalc, DRIVE.driveKDCalc);
     //TODO you dont need multiple controllers, calculating only takes the current state and goal. they arent wired into them, only inputted, you moron
     //!do it at guerin to see if it fucks things up tho, saftey first
 
@@ -246,36 +246,36 @@ public class Drive {
         bottomTurnLeft.setInverted(true);
         bottomTurnRight.setInverted(true);
 
-        topDriveLeft.configMotionSCurveStrength(4);
-        topDriveRight.configMotionSCurveStrength(4);
-        bottomDriveLeft.configMotionSCurveStrength(4);
-        bottomDriveRight.configMotionSCurveStrength(4);
+        topDriveLeft.configMotionSCurveStrength(6);
+        topDriveRight.configMotionSCurveStrength(6);
+        bottomDriveLeft.configMotionSCurveStrength(6);
+        bottomDriveRight.configMotionSCurveStrength(6);
         //TODO see how scurve changes accuracy
         
-        topDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        topDriveLeft.configVelocityMeasurementWindow(32);
+        topDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_25Ms);
+        topDriveLeft.configVelocityMeasurementWindow(16);
 
-        topDriveRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        topDriveRight.configVelocityMeasurementWindow(32);
+        topDriveRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_25Ms);
+        topDriveRight.configVelocityMeasurementWindow(16);
 
-        bottomDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        bottomDriveLeft.configVelocityMeasurementWindow(32);
+        bottomDriveLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_25Ms);
+        bottomDriveLeft.configVelocityMeasurementWindow(16);
 
-        bottomDriveRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        bottomDriveRight.configVelocityMeasurementWindow(32);
+        bottomDriveRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_25Ms);
+        bottomDriveRight.configVelocityMeasurementWindow(16);
 
 
-        topTurnLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        topTurnLeft.configVelocityMeasurementWindow(32);
+        topTurnLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_25Ms);
+        topTurnLeft.configVelocityMeasurementWindow(16);
 
-        topTurnRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        topTurnRight.configVelocityMeasurementWindow(32);
+        topTurnRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_25Ms);
+        topTurnRight.configVelocityMeasurementWindow(16);
 
-        bottomTurnLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        bottomTurnLeft.configVelocityMeasurementWindow(32);
+        bottomTurnLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_25Ms);
+        bottomTurnLeft.configVelocityMeasurementWindow(16);
 
-        bottomTurnRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms);
-        bottomTurnRight.configVelocityMeasurementWindow(32);
+        bottomTurnRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_25Ms);
+        bottomTurnRight.configVelocityMeasurementWindow(16);
 
         
         topDriveLeft.configVoltageCompSaturation(DRIVE.voltComp);
@@ -303,29 +303,29 @@ public class Drive {
         bottomTurnRight.enableVoltageCompensation(true);
 
 
-        topDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-        topDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        topDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10);
+        topDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10);
 
-        topTurnLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-        topTurnLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        topTurnLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10);
+        topTurnLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10);
 
-        topDriveRight.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-        topDriveRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        topDriveRight.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10);
+        topDriveRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10);
 
-        topTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-        topTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        topTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10);
+        topTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10);
 
-        bottomDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-        bottomDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        bottomDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10);
+        bottomDriveLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10);
 
-        bottomTurnLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-        bottomTurnLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        bottomTurnLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10);
+        bottomTurnLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10);
 
-        bottomDriveRight.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-        bottomDriveRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        bottomDriveRight.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10);
+        bottomDriveRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10);
 
-        bottomTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
-        bottomTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        bottomTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10);
+        bottomTurnRight.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10);
 
 
         topDriveLeft.configPeakOutputForward(DRIVE.peakOutputForward);
@@ -553,7 +553,7 @@ public class Drive {
         SmartDashboard.putNumber("encoder b left", bottomTurnLeftEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("encoder b right", bottomTurnRightEncoder.getAbsolutePosition());
 
-        SmartDashboard.putNumber("off", topTurnLeftEncoder.configGetMagnetOffset());
+        SmartDashboard.putNumber("speeed", topDriveLeft.getSelectedSensorVelocity());
     }
 
 
@@ -717,6 +717,9 @@ public class Drive {
         rightTopOutput = MkUtil.inchesToNative(distance);
         leftBottomOutput = MkUtil.inchesToNative(distance);
         rightBottomOutput = MkUtil.inchesToNative(distance);
+
+        SmartDashboard.putNumber("dist", distance);
+        SmartDashboard.putNumber("leftout", leftTopOutput);
     }
 
     public boolean isMagicStraightDone()

@@ -29,23 +29,34 @@ public final class Constants {
         public static int topDriveLeftCANID = 9;
         public static int bottomDriveLeftCANID = 6;
         
-        public static double driveKP = 0.9;
+        public static double driveKPCalc = 0.9;
+        public static double driveKICalc = 0;
+        public static double driveKDCalc = 0;
+        public static double driveKFCalc = 0;
+        //for calculate that is nevr used
+
+
+
+
+        public static double maxNativeVelocity = 21000; // 1685 -> before 1685 //TODO make sure this is right for talon fx
+                                                        //dont even know where i pulled this number, prob from swerve code
+
+        public static double driveKP = 7 * (0.1 * 1023) / 1400;
         public static double driveKI = 0;
-        public static double driveKD = 0;
-        public static double driveKF = 0; //! (%ofMotor x 1023) / maxNativeVelocity
+        public static double driveKD = /*3*/ 3 * driveKP;//0;
+        public static double driveKF = 1023.0 / maxNativeVelocity;//0; //! (%ofMotor x 1023) / maxNativeVelocity
         public static double driveOpenRampRate = 0;
         public static double driveCloseRampRate = 0;
 
-        public static double maxNativeVelocity = 2084; //TODO make sure this is right for talon fx
-                                                        //dont even know where i pulled this number, prob from swerve code
+        
 
         public static double peakOutputForward = 1;
         public static double peakOutputReverse = -1;
 
-        public static double magicVel = 1095;
+        public static double magicVel = .75 * maxNativeVelocity;
         public static double magicAccel = 674;
 
-        public static double kWheelDiameterInches = 5.9575;
+        public static double kWheelDiameterInches = 4; //old wheels 5.9575;
                                             //need to fix this
         public static double kWheelCircumference = kWheelDiameterInches * kPi;
 

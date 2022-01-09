@@ -360,6 +360,25 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
         }
       }
       //TODO test toggle not work
+      /*
+// Run this only once to initialize the variables
+boolean beltStatus = false;
+boolean previousButton = false;
+boolean currentButton = false;
+// Run the following code continuously
+previousButton = currentButton
+currentButton = stick.getRawButton(3);
+
+if (currentButton && !previousButton) 
+{
+	beltStatus = beltStatus ? false : true; 
+}
+
+conveyorMotor.set((double)(beltStatus ? 1 : 0));
+
+credit = artdutra04 (chief delphi)
+      */
+      //TODO test this toggle ^^^^
 
       if(xbox.getBButtonPressed())
       {

@@ -17,4 +17,4 @@ stolen code from -
   Radiodef (stackoverflow) for somehow working mic to db level meter
 
  SWERVE AUTONOMOUS:
-  Alex Swerdlow (coding god) - basic auto structure
+  team 3244 - basic auto structure and pidf config

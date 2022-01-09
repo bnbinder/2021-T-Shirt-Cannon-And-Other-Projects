@@ -340,22 +340,28 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
 
 
 
-
+    boolean a = false;
+    boolean b = false;
+    boolean x = false;
 
 
 
     
     if(poopTwo == true)
     {
-      if(xbox.getAButtonPressed())
+      if(xbox.getAButtonPressed() && x == false)
       {
-        if(xbox.getAButtonReleased())
-        {
+        x = true;
+      }
+      if(xbox.getAButtonReleased() && x == true)
+      {
           mDrive.playSong();
           play = true;
           stop = false;
-        }
+          x = false;
       }
+      //TODO test toggle
+
       if(xbox.getBButtonPressed())
       {
         if(xbox.getBButtonReleased())
@@ -389,13 +395,6 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
           poop = !poop;
         }
       }
-      if(xbox.getBumperPressed(Hand.kRight))
-      {
-        if(xbox.getBumperReleased(Hand.kRight))
-        {
-          poopTwo = !poopTwo;
-        }
-      }
       if(xbox.getBumperPressed(Hand.kRight) && poopTwo)
       {
         if(xbox.getBumperReleased(Hand.kRight) && poopTwo)
@@ -403,6 +402,14 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
           mDrive.stopSong();
         }
       }
+      if(xbox.getBumperPressed(Hand.kRight))
+      {
+        if(xbox.getBumperReleased(Hand.kRight))
+        {
+          poopTwo = !poopTwo;
+        }
+      }
+      
 
 
       if(poop)

@@ -197,7 +197,7 @@ public class MkUtil {
   public static double setDirection(TalonFX talon, double setpoint, double greerRatio)
   {
     // use the fastest way
-    double currentAngle = MkUtil.nativeToDegrees(talon.getSelectedSensorPosition(), greerRatio);
+    double currentAngle = MkUtil.nativeToDegrees((talon.getSelectedSensorPosition() + 2048) % 2048, greerRatio);
     return currentAngle + closestAngle(currentAngle, setpoint);
   }
 

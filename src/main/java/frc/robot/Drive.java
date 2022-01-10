@@ -1097,6 +1097,50 @@ public class Drive {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+    public double radius = 0;
+    public double theta = 0;
+
+    //let the math begin
+    //in inches
+    public double calculateCircleRadius(double distanceA, double lengthB)
+    {
+        return ((Math.pow(distanceA, 2)/4) + Math.pow(lengthB, 2)) * (1 / (2 * lengthB));
+    }
+    public double calculateAngularVelocity(double distanceA, double lengthB)
+    {
+        radius = calculateCircleRadius(distanceA, lengthB);
+        return (DRIVE.maxInchesVelocity / radius);
+    }
+    public double calculateArcOfPath(double distanceA, double lengthB)
+    {
+        radius = calculateCircleRadius(distanceA, lengthB);
+        theta = 2 * (Math.asin((distanceA/(2 * radius))));
+        return (theta / 360) * (2* (Constants.kPi * radius));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private static class InstanceHolder
     {
         private static final Drive mInstance = new Drive();

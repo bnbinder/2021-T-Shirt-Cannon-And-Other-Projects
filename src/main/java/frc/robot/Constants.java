@@ -48,6 +48,10 @@ public final class Constants {
         public static double driveOpenRampRate = 0;
         public static double driveCloseRampRate = 0;
 
+
+
+        public static double maxInchesVelocity = MkUtil.nativeToInches(maxNativeVelocity);
+
         
 
         public static double peakOutputForward = 1;

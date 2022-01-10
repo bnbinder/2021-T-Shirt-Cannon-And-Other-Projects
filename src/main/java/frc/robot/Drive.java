@@ -554,6 +554,9 @@ public class Drive {
         SmartDashboard.putNumber("encoder b right", bottomTurnRightEncoder.getAbsolutePosition());
 
         SmartDashboard.putNumber("speeed", topDriveLeft.getSelectedSensorVelocity());
+
+
+       
     }
 
 
@@ -652,19 +655,19 @@ public class Drive {
 
     public double turnCalculateTopLeftEncoder(double setpoint)
     {
-        return topLeftTurningEncoder.calculate((topTurnLeft.getSelectedSensorPosition() + 2048) % 2048, (MkUtil.degreesToNative(MkUtil.setDirection(topTurnLeft, setpoint, TURN.greerRatio),TURN.greerRatio) + 2048) % 2048);
+        return topLeftTurningEncoder.calculate((topTurnLeft.getSelectedSensorPosition()), (MkUtil.degreesToNative(MkUtil.setDirection(topTurnLeft, setpoint, TURN.greerRatio),TURN.greerRatio)));
     }
     public double turnCalculateTopRightEncoder(double setpoint)
     {
-        return topRightTurningEncoder.calculate((topTurnRight.getSelectedSensorPosition() + 2048) % 2048, (MkUtil.degreesToNative(MkUtil.setDirection(topTurnRight, setpoint, TURN.greerRatio),TURN.greerRatio) + 2048) % 2048);
+        return topRightTurningEncoder.calculate((topTurnRight.getSelectedSensorPosition()), (MkUtil.degreesToNative(MkUtil.setDirection(topTurnRight, setpoint, TURN.greerRatio),TURN.greerRatio)));
     }
     public double turnCalculateBotLeftEncoder(double setpoint)
     {
-        return bottomLeftTurningEncoder.calculate((bottomTurnLeft.getSelectedSensorPosition() + 2048) % 2048, (MkUtil.degreesToNative(MkUtil.setDirection(bottomTurnLeft, setpoint, TURN.greerRatio),TURN.greerRatio) + 2048) % 2048);
+        return bottomLeftTurningEncoder.calculate((bottomTurnLeft.getSelectedSensorPosition()), (MkUtil.degreesToNative(MkUtil.setDirection(bottomTurnLeft, setpoint, TURN.greerRatio),TURN.greerRatio)));
     }
     public double turnCalculateBotRightEncoder(double setpoint)
     {
-        return bottomRightTurningEncoder.calculate((bottomTurnRight.getSelectedSensorPosition() + 2048) % 2048, (MkUtil.degreesToNative(MkUtil.setDirection(bottomTurnRight, setpoint, TURN.greerRatio),TURN.greerRatio) + 2048) % 2048);
+        return bottomRightTurningEncoder.calculate((bottomTurnRight.getSelectedSensorPosition()), (MkUtil.degreesToNative(MkUtil.setDirection(bottomTurnRight, setpoint, TURN.greerRatio),TURN.greerRatio)));
     }
 
 
@@ -692,7 +695,6 @@ public class Drive {
     public void setMagicStraight(double setpoint)
     {
         distance = setpoint;
-
         topDriveLeft.configMotionCruiseVelocity(DRIVE.magicVel);
         topDriveRight.configMotionCruiseVelocity(DRIVE.magicVel);
         bottomDriveLeft.configMotionCruiseVelocity(DRIVE.magicVel);
@@ -974,18 +976,21 @@ public class Drive {
 
     public void turnEncoder(double setpoint)
     {
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRightEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRightEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeftEncoder(setpoint));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRightEncoder(setpoint));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRightEncoder(setpoint));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeftEncoder(setpoint));
     }   
     
     public void turnInternalEncoder(double setpoint)
     {
+
+
+
         topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
         topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(setpoint, TURN.greerRatio)));
     }   
 
     public void turnRotateNavX()

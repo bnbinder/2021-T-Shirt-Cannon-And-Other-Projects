@@ -10,13 +10,23 @@ import frc.robot.Constants.TURN;
 import frc.robot.Constants;
 
 public class MkUtil {
-
-  public static double nativeToInches(double nativeUnits) {
+//original ones 
+/*
+ public static double nativeToInches(double nativeUnits) {
     return (nativeUnits / 2048.0) * DRIVE.kWheelCircumference;
   }
 
   public static double inchesToNative(double in) {
     return (in / DRIVE.kWheelCircumference) * 2048.0;
+  }*/
+
+  //new ones with greer ration 
+  public static double nativeToInches(double nativeUnits) {
+    return (nativeUnits / (2048.0 * DRIVE.greerRatio)) * DRIVE.kWheelCircumference;
+  }
+
+  public static double inchesToNative(double in) {
+    return (in / DRIVE.kWheelCircumference) * (2048.0 * DRIVE.greerRatio);
   }
 
   public static double nativePer100MstoInchesPerSec(double vel) {
@@ -197,7 +207,7 @@ public class MkUtil {
   public static double setDirection(TalonFX talon, double setpoint, double greerRatio)
   {
     // use the fastest way
-    double currentAngle = MkUtil.nativeToDegrees((talon.getSelectedSensorPosition() + 2048) % 2048, greerRatio);
+    double currentAngle = MkUtil.nativeToDegrees((talon.getSelectedSensorPosition()), greerRatio);
     return currentAngle + closestAngle(currentAngle, setpoint);
   }
 

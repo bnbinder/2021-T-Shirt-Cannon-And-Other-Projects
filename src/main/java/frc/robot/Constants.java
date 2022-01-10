@@ -41,9 +41,9 @@ public final class Constants {
         public static double maxNativeVelocity = 21000; // 1685 -> before 1685 //TODO make sure this is right for talon fx
                                                         //dont even know where i pulled this number, prob from swerve code
 
-        public static double driveKP = 7 * (0.1 * 1023) / 1400;
+        public static double driveKP = 0.21;
         public static double driveKI = 0;
-        public static double driveKD = /*3*/ 3 * driveKP;//0;
+        public static double driveKD = /*3*/ 0 * driveKP; //0;
         public static double driveKF = 1023.0 / maxNativeVelocity;//0; //! (%ofMotor x 1023) / maxNativeVelocity
         public static double driveOpenRampRate = 0;
         public static double driveCloseRampRate = 0;

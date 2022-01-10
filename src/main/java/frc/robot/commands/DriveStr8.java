@@ -14,6 +14,6 @@ public class DriveStr8 extends SequentialCommandGroup {
   public DriveStr8() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(deadline(new DriveStraight(10).withTimeout(1.5)));
+    addCommands(deadline(new DriveStraight(12)));
   }
 }

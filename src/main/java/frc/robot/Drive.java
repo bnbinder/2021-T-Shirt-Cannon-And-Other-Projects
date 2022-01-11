@@ -532,10 +532,10 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1
         */
 
         //degrees = MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio);
-        SmartDashboard.putNumber("topledeg", MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio));
-        SmartDashboard.putNumber("toprideg", MkUtil.nativeToDegrees(topTurnRight.getSelectedSensorPosition(), TURN.greerRatio));
-        SmartDashboard.putNumber("botledeg", MkUtil.nativeToDegrees(bottomTurnLeft.getSelectedSensorPosition(), TURN.greerRatio));
-        SmartDashboard.putNumber("botrideg", MkUtil.nativeToDegrees(bottomTurnRight.getSelectedSensorPosition(), TURN.greerRatio));
+        SmartDashboard.putNumber("topl", topTurnLeft.getSelectedSensorPosition());//, TURN.greerRatio));
+        SmartDashboard.putNumber("topr", topTurnRight.getSelectedSensorPosition());//, TURN.greerRatio));
+        SmartDashboard.putNumber("botl", bottomTurnLeft.getSelectedSensorPosition());//, TURN.greerRatio));
+        SmartDashboard.putNumber("botr", bottomTurnRight.getSelectedSensorPosition());//, TURN.greerRatio));
         //(frontLeft,frontRight,bottomLeft,bottomRight);
         
         //frontLeft = new SwerveModuleState(leftTopVelMeters, Rotation2d.fromDegrees(MkUtil.nativeToDegrees(topTurnLeft.getSelectedSensorPosition(), TURN.greerRatio)));
@@ -551,10 +551,10 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1
 
         SmartDashboard.putNumber("navx", navX.getYaw());
 
-        SmartDashboard.putNumber("encoder t left", topTurnLeftEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("encoder t right", topTurnRightEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("encoder b left", bottomTurnLeftEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("encoder b right", bottomTurnRightEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("encoder t left", MkUtil.degreesToNative(topTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio));
+        SmartDashboard.putNumber("encoder t right", MkUtil.degreesToNative(topTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio));
+        SmartDashboard.putNumber("encoder b left", MkUtil.degreesToNative(bottomTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio));
+        SmartDashboard.putNumber("encoder b right", MkUtil.degreesToNative(bottomTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio));
 
         SmartDashboard.putNumber("speeed", topDriveLeft.getSelectedSensorVelocity());
 
@@ -694,6 +694,7 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1
         bottomDriveLeft.setSelectedSensorPosition(0);
         bottomDriveRight.setSelectedSensorPosition(0);
     }    
+    
 
     public void setMagicStraight(double setpoint)
     {
@@ -1112,8 +1113,7 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1
 
 
    
-    public double thetaTurn = 0;
-    public double totalDistance = 0;
+
     public double currentDistance = 0;
 
     public double distanceA = 0;
@@ -1143,13 +1143,11 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1
     }
 
 
-    public void autoTurnSet(double distanceAA, double lengthBB)
+    public void autoTurnSet(double distanceAA, double lengthBB, double totalDistance)
     {
-        totalDistance = distance;
         currentDistance = 0;
-        thetaTurn = calculateAngleOfPath(distanceAA, lengthBB);
     }
-    public void autoTurnUpdate()
+    public void autoTurnUpdate(double totalDistance, double thetaTurn)
     {
         currentDistance = 
             (MkUtil.nativeToDegrees(topDriveLeft.getSelectedSensorPosition(), TURN.greerRatio) +
@@ -1162,7 +1160,7 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1
         bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(((currentDistance/totalDistance)*thetaTurn), TURN.greerRatio)));
         bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(((currentDistance/totalDistance)*thetaTurn), TURN.greerRatio)));
     }
-    public boolean autoTurnIsDone()
+    public boolean autoTurnIsDone(double totalDistance)
     {
         return Math.abs(totalDistance - currentDistance) < 0.5 && Math.abs(avgVelInches) < 0.1;
     }

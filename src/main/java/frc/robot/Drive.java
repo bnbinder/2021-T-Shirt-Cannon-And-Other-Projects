@@ -183,10 +183,10 @@ public class Drive {
         bottomTurnRight.configFactoryDefault();
     
 
-        topDriveLeft.setNeutralMode(NeutralMode.Coast);
-        topDriveRight.setNeutralMode(NeutralMode.Coast);
-        bottomDriveLeft.setNeutralMode(NeutralMode.Coast);
-        bottomDriveRight.setNeutralMode(NeutralMode.Coast);
+        topDriveLeft.setNeutralMode(NeutralMode.Brake);
+        topDriveRight.setNeutralMode(NeutralMode.Brake);
+        bottomDriveLeft.setNeutralMode(NeutralMode.Brake);
+        bottomDriveRight.setNeutralMode(NeutralMode.Brake);
         
         topTurnLeft.setNeutralMode(NeutralMode.Brake);
         topTurnRight.setNeutralMode(NeutralMode.Brake);
@@ -241,10 +241,10 @@ public class Drive {
         bottomDriveLeft.setInverted(false);
         bottomDriveRight.setInverted(false);
 
-        topTurnLeft.setInverted(true);
-        topTurnRight.setInverted(true);
-        bottomTurnLeft.setInverted(true);
-        bottomTurnRight.setInverted(true);
+        topTurnLeft.setInverted(false);
+        topTurnRight.setInverted(false);
+        bottomTurnLeft.setInverted(false);
+        bottomTurnRight.setInverted(false);
 
         topDriveLeft.configMotionSCurveStrength(6);
         topDriveRight.configMotionSCurveStrength(6);
@@ -413,10 +413,10 @@ public class Drive {
   //      topTurnRightEncoder.configMagnetOffset(-offsetTopRightCANCoder/*286.7*/);
 //     bottomTurnLeftEncoder.configMagnetOffset(-offsetBottomLeftCANCoder/*298.3*/);
   //      bottomTurnRightEncoder.configMagnetOffset(-offsetBottomRightCANCoder/*130.4*/);
-   offsetTopLeftCANCoder = topTurnLeftEncoder.getAbsolutePosition() - -107.050781;//78.75;
- offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition() - -67.3242187;//115.224;
-  offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition() - -63.89648437; //117.0703125;//121.289;
-offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1210937;//320.361;
+   offsetTopLeftCANCoder = topTurnLeftEncoder.getAbsolutePosition() - -106.787109375;//-107.050781;//78.75;
+ offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition() - -71.103515625;//-67.3242187;//115.224;
+  offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition() - -66.708984375;//-63.89648437; //117.0703125;//121.289;
+offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 132.9785156;//134.1210937;//320.361;
 
         topTurnLeft.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopLeftCANCoder, TURN.greerRatio));
         topTurnRight.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopRightCANCoder, TURN.greerRatio));

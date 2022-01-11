@@ -81,11 +81,11 @@ public class Drive {
     private final PIDController topRightTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
     private final PIDController bottomLeftTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
     private final PIDController bottomRightTurningEncoder = new PIDController(TURN.turnEncoderKP, TURN.turnEncoderKI, TURN.turnEncoderKD);
-    
-    private double offsetTopLeftCANCoder = topTurnLeftEncoder.getAbsolutePosition() - -107.050781;//78.75;
-    private double offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition() - -67.3242187;//115.224;
-    private double offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition() - -63.89648437; //117.0703125;//121.289;
-    private double offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1210937;//320.361;
+
+    private double offsetTopLeftCANCoder;// = topTurnLeftEncoder.getAbsolutePosition() - -107.050781;//78.75;
+    private double offsetTopRightCANCoder;// = topTurnRightEncoder.getAbsolutePosition() - -67.3242187;//115.224;
+    private double offsetBottomLeftCANCoder;// = bottomTurnLeftEncoder.getAbsolutePosition() - -63.89648437; //117.0703125;//121.289;
+    private double offsetBottomRightCANCoder;// = bottomTurnRightEncoder.getAbsolutePosition() - 134.1210937;//320.361;
 
     private double distance;
     
@@ -413,7 +413,10 @@ public class Drive {
   //      topTurnRightEncoder.configMagnetOffset(-offsetTopRightCANCoder/*286.7*/);
 //     bottomTurnLeftEncoder.configMagnetOffset(-offsetBottomLeftCANCoder/*298.3*/);
   //      bottomTurnRightEncoder.configMagnetOffset(-offsetBottomRightCANCoder/*130.4*/);
-
+   offsetTopLeftCANCoder = topTurnLeftEncoder.getAbsolutePosition() - -107.050781;//78.75;
+ offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition() - -67.3242187;//115.224;
+  offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition() - -63.89648437; //117.0703125;//121.289;
+offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 134.1210937;//320.361;
 
         topTurnLeft.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopLeftCANCoder, TURN.greerRatio));
         topTurnRight.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopRightCANCoder, TURN.greerRatio));
@@ -1154,10 +1157,10 @@ public class Drive {
             MkUtil.nativeToDegrees(bottomDriveLeft.getSelectedSensorPosition(), TURN.greerRatio) + 
             MkUtil.nativeToDegrees(bottomDriveRight.getSelectedSensorPosition(), TURN.greerRatio)) / 4;
 
-        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft((currentDistance/totalDistance)*thetaTurn));
-        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight((currentDistance/totalDistance)*thetaTurn));
-        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft((currentDistance/totalDistance)*thetaTurn));
-        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight((currentDistance/totalDistance)*thetaTurn));
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft(MkUtil.degreesToNative(((currentDistance/totalDistance)*thetaTurn), TURN.greerRatio)));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight(MkUtil.degreesToNative(((currentDistance/totalDistance)*thetaTurn), TURN.greerRatio)));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft(MkUtil.degreesToNative(((currentDistance/totalDistance)*thetaTurn), TURN.greerRatio)));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight(MkUtil.degreesToNative(((currentDistance/totalDistance)*thetaTurn), TURN.greerRatio)));
     }
     public boolean autoTurnIsDone()
     {

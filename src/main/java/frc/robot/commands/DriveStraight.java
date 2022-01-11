@@ -20,12 +20,14 @@ public class DriveStraight extends CommandBase {
   @Override
   public void initialize() {
     mDrive.setMagicStraight(j);
+    mDrive.autoTurnSet(37, 24);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
     mDrive.updateMagicStraight();
+    mDrive.autoTurnUpdate();
   }
 
   // Make this return true when this Command no longer needs to run execute()

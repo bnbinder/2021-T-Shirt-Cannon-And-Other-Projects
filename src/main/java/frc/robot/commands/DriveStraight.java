@@ -14,7 +14,6 @@ public class DriveStraight extends CommandBase {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     j = i;
-    mDrive.zeroSensors();
   }
 
   // Called just before this Command runs the first time

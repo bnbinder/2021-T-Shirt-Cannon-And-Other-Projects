@@ -694,6 +694,7 @@ public class Drive {
 
     public void setMagicStraight(double setpoint)
     {
+        zeroSensors();
         distance = setpoint;
         topDriveLeft.configMotionCruiseVelocity(DRIVE.magicVel);
         topDriveRight.configMotionCruiseVelocity(DRIVE.magicVel);
@@ -1107,26 +1108,62 @@ public class Drive {
 
 
 
-    public double radius = 0;
-    public double theta = 0;
+   
+    public double thetaTurn = 0;
+    public double totalDistance = 0;
+    public double currentDistance = 0;
+
+    public double distanceA = 0;
+    public double lengthB = 0;
 
     //let the math begin
     //in inches
-    public double calculateCircleRadius(double distanceA, double lengthB)
+    public double calculateCircleRadius(double distanceAA, double lengthBB)
     {
-        return ((Math.pow(distanceA, 2)/4) + Math.pow(lengthB, 2)) * (1 / (2 * lengthB));
+        return ((Math.pow(distanceAA, 2)/4) + Math.pow(lengthBB, 2)) * (1 / (2 * lengthBB));
     }
-    public double calculateAngularVelocity(double distanceA, double lengthB)
+    public double calculateAngularVelocity(double distanceAA, double lengthBB)
     {
-        radius = calculateCircleRadius(distanceA, lengthB);
+        double radius = calculateCircleRadius(distanceAA, lengthBB);
         return (DRIVE.maxInchesVelocity / radius);
     }
-    public double calculateArcOfPath(double distanceA, double lengthB)
+    public double calculateArcOfPath(double distanceAA, double lengthBB)
     {
-        radius = calculateCircleRadius(distanceA, lengthB);
-        theta = 2 * (Math.asin((distanceA/(2 * radius))));
+        double radius = calculateCircleRadius(distanceAA, lengthBB);
+        double theta = 2 * (Math.asin((distanceAA/(2 * radius))));
         return (theta / 360) * (2* (Constants.kPi * radius));
     }
+    public double calculateAngleOfPath(double distanceAA, double lengthBB)
+    {
+        double radius = calculateCircleRadius(distanceAA, lengthBB);
+        return 2 * (Math.asin((distanceAA/(2 * radius))));
+    }
+
+
+    public void autoTurnSet(double distanceAA, double lengthBB)
+    {
+        totalDistance = distance;
+        currentDistance = 0;
+        thetaTurn = calculateAngleOfPath(distanceAA, lengthBB);
+    }
+    public void autoTurnUpdate()
+    {
+        currentDistance = 
+            (MkUtil.nativeToDegrees(topDriveLeft.getSelectedSensorPosition(), TURN.greerRatio) +
+            MkUtil.nativeToDegrees(topDriveRight.getSelectedSensorPosition(), TURN.greerRatio) +
+            MkUtil.nativeToDegrees(bottomDriveLeft.getSelectedSensorPosition(), TURN.greerRatio) + 
+            MkUtil.nativeToDegrees(bottomDriveRight.getSelectedSensorPosition(), TURN.greerRatio)) / 4;
+
+        topTurnLeft.set(ControlMode.PercentOutput, turnCalculateTopLeft((currentDistance/totalDistance)*thetaTurn));
+        topTurnRight.set(ControlMode.PercentOutput, turnCalculateTopRight((currentDistance/totalDistance)*thetaTurn));
+        bottomTurnLeft.set(ControlMode.PercentOutput, turnCalculateBotLeft((currentDistance/totalDistance)*thetaTurn));
+        bottomTurnRight.set(ControlMode.PercentOutput, turnCalculateBotRight((currentDistance/totalDistance)*thetaTurn));
+    }
+    public boolean autoTurnIsDone()
+    {
+        return Math.abs(totalDistance - currentDistance) < 0.5 && Math.abs(avgVelInches) < 0.1;
+    }
+
 
 
 

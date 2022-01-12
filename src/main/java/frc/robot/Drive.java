@@ -181,7 +181,12 @@ public class Drive {
         bottomTurnLeft.configFactoryDefault();
         topTurnRight.configFactoryDefault();
         bottomTurnRight.configFactoryDefault();
-    
+        
+
+        topTurnLeft.configFeedbackNotContinuous(true, 20);
+        topTurnRight.configFeedbackNotContinuous(true, 20);
+        bottomTurnLeft.configFeedbackNotContinuous(true, 20);
+        bottomTurnRight.configFeedbackNotContinuous(true, 20);
 
         topDriveLeft.setNeutralMode(NeutralMode.Brake);
         topDriveRight.setNeutralMode(NeutralMode.Brake);
@@ -380,10 +385,10 @@ public class Drive {
 
         
         //during open loop, 0.5 seconds before motor go from 0 to selected output
-        topTurnLeft.configOpenloopRamp(TURN.turnOpenRampRate);
-        topTurnRight.configOpenloopRamp(TURN.turnOpenRampRate);
-        bottomTurnLeft.configOpenloopRamp(TURN.turnOpenRampRate);
-        bottomTurnRight.configOpenloopRamp(TURN.turnOpenRampRate);
+        //topTurnLeft.configOpenloopRamp(TURN.turnOpenRampRate);
+        //topTurnRight.configOpenloopRamp(TURN.turnOpenRampRate);
+        //bottomTurnLeft.configOpenloopRamp(TURN.turnOpenRampRate);
+        //bottomTurnRight.configOpenloopRamp(TURN.turnOpenRampRate);
 
         topDriveLeft.configOpenloopRamp(DRIVE.driveOpenRampRate);
         topDriveRight.configOpenloopRamp(DRIVE.driveOpenRampRate);
@@ -413,10 +418,13 @@ public class Drive {
   //      topTurnRightEncoder.configMagnetOffset(-offsetTopRightCANCoder/*286.7*/);
 //     bottomTurnLeftEncoder.configMagnetOffset(-offsetBottomLeftCANCoder/*298.3*/);
   //      bottomTurnRightEncoder.configMagnetOffset(-offsetBottomRightCANCoder/*130.4*/);
-   offsetTopLeftCANCoder = topTurnLeftEncoder.getAbsolutePosition() - -106.787109375;//-107.050781;//78.75;
- offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition() - -71.103515625;//-67.3242187;//115.224;
-  offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition() - -66.708984375;//-63.89648437; //117.0703125;//121.289;
-offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 132.9785156;//134.1210937;//320.361;
+   offsetTopLeftCANCoder = topTurnLeftEncoder.getAbsolutePosition() - 65.8300781257;//-107.050781;//78.75;
+ offsetTopRightCANCoder = topTurnRightEncoder.getAbsolutePosition() - 114.697265625;//-67.3242187;//115.224;
+  offsetBottomLeftCANCoder = bottomTurnLeftEncoder.getAbsolutePosition() - 119.70703125;//-63.89648437; //117.0703125;//121.289;
+offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() +42.1875;//134.1210937;//320.361;
+
+       
+
 
         topTurnLeft.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopLeftCANCoder, TURN.greerRatio));
         topTurnRight.setSelectedSensorPosition(MkUtil.degreesToNative(offsetTopRightCANCoder, TURN.greerRatio));
@@ -551,10 +559,10 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 132.9
 
         SmartDashboard.putNumber("navx", navX.getYaw());
 
-        SmartDashboard.putNumber("encoder t left", MkUtil.degreesToNative(topTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio));
-        SmartDashboard.putNumber("encoder t right", MkUtil.degreesToNative(topTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio));
-        SmartDashboard.putNumber("encoder b left", MkUtil.degreesToNative(bottomTurnLeftEncoder.getAbsolutePosition(), TURN.greerRatio));
-        SmartDashboard.putNumber("encoder b right", MkUtil.degreesToNative(bottomTurnRightEncoder.getAbsolutePosition(), TURN.greerRatio));
+        SmartDashboard.putNumber("encoder t left", topTurnLeftEncoder.getAbsolutePosition() );
+        SmartDashboard.putNumber("encoder t right",topTurnRightEncoder.getAbsolutePosition() );
+        SmartDashboard.putNumber("encoder b left", bottomTurnLeftEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("encoder b right", bottomTurnRightEncoder.getAbsolutePosition() );
 
         SmartDashboard.putNumber("speeed", topDriveLeft.getSelectedSensorVelocity());
 
@@ -826,7 +834,7 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 132.9
         SmartDashboard.putNumber("b", B);
         SmartDashboard.putNumber("c", C);
         SmartDashboard.putNumber("d", D);
-
+                                                                        //idk why negative works but whatever
         double ws1 = Math.sqrt(Math.pow(B,2)+Math.pow(C,2));   double wa1 = Math.atan2(B,C)*(180/Math.PI);
         double ws2 = Math.sqrt(Math.pow(B,2)+Math.pow(D,2));   double wa2 = Math.atan2(B,D)*(180/Math.PI);
         double ws3 = Math.sqrt(Math.pow(A,2)+Math.pow(D,2));   double wa3 = Math.atan2(A,D)*(180/Math.PI);
@@ -921,15 +929,15 @@ offsetBottomRightCANCoder = bottomTurnRightEncoder.getAbsolutePosition() - 132.9
         SmartDashboard.putNumber("speedbotright", bottomDriveRight.getMotorOutputPercent());
 
 
-        SmartDashboard.putNumber("ws1", ws1);
-        SmartDashboard.putNumber("ws2", ws2);
-        SmartDashboard.putNumber("ws3", ws3);
-        SmartDashboard.putNumber("ws4", ws4);
+        SmartDashboard.putNumber("ws1", wa1);
+        SmartDashboard.putNumber("ws2", wa2);
+        SmartDashboard.putNumber("ws3", wa3);
+        SmartDashboard.putNumber("ws4", wa4);
 
-        SmartDashboard.putNumber("ptopl", driveTopLeft.getP());
-        SmartDashboard.putNumber("ptopr", driveTopRight.getP());
-        SmartDashboard.putNumber("pbotl", driveBotLeft.getP());
-        SmartDashboard.putNumber("pbotr", driveBotRight.getP());
+        //SmartDashboard.putNumber("ptopl", driveTopLeft.getP());
+        //SmartDashboard.putNumber("ptopr", driveTopRight.getP());
+        //SmartDashboard.putNumber("pbotl", driveBotLeft.getP());
+        //SmartDashboard.putNumber("pbotr", driveBotRight.getP());
     }
 
     //!             figure above shit later, make simple cave man code

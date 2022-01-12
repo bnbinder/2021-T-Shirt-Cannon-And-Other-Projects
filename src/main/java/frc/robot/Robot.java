@@ -279,9 +279,9 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     */
     
       
-      one = (xbox.getRawAxis(1) - DRIVE.deadband) / (1 - DRIVE.deadband);
-      two = (xbox.getRawAxis(0) - DRIVE.deadband) / (1 - DRIVE.deadband);
-      three = (xbox.getRawAxis(5) - TURN.deadband) / (1 - TURN.deadband);
+      one = (xbox.getRawAxis(1));// - DRIVE.deadband) / (1 - DRIVE.deadband);
+      two = (xbox.getRawAxis(0));// - DRIVE.deadband) / (1 - DRIVE.deadband);
+      three = (xbox.getRawAxis(5));// - TURN.deadband) / (1 - TURN.deadband);
       
       if(Math.abs(xbox.getRawAxis(1)) < 0.1)
       {
@@ -301,7 +301,7 @@ mDrive.navXshit(), new Pose2d(0, 0, new Rotation2d()));
     {
       if(one != 0 || two != 0 || three != 0)
       {
-        mDrive.strafeRotate(-one/the,two/the,three/the);
+        mDrive.strafeRotate(one/the,two/the,-three/the);
       }
       else if(xbox.getYButton())
       {
@@ -400,8 +400,8 @@ credit = artdutra04 (chief delphi)
       }
       if(stop && !play)
       {
-        mDrive.setTurnPercent(0,0,0,0);
-        mDrive.setDrivePerent(0,0,0,0);
+        //mDrive.setTurnPercent(0,0,0,0);
+        //mDrive.setDrivePerent(0,0,0,0);
       }
       
     }
